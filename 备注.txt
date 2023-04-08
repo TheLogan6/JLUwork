@@ -1,0 +1,26 @@
+NongFuSpring        1    1    380  50   12   50.0   纯净水
+NongFuSpring        1    1    380  50   24   50.0   纯净水
+NongFuSpring        1    1    550  50   6     75.0   纯净水
+NongFuSpring        1    1    550  50   12   140.0 纯净水
+NongFuSpring        1    2    380  50   12   60.0   矿泉水
+NongFuSpring        1    2    550  50   12   60.0   矿泉水
+NongFuSpring        1    2    550  50   24   100.0矿泉水
+Huiyuan	               2    1    380  50   6     60.0  苹果汁
+Huiyuan	               2    1    380  50   12   70.0  苹果汁
+Huiyuan	               2    2    380  50   6     60.0  葡萄汁
+Huiyuan	               2    2    380  50   6     60.0  葡萄汁
+BeerQingdao          3    1    550  50   12   100.0
+BeerQingdao          3    1    330  50   12   80.0
+BeerQingdao          3    2    330  50   12   130.0
+Shede                      4    1    500  50   6      300.0
+Shede                      4    2    500  50   6      300.0
+Shede                      4    3    500  50   6      300.0
+Wuliangye              5    1    500  50   6       450.0
+Wuliangye              5    2    500  50   6       550.0
+Wuliangye              5    3    500  50   6       650.0
+Kangshifu               6    1    550  50   12     80.0
+Kangshifu               6    1    550  50   24     150.0
+Kangshifu               6    2    550  50   12     80.0
+Kangshifu               6    3    550  50   12     80.0
+Wahaha                  7    1    550  50   12     100.0
+Wahaha                  7    2    550  50   12     120.0

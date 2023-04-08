@@ -1,0 +1,26 @@
+NongFuSpring          1    	1   	  380  	1000		12   	   50.0
+NongFuSpring          1    	1       380  	2000		24       50.0
+NongFuSpring          1    	1    	  550   	1500		6        75.0
+NongFuSpring          1    	1       550   	1000		12       140.0
+NongFuSpring          1    	2       380    	2000		12       60.0
+NongFuSpring          1    	2       550  	1500		12       60.0
+NongFuSpring          1    	2       550  	3000		24       100.0
+Huiyuan	                 2    	1       380  	1500		6        60.0
+Huiyuan	                2    	1       380  	1500		12       70.0
+Huiyuan	                2    	2       380  	2000		6        60.0
+Huiyuan	                2    	2       380  	2000		6        60.0
+BeerQingdao           3    	1       550  	2000		12       100.0
+BeerQingdao           3    	1       330  	2000		12       80.0
+BeerQingdao           3    	2       330  	2500		12       130.0
+Shede                 4    	1       500  	1500		6        300.0
+Shede                 4    	3       500  	1000		6        300.0
+Wuliangye             5    	1       500  	1500		6        450.0
+Wuliangye             5    	2       500 	1500		6        550.0
+Wuliangye             5    	3       500   	2000		6        650.0
+Kangshifu             6    	1       550  	2000		12      80.0
+Kangshifu             6    	1       550  	1500		24      150.0
+Kangshifu             6    	2       550  	3000		12      80.0
+Kangshifu             6    	3       550  	2500		12      80.0
+Wahaha                7    	1       550   	2500		12      100.0
+Wahaha                7    	2       550   	2500		12      120.0
+end
