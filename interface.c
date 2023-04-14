@@ -459,10 +459,10 @@ void SalePromotion(client* cur_cus){
 				printf("\t\t\t 共计%.2f元!\n", buy_money);
 				system("pause");
 				break;
-				break;
 			}
-			case(3):{
-				
+			case(3):{// 加入购物车 
+				addShoppingCart(&cur_cus->cart,buy_amount,cur_cus->id,tar->Price,tar->BrandNumber, tar->ProductNumber, tar->SpecificationNumber); 
+				writeShoppingCart(&L);
 				printf("\n\t\t\t已成功加入购物车!"); 
 				break;
 			} 

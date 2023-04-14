@@ -179,7 +179,7 @@ void Sell_select_Number_of_goods(struct sell_bill* newbill,struct customer* user
     printf("%d%%", discount);
 //    user->point+=newbill->total_price;
 }
-void Sell_confirm(struct sell_bill* newbill,struct customer* user)
+int Sell_confirm(struct sell_bill* newbill,struct customer* user)
 {
     bool flag=false;
     while(flag==false)
@@ -188,6 +188,7 @@ void Sell_confirm(struct sell_bill* newbill,struct customer* user)
         printf("请选择您的支付方式：\n");
         printf("1.现金支付\n");
         printf("2.余额支付\n");
+        printf("3.加入购物车\n");
         printf("3.取消购买\n");
         printf("请输入您的支付方式所对应的编号：\n");
         int buychoice;
@@ -239,7 +240,14 @@ void Sell_confirm(struct sell_bill* newbill,struct customer* user)
                 continue;
             }
         }
-        if(buychoice==3)
+        if(buychoice==3)  //加入购物车 
+        {
+			printf("期待您的下一次光临\n");
+            newbill->status=0;
+            flag=true;
+            continue;
+        }
+        if(buychoice==4)
         {
             printf("期待您的下一次光临\n");
             newbill->status=0;
@@ -247,6 +255,7 @@ void Sell_confirm(struct sell_bill* newbill,struct customer* user)
             continue;
         }
     }
+    return buychoice;
 }
 void sell_save(struct sell_bill* newbill)
 {
