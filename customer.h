@@ -28,6 +28,7 @@ struct customer{
     double balance;
     char phoneNumber[12];
     struct customer*ne,*pre;
+    struct shopping_cart* cart;
 };
 typedef struct customer client;
 

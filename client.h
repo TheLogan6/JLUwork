@@ -6,10 +6,13 @@
 #include<string.h>
 #include<stdbool.h>
 
-#include"interface.h"
 #include"warehouse.h"
-#include"sellbill.h"
 #include"customer.h" 
+#include"manager.h" 
+#include"sellbill.h"
+#include"shiningpoints.h"
+#include"supplier.h" 
+#include"interface.h"
 
 void ClientInput();
 void PurchaseInterface(client* cur_cus);

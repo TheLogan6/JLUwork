@@ -40,6 +40,7 @@ void readClient(client **L)
         tmp->pre = q;
         q = tmp;
         q->ne = NULL;
+        q->cart=NULL;
         cus_cnt++;
     }
     (*L)=(*L)->ne;
@@ -66,14 +67,20 @@ void writeClientInfo(client *L) {
 }
 //添加用户
 void addClient(client **L, client *p) {
-    if (!*L) {
+	while(1)
+	{
+		system("cls");
+		printf("\n\n\n\n\n");
+		printf("\t\t\t\t\t-------------新用户注册界面----------------\n");
+//		printf("\t\t\t\t\t      (在姓名处输入0可以返回上一个界面)\n");
+		if (!*L) {
         *L = (client *) malloc(sizeof(client));
         (*L)->ne = NULL, (*L)->pre = p;
         int id, level=1, point;
         char password[10];
         char phoneNumber[12];
         char s[20];
-        cout("请输入顾客的姓名：\n");
+        cout("\t\t\t请输入顾客的姓名：");
         cin("%s", s);
         getchar();
 //        cout("请分配用户等级:(等级1,2,3)\n");
@@ -84,7 +91,6 @@ void addClient(client **L, client *p) {
 //                while (getchar() != '\n');
 //            } else
 //                break;
-//        }
         cout("请输入用户电话号码：\n");
         while (1) {
             char ch;
@@ -148,6 +154,10 @@ void addClient(client **L, client *p) {
         cus_cnt++;
     } else
         addClient(&(*L)->ne, *L);
+		
+		
+	} 
+    
 }
 //寻找用户
 client*findClient(client**L,int id){
@@ -353,8 +363,8 @@ bool recharge(client**L,LogNode**log,int id,double money){
     if(money<0)return false;
     if(!p)return false;
     if(!checkBalance(&p,-money))return false;
-	addLogNode(&log,&L,id,1,money);
-	writeLog(log);
+	addLogNode(log,L,id,1,money);
+	writeLog(*log);
     //更新订单节点
 }
 //打印用户订单

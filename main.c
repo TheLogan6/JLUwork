@@ -4,6 +4,7 @@
 #include<windows.h>
 #include<string.h>
 #include<stdbool.h>
+#include<conio.h>
 #include"interface.h"
 #include"warehouse.h" 
 #include"client.h"
@@ -11,22 +12,26 @@
 #include"customer.h"
 #include"sellbill.h"
 #include"shiningpoints.h" 
+#include"supplier.h" 
 
 //全局变量区
+char Exchange_reason[Exchange_Reason_num][50]={"不喜欢","商品与描述不符","产品过期","商品少件","商品破损","发错货物"};
+char Return_reason[Return_Reason_num][50]={"不想要了","不喜欢","商品与描述不符","产品过期","质量问题","商品少件","商品破损","发错货物"};
 char* code[12][5];
 char* BillType[6];
-Inventory* Inv_head;
-SpecialInv* SpeInv_head;
-ProductSource* Sou_head;
-client* L;//没有哨位节点 
-LogNode* log_head;
-int cus_cnt;
+Inventory* Inv_head;                // 库存商品 
+//SpecialInv* SpeInv_head;             // 特价商品 
+ProductSource* Sou_head;            // 货源结构体 
+client* L;                         //客户节点 没有哨位节点 
+LogNode* log_head;                 //  
+int cus_cnt;  
 int log_cnt;
-client *cus_head;
-struct sell_bill* bill_pre;
+//client *cus_head;
+struct sell_bill* bill_pre;            //有哨位节点 
+struct sell_bill* bill_with_problem;  // 有哨位节点 
 
 int total_brand;    // 产品的品牌总数 
-const int passwordans = 123456;
+char passwordans[20] = "123456";
 double total_money = 50000.00;    //  
 
 
@@ -38,19 +43,20 @@ int main(int argc, char *argv[]) {
 	readClient(&L);
 	InitLog(&log_head,&L);
 	Sou_head = ReadSource();
-
 	bill_pre = Initiate_Bill(); 
+	//initproductinlist();
+	//createproductinlist();
 	total_brand = 7; 
+	readShoppingCart(&L);	
+	JudgeNearexpiry();
 
-	SpeInv_head = InitSpecialInv();
-//	PrintSpecialInv();
-//	pau;
+	bill_with_problem=Initiate_Bill_with_problem();
 	while(1)                //用作返回上一级 
 	{
         system("cls"); 
 		LoginInterface();
         char ChooseLogin_s[10];
-        system("taskkill /im process.exe>nul 2>nul");
+//       system("taskkill /im process.exe>nul 2>nul");
         scanf("%s", ChooseLogin_s);
         int ChooseLogin = inputcheck(ChooseLogin_s);
         switch(ChooseLogin){
@@ -62,13 +68,13 @@ int main(int argc, char *argv[]) {
                 ManagerInput();
                 break;
             }
-            case(3) : {
+            case(3) : { //新用户添加 
                 addClient(&L,NULL); 
                 writeClientInfo(L);
                 pau;
                 break;
             }
-            case(4):{
+            case(4):{ // 退出程序 
             	return 0;
 				break;
 			}

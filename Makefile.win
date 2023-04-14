@@ -4,8 +4,8 @@
 CPP      = g++.exe -D__DEBUG__
 CC       = gcc.exe -D__DEBUG__
 WINDRES  = windres.exe
-OBJ      = main.o interface.o warehouse.o client.o manager.o customer.o restock.o sellbill.o shiningpoints.o
-LINKOBJ  = main.o interface.o warehouse.o client.o manager.o customer.o restock.o sellbill.o shiningpoints.o
+OBJ      = main.o interface.o warehouse.o client.o manager.o customer.o sellbill.o shiningpoints.o supplier.o
+LINKOBJ  = main.o interface.o warehouse.o client.o manager.o customer.o sellbill.o shiningpoints.o supplier.o
 LIBS     = -L"D:/LenovoSoftstore/Install/DevC/MinGW64/lib" -L"D:/LenovoSoftstore/Install/DevC/MinGW64/x86_64-w64-mingw32/lib" -static-libgcc -g3
 INCS     = -I"D:/LenovoSoftstore/Install/DevC/MinGW64/include" -I"D:/LenovoSoftstore/Install/DevC/MinGW64/x86_64-w64-mingw32/include" -I"D:/LenovoSoftstore/Install/DevC/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include"
 CXXINCS  = -I"D:/LenovoSoftstore/Install/DevC/MinGW64/include" -I"D:/LenovoSoftstore/Install/DevC/MinGW64/x86_64-w64-mingw32/include" -I"D:/LenovoSoftstore/Install/DevC/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include" -I"D:/LenovoSoftstore/Install/DevC/MinGW64/lib/gcc/x86_64-w64-mingw32/4.9.2/include/c++"
@@ -42,11 +42,11 @@ manager.o: manager.c
 customer.o: customer.c
 	$(CC) -c customer.c -o customer.o $(CFLAGS)
 
-restock.o: restock.c
-	$(CC) -c restock.c -o restock.o $(CFLAGS)
-
 sellbill.o: sellbill.c
 	$(CC) -c sellbill.c -o sellbill.o $(CFLAGS)
 
 shiningpoints.o: shiningpoints.c
 	$(CC) -c shiningpoints.c -o shiningpoints.o $(CFLAGS)
+
+supplier.o: supplier.c
+	$(CC) -c supplier.c -o supplier.o $(CFLAGS)

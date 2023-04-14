@@ -5,10 +5,14 @@
 #include<time.h>
 #include<windows.h>
 #include<stdbool.h>
+
 #include"warehouse.h"
+#include"client.h" 
 #include"customer.h" 
 #include"manager.h" 
 #include"sellbill.h"
+#include"shiningpoints.h"
+#include"supplier.h" 
 
 void LoginInterface();    //登录界面
 void ManagerInterface(); // 店铺管理界面 
@@ -32,5 +36,5 @@ int inputcheck(char numstring[]);  // 判断整数输入是否合法
 void ManagerInterface_Read();    //只读模式 
 void ManagerInterface_Write();    // 修改模式 
 
-void SalePromotion();            // 促销界面 
+void SalePromotion(client* cur_cus);            // 促销界面 
 

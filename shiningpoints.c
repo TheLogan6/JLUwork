@@ -1,45 +1,117 @@
 #include"shiningpoints.h"
 
-void ShoppintcartInterface(client* cur_cus){          // 当前客户信息 
-	while(1)
-	{
-		system("cls");
-		printf("\n\n\n\n");
-		printf("\t\t\t\t\t------------购物车界面----------------\n");
-		printf("\t\t\t\t\t    (输入0可以返回购物界面)\n");
-		printf("\t订单编号 | 品牌名称 | 商品名称 | 酒水容量 | 包装大小 | 单价 | 购买数量 | 金额");
-		//打印所有的订单 
-		printf("\t 请选择您要对你的购物车进行的服务：");
-		printf("\t 1. 删除订单\n");
-		printf("\t 2. 修改购买数量\n");
-		printf("\t 3. 支付结算");
-		char ShoppingcartOp_s[5];
-		int ShoppingcartOp;
-		scanf("%s", ShoppingcartOp_s);
-		ShoppingcartOp = inputcheck(ShoppingcartOp_s);
-		if(ShoppingcartOp == -1){
-			RefreshPage();
-			continue;
-		} 
-		if(ShoppingcartOp == 0) return;
-		switch(ShoppingcartOp){
-			case(1):{
-				Deleteitems();
-				break;
-			}
-			case(2):{
-				Changequantity();
-				break;
-			} 
+void showShoppingCart(client*cus){
+    if(!cus)return ;
+    shopping_cart*p=cus->cart; 
+    int cnt=0;
+    while(p) {
+        p->id=++cnt;
+        Inventory* q = Inv_head->next;
+        while(q)
+        {
+        	if(q->BrandNumber == p->x&& q->SpecificationNumber == p->z) break;
+        	q = q->next;
 		}
-	}
+		if(q == NULL) printf("您曾选择的商品已售罄！");
+        else{
+        	printf("\t订单编号 |    品牌名称    |   商品名称   | 酒水容量 |  包装大小  |  购买数量  |   单价   |  总金额\n");
+			printf("\t  %-9d%-20s%-15s", p->id, q->DrinksBrand, code[p->x][p->y]);
+			printf("%-12d%-12d%-12d%-9.2lf%-10.2lf\n", q->volume, q->packagingsize, p->cnt,p->single_cost,p->total_cost);
+		}
+        p=p->next;
+    }
 }
-		
-void ShoppintcartServe(){
-}	
-void Deleteitems(){
-}	
-void Changequantity(){
+void addShoppingCart(shopping_cart**p,int cnt,int cus_id,double money,int x,int y,int z){
+    if((*p)&&(*p)->x==x&&(*p)->y==y&&(*p)->z==z){
+            (*p)->cnt+=cnt;
+            return;
+    }
+    else if(!(*p)){
+        shopping_cart *tmp=(shopping_cart*)malloc(sizeof(shopping_cart));
+        tmp->single_cost=money;
+        tmp->cnt=cnt;
+        tmp->cus_id=cus_id;
+        tmp->total_cost=(double)money*cnt;
+        tmp->x=x,tmp->y=y,tmp->z=z;
+        strcpy(tmp->goods_name,"tempname");
+        tmp->next=NULL;
+        *p=tmp;
+    }
+    else addShoppingCart(&(*p)->next,cnt,cus_id,money,x,y,z);
+}
+void readShoppingCart(client**L){
+    FILE *fp=fopen("shoppingcart.txt", "r");
+    if(!fp){
+        printf("文件打开失败！\n");
+        exit(0);
+    }
+    char buffer[1000];
+    fgets(buffer,sizeof buffer,fp);
+    char ch;
+    int id,cus_id;double money;int cnt,x,y,z;
+    while (fscanf(fp, "%d%d%d%lf%d%d%d",&id,&cus_id,&cnt,&money,&x,&y,&z)!=EOF){
+        client *p= findClient(L,cus_id);
+        addShoppingCart(&(p->cart),cnt,cus_id,money,x,y,z);
+    }
+    fclose(fp);
+}
+
+
+void writeShoppingCart(client**L){
+    client *p=*L;
+    FILE *fp= fopen("shoppingcart.txt", "w");
+    fprintf(fp,"id\t客户id\t商品个数\t商品单价\t编号x\t编号y\t编号z\n");
+    if(!p)return ;
+    while(p){
+        shopping_cart *tmp=p->cart;
+        while(tmp){
+            fprintf(fp,"%d\t%d\t%d\t%lf\t%d\t%d\t%d\n",tmp->id,tmp->cus_id,tmp->cnt,tmp->single_cost,tmp->x,tmp->y,tmp->z);
+            tmp=tmp->next;
+        }
+        p=p->ne;
+    }
+    fclose(fp);
+}
+
+void delShoppingCart(client*L,int id){
+    shopping_cart *p=L->cart;
+    shopping_cart *dummy= malloc(sizeof(shopping_cart));
+    dummy->next=p;
+    p=dummy;
+    while(p&&p->next){
+        if(p->next->id==id)break;
+        p=p->next;
+    }
+    if(p->next!=NULL)p->next=p->next->next;
+    L->cart=dummy->next;
+}
+
+void ChangeNumber(client*cur_cus, int tarid){
+	shopping_cart *p = cur_cus->cart;
+	while(p)
+	{
+		if(p->id == tarid) break;
+		p = p->next;
+	}
+	if(p==NULL) printf("未找到该订单,请刷新后重新输入！");
+	printf("请输入您想要修改的数量(单次不得超过300箱)：");
+	int  change_num;
+	char change_num_s[10];
+	scanf("%s",change_num_s);
+	change_num = inputcheck(change_num_s);
+	if(change_num == -1 || change_num == 0){
+		RefreshPage();
+		return;
+	} 
+	else {
+		p->cnt = change_num;
+		p->total_cost = change_num * p->single_cost;
+	}
 	
 }
+
+
+ 
+
+		
 		

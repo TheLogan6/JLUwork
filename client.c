@@ -71,8 +71,8 @@ void PurchaseProduct(client* cur_cus, int ChooseBrand, struct sell_bill* newbill
 //			printf("\n\t\t\t\t您已成功选择  ,容量为  ,包装为  "); 
 		}
 				
-		
-		system("pause"); 
+//		Sleep(2000); 
+//		system("pause"); 
 	}
 }
 

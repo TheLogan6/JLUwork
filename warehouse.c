@@ -4,16 +4,19 @@ extern char* code[12][5];
 extern Inventory* Inv_head;
 extern ProductSource* Sou_head;
 extern int total_brand;
-extern SpecialInv* SpeInv_head;
+//extern SpecialInv* SpeInv_head;
 
 void encode_product(){
-	code[1][0] = "农夫山泉";code[1][1] = "纯净水", code[1][2] = "矿泉水" ;code[1][3] = "红茶味茶π";
+	code[1][0] = "农夫山泉";code[1][1] = "纯净水", code[1][2] = "矿泉水" ;code[1][3] = "红茶味茶π";code[1][3] = "元气森林";
 	code[2][0] = "汇源"; code[2][1] = "苹果汁"; code[2][2] = "葡萄汁"; code[2][3] = "葡萄汁";
 	code[3][0] = "青岛啤酒" ; code[3][1] = "青岛纯生"; code[3][2] = "青岛小棕瓶" ;
 	code[4][0] = "舍得"; code[4][1] = "水晶舍得"; code[4][2] = "至尊舍得" ;
 	code[5][0] = "五粮液"; code[5][1] = "剑兰春"; code[5][2] = "五粮春"; code[5][3] = "黄金酒";
 	code[6][0] = "康师傅" ;code[6][1] = "冰红茶"; code[6][2] = "冰绿茶"; code[6][3] = "冰糖雪梨";
-	code[7][0] = "娃哈哈"; code[7][1] = "营养快线"; 
+	code[7][0] = "娃哈哈"; code[7][1] = "营养快线"; code[7][2] = "AD钙奶"; 
+	code[8][0]="喜茶"        ;  code[8][1] = "喜小瓶气泡水";
+	code[9][0]="可口可乐"    ; code[9][1] = "可乐";code[9][1] = "雪碧";
+	code[10][0]="大窑嘉宾"   ;    code[10][1] = "大窑橙味";
 }
 
 Inventory* InitInventory(){
@@ -22,7 +25,7 @@ Inventory* InitInventory(){
 	Inv_head->next = NULL;
 	Inventory* Inv_tail = Inv_head;                    // 尾指针 
 	FILE* Storehouse_fp;
-	Storehouse_fp = fopen("仓库.txt","r+");
+	Storehouse_fp = fopen("warehouse.txt","r+");
 	if(Storehouse_fp == NULL){
 		printf("Storehousefile cannot open, error happens!");
 		exit(-1);
@@ -37,12 +40,13 @@ Inventory* InitInventory(){
 //		fgets(p->DrinksBrand, 20, fp);
 		fscanf(Storehouse_fp, "%d%d%d%d%d%d", &p->BrandNumber, &p->ProductNumber, &p->SpecificationNumber, &p->volume, &p->Reserve, &p->packagingsize);
 		fscanf(Storehouse_fp, "%f\n", &p->Price);
-		fscanf(Storehouse_fp, "%d%d%d\n", &p->quality_year, &p->quality_month, &p->quality_day);	
+		fscanf(Storehouse_fp, "%d%d%d%d\n", &p->quality_year, &p->quality_month, &p->quality_day, &p->nearexpiry);	
 		p->pre = Inv_tail;
 		p->next = NULL;
 		Inv_tail->next = p;
 		Inv_tail = p;
 	} 
+	fclose(Storehouse_fp);
 	return Inv_head;
 } 
 
@@ -61,7 +65,7 @@ void PrintInventory(Inventory* Inv_head){
 	printf("  酒水品牌  | 品牌编号 |   商品名称   | 商品编号 | 容量大小 | 包装大小 | 库存容量 |   价格   |          保质期\n");
 	while(p)
 	{
-		printf("%-18s%-9d", p->DrinksBrand, p->BrandNumber);
+		printf("%-18s%-9d", code[p->BrandNumber][0], p->BrandNumber);
 		printf("%-16s", code[p->BrandNumber][p->ProductNumber]);
 		printf("%-10d%-10d%-11d%-11d", p->SpecificationNumber, p->volume, p->packagingsize, p->Reserve);
 		if(p->Reserve == 0) printf("(已售罄)");
@@ -88,7 +92,7 @@ void AddNewinventory(Inventory* newInv){
 }
 
 void UpdateInventory(){
-    FILE* newstorehouse_fp = fopen("新仓库.txt", "w");
+    FILE* newstorehouse_fp = fopen("Newstorehouse.txt", "w");
     if (newstorehouse_fp == NULL)
     {
         printf("NewstorehouseFile cannot open, error happens!");
@@ -101,7 +105,8 @@ void UpdateInventory(){
         fprintf(newstorehouse_fp, "%-20s", p->DrinksBrand);
 		fprintf(newstorehouse_fp, "%-9d%-9d", p->BrandNumber, p->ProductNumber);
 		fprintf(newstorehouse_fp, "%-9d%-9d%-9d%-9d", p->SpecificationNumber, p->volume, p->packagingsize, p->Reserve); 
-		fprintf(newstorehouse_fp, "%-15.2f\n", p->Price);
+		fprintf(newstorehouse_fp, "%-15.2f", p->Price);
+		fprintf(newstorehouse_fp, "%-9d%-9d%-9d%-5d\n", p->quality_year, p->quality_month, p->quality_day, p->nearexpiry);
 		p = p->next;
     }
     fclose(newstorehouse_fp);
@@ -508,49 +513,112 @@ ProductSource* FindSource(int Brand, int Specification){
 	return NULL;
 }
 
+
+/*---------------------------------------------------------------------------临期商品操作-----*/ 
 int timegap(int x1, int y1, int z1, int x2, int y2, int z2){ // 1是保质期限 
 //	printf("%d %d %d %d %d %d",x1,y1,z1,x2,y2,z2);
 	return (x1-x2)*365 + (y1-y2)* 30 + (z1-z2);
 }
 
-
-
-SpecialInv* InitSpecialInv(){
-	SpecialInv* head = (SpecialInv*)malloc(sizeof(SpecialInv));
-	head->next = NULL;
-	SpecialInv* tail = head;
+void JudgeNearexpiry(){
+	Inventory* q = Inv_head->next;
 	time_t timep;
 	struct tm *p;
     time(&timep);
     p = localtime(&timep); //取得当地具体时间
-//    printf("%d %d %d ", (1900 + p->tm_year), (1 + p->tm_mon), p->tm_mday);
-	Inventory* q = Inv_head->next;
 	while(q)
 	{
-		if(timegap(q->quality_year,q->quality_month,q->quality_day,1900+p->tm_year, 1+p->tm_mon, p->tm_mday) < 60 ){
-			SpecialInv* node = (SpecialInv*)malloc(sizeof(SpecialInv));
-			node->Pro = q;
-			node->next = NULL;
-			node->pre = tail;
-			node->SpecialPrice = q->Price * 0.6;
-			tail->next = node;
-			tail = node;
+		if(q->nearexpiry == 1) {
+			q = q->next;
+			continue;
+		}
+		else if(timegap(q->quality_year,q->quality_month,q->quality_day,1900+p->tm_year, 1+p->tm_mon, p->tm_mday) < 60 )
+		{
+			q->Price *= 0.5;
+			q->nearexpiry = 1;
 		}
 		q = q->next;
 	}
-	return head;
-} 
+	UpdateInventory();
+	return;
+}
 
+//SpecialInv* InitSpecialInv(){
+//	SpecialInv* head = (SpecialInv*)malloc(sizeof(SpecialInv));
+//	head->next = NULL;
+//	SpecialInv* tail = head;
+//	time_t timep;
+//	struct tm *p;
+//    time(&timep);
+//    p = localtime(&timep); //取得当地具体时间
+////    printf("%d %d %d ", (1900 + p->tm_year), (1 + p->tm_mon), p->tm_mday);
+//	Inventory* q = Inv_head->next;
+//	while(q)
+//	{
+//		if(timegap(q->quality_year,q->quality_month,q->quality_day,1900+p->tm_year, 1+p->tm_mon, p->tm_mday) < 60 ){
+//			q->Price *= 0.5;
+//			SpecialInv* node = (SpecialInv*)malloc(sizeof(SpecialInv));
+//			node->Pro = q;
+//			node->next = NULL;
+//			node->pre = tail;
+//			tail->next = node;
+//			tail = node;
+//		}
+//		q = q->next;
+//	}
+//	return head;
+//} 
+//
 void PrintSpecialInv(){
-	SpecialInv* p = SpeInv_head->next;
-	printf("  酒水品牌  | 品牌编号 |   商品名称   | 商品编号 | 容量大小 | 包装大小 |  促销价格  |          保质期\n");
+	Inventory* p = Inv_head->next;
+	printf("  酒水品牌  | 品牌编号 |   商品名称   | 商品编号 | 容量大小 | 包装大小 | 库存容量 |  促销价格  |          保质期\n");
 	while(p)
 	{
-		printf("%-18s%-9d", p->Pro->DrinksBrand, p->Pro->BrandNumber);
-		printf("%-16s", code[p->Pro->BrandNumber][p->Pro->ProductNumber]);
-		printf("%-10d%-9d%-11d", p->Pro->SpecificationNumber, p->Pro->volume, p->Pro->packagingsize);
-		printf("%-12.2f   ", p->Pro->Price);
-		printf("%d年%d月%d日\n", p->Pro->quality_year, p->Pro->quality_month, p->Pro->quality_day);
+		if(p->nearexpiry == 1)
+		{
+			printf("%-18s%-9d", code[p->BrandNumber][0], p->BrandNumber);
+			printf("%-16s", code[p->BrandNumber][p->ProductNumber]);
+			printf("%-10d%-9d%-11d%-8d", p->SpecificationNumber, p->volume, p->packagingsize,p->Reserve);
+			printf("%-12.2f   ", p->Price);
+			printf("%d年%d月%d日\n", p->quality_year, p->quality_month, p->quality_day); 
+		}
 		p = p->next;	
 	}	
 }
+
+
+
+
+/*-------------------------- 赠品操作--------------------------*/
+Gift* InitGift(){
+	Gift* Gift_head = (Gift*)malloc(sizeof(Gift));  // 哨位节点 
+	Gift_head->pre = NULL;
+	Gift_head->next = NULL;
+	Gift* Gift_tail = Gift_head;                    // 尾指针 
+	FILE* Gift_fp;
+	Gift_fp = fopen("gift.txt","r+");
+	if(Gift_fp == NULL){
+		printf("Giftfile cannot open, error happens!");
+		exit(-1);
+	}
+
+	while(!feof(Gift_fp))
+	{
+//		char garbage[50];
+//		fgets(garbage, sizeof(Inventory), Storehouse_fp);
+		Gift* p = (Gift*)malloc(sizeof(Gift));
+		fscanf(Gift_fp, "%d%d%d%d", &p->reorder, &p->brand, &p->product, &p->specification);
+		fscanf(Gift_fp, "%d\n", &p->Reserve_gift);
+		p->pre = Gift_tail;
+		p->next = NULL;
+		Gift_tail->next = p;
+		Gift_tail = p;
+	} 
+	return Gift_head; 
+} 
+
+void addintogift(){
+	return; 
+}
+
+

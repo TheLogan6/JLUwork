@@ -1,5 +1,5 @@
 #include"sellbill.h"
-
+//正常订单
 struct customer* Find_pointer_of_client(int id)
 {
     struct  customer* pointer_of_client=L;
@@ -29,6 +29,9 @@ struct sell_bill* Initiate_Bill()
         nth_bill++;
         struct sell_bill* bill=(struct sell_bill*)malloc(sizeof(struct sell_bill));
         if(fscanf(filep, "%d", &bill->order) == EOF)break;
+        if(fscanf(filep, "%d", &bill->status) == EOF)break;
+        if(fscanf(filep, "%d", &bill->reason_num) == EOF)break;
+        if(fscanf(filep, "%d", &bill->change_num) == EOF)break;
         if(fscanf(filep, "%d%d%d%d%d%d", &bill->year, &bill->month, &bill->day, &bill->hour, &bill->minute, &bill->second) == EOF)break;
         fscanf(filep, "%s", bill->brand);                //品牌
         fscanf(filep, "%d", &bill->number_of_brand);      //品牌编号
@@ -50,13 +53,9 @@ struct sell_bill* Initiate_Bill()
         struct Inventory* pointer_Inventory=Inv_head->next;
         while(pointer_Inventory!=NULL)
         {
-        	if(pointer_Inventory->BrandNumber==bill->number_of_brand&&pointer_Inventory->SpecificationNumber==bill->SpecificationNumber) break;
-			pointer_Inventory=pointer_Inventory->next;
-		}
-        if(pointer_Inventory==NULL) 
-        {
-        	printf("1");
-		}
+            if(pointer_Inventory->BrandNumber==bill->number_of_brand&&pointer_Inventory->SpecificationNumber==bill->SpecificationNumber) break;
+            pointer_Inventory=pointer_Inventory->next;
+        }
         bill->product=pointer_Inventory;
         point=bill;
     }
@@ -115,27 +114,27 @@ void Sell_select_ProductNumber(int number, struct sell_bill* newbill)
 //        }
 //        break;
 //    }
-	newbill->SpecificationNumber=number;
+    newbill->SpecificationNumber=number;
     struct Inventory* pointer_Inventory=Inv_head->next;
     while(pointer_Inventory!=NULL)
     {
-    	if(pointer_Inventory->BrandNumber==newbill->number_of_brand&&pointer_Inventory->SpecificationNumber==newbill->SpecificationNumber) break;
-    	pointer_Inventory=pointer_Inventory->next;
-	}  
+        if(pointer_Inventory->BrandNumber==newbill->number_of_brand&&pointer_Inventory->SpecificationNumber==newbill->SpecificationNumber) break;
+        pointer_Inventory=pointer_Inventory->next;
+    }
     newbill->ProductNumber=pointer_Inventory->ProductNumber;
     newbill->volume = pointer_Inventory->volume;
     newbill->packagingsize = pointer_Inventory->packagingsize;
     newbill->Unit_Price = pointer_Inventory->Price;
 }
-struct sell_bill* Sell_select_Number_of_goods(struct sell_bill* newbill,struct customer* user)
+void Sell_select_Number_of_goods(struct sell_bill* newbill,struct customer* user)
 {
     printf("请问您需要买多少箱%d瓶/箱的产品:", newbill->packagingsize);
     struct Inventory* pointer_Inventory=Inv_head->next;
     while(pointer_Inventory!=NULL)
     {
-    	if(pointer_Inventory->BrandNumber==newbill->number_of_brand&&pointer_Inventory->SpecificationNumber==newbill->SpecificationNumber) break;
-    	pointer_Inventory=pointer_Inventory->next;
-	}  
+        if(pointer_Inventory->BrandNumber==newbill->number_of_brand&&pointer_Inventory->SpecificationNumber==newbill->SpecificationNumber) break;
+        pointer_Inventory=pointer_Inventory->next;
+    }
     newbill->product=pointer_Inventory;
     while(1)
     {
@@ -178,18 +177,19 @@ struct sell_bill* Sell_select_Number_of_goods(struct sell_bill* newbill,struct c
     int discount = 100 * newbill->discount_for_client;
     newbill->total_price *= newbill->discount_for_client;
     printf("%d%%", discount);
-    return newbill;
 //    user->point+=newbill->total_price;
 }
-struct  sell_bill* Sell_confirm(struct sell_bill* newbill,struct customer* user)
+void Sell_confirm(struct sell_bill* newbill,struct customer* user)
 {
-    bool purchased=false;
-    while(purchased==false)
+    bool flag=false;
+    while(flag==false)
     {
+        //system("");
         printf("请选择您的支付方式：\n");
         printf("1.现金支付\n");
         printf("2.余额支付\n");
         printf("3.取消购买\n");
+        printf("请输入您的支付方式所对应的编号：\n");
         int buychoice;
         while(1)
         {
@@ -197,7 +197,7 @@ struct  sell_bill* Sell_confirm(struct sell_bill* newbill,struct customer* user)
             char c;
             do
             {
-                if(count!=0)printf("对不起，您输入的支付方式不正确，请您重新输入\n");
+                if(count!=0)printf("对不起，您输入的编号不正确，请您重新输入\n");
                 ret=scanf("%d", &buychoice);
                 c = getchar();
                 fflush(stdin);
@@ -205,7 +205,7 @@ struct  sell_bill* Sell_confirm(struct sell_bill* newbill,struct customer* user)
             }while ((ret!=1)||(c!='\n'));
             if(buychoice<=0||buychoice>3)
             {
-                printf("对不起，您输入的支付方式不正确，请您重新输入\n");
+                printf("对不起，您输入的编号不正确，请您重新输入\n");
                 continue;
             }
             break;
@@ -215,8 +215,9 @@ struct  sell_bill* Sell_confirm(struct sell_bill* newbill,struct customer* user)
             printf("\n您已成功购买，谢谢您的惠顾\n");
 //            addLogNode(&log_head,&L,user->id,0,newbill->total_price);
 //            writeLog(log_head);
+            flag=true;
+            newbill->status=1;
             newbill->product->Reserve-=newbill->number_of_packagingzise;
-            purchased=true;
             continue;
         }
         if(buychoice==2)
@@ -227,8 +228,9 @@ struct  sell_bill* Sell_confirm(struct sell_bill* newbill,struct customer* user)
                 printf("\n您已成功购买，谢谢您的惠顾\n");
 //                addLogNode(&log_head,&L,user->id,0,newbill->total_price);
 //                writeLog(log_head);
+                flag=true;
+                newbill->status=1;
                 newbill->product->Reserve-=newbill->number_of_packagingzise;
-                purchased=true;
                 continue;
             }
             else
@@ -240,10 +242,11 @@ struct  sell_bill* Sell_confirm(struct sell_bill* newbill,struct customer* user)
         if(buychoice==3)
         {
             printf("期待您的下一次光临\n");
-            return NULL;
+            newbill->status=0;
+            flag=true;
+            continue;
         }
     }
-    return newbill;
 }
 void sell_save(struct sell_bill* newbill)
 {
@@ -264,9 +267,11 @@ void sell_save(struct sell_bill* newbill)
         {
             pointer_of_all_bills=pointer_of_all_bills->next;
         }
+       	pau;
         newbill->pre=pointer_of_all_bills;
         pointer_of_all_bills->next=newbill;
         newbill->order=pointer_of_all_bills->order+1;
+        newbill->next=NULL;
     }
     newbill->year=1900+timenow->tm_year;
     newbill->month=1+timenow->tm_mon;
@@ -274,7 +279,12 @@ void sell_save(struct sell_bill* newbill)
     newbill->hour=8+timenow->tm_hour;
     newbill->minute=timenow->tm_min;
     newbill->second=timenow->tm_sec;
+    newbill->reason_num=-1;
+	newbill->change_num=-1; 
     fprintf(filep,"%d ",newbill->order);
+    fprintf(filep,"%d ",newbill->status);
+    fprintf(filep,"%d ",newbill->reason_num);
+    fprintf(filep,"%d ",newbill->change_num);
     fprintf(filep,"%d ",newbill->year);
     fprintf(filep,"%d ",newbill->month);
     fprintf(filep,"%d ",newbill->day);
@@ -295,6 +305,7 @@ void sell_save(struct sell_bill* newbill)
     fprintf(filep,"%.2lf\n",newbill->discount_for_client);
 //    fprintf(filep);
     fclose(filep);
+    bill_pre = Initiate_Bill(); 
 }
 void Print_Bills_Of_Given_Brand(void) { printf("您打算查询哪个品牌的订单\n");
     for(int i=1;i<=Number_Of_Brand;i++)
@@ -329,75 +340,115 @@ void Print_Bills_Of_Given_Brand(void) { printf("您打算查询哪个品牌的订单\n");
             count++;
             if (count == 1)
                 printf("—————————————————————————————————————————————————————————历史订单——————————————————————————————————————————————————————\n"
-           "编号\t|交易时间\t\t|商品品牌\t|商品名称\t|商品容量(ml)\t|包装大小(瓶/箱)\t|销售单价\t|售出数目(箱)\t|总数(瓶)\t|买家\t\t|买家等级\t|优惠\t|总价\t\n");
-    		//订单编号
-        printf("%d\t", bill->order);
-        printf("|");
-        //交易时间?
-        printf("%d-", bill->year);
-        if (bill->month < 10)printf("0%d-", bill->month);
-        else printf("%d-", bill->month);
-        if (bill->day < 10)printf("0%d ", bill->day);
-        else printf("%d ", bill->day);
-        if (bill->hour < 10)printf("0%d:", bill->hour);
-        else printf("%d:", bill->hour);
-        if (bill->minute < 10)printf("0%d:", bill->minute);
-        else printf("%d:", bill->minute);
-        if (bill->second < 10)printf("0%d", bill->second);
-        else printf("%d", bill->second);
-        printf("\t|");
-        //产品品牌?
-        printf("%s", bill->brand);
-        for (int i = 1; i <= 2 - (strlen(bill->brand) +1) / 8; i++)printf("\t");
-        printf("|");
-        //产品名称?
-        printf("%s", code[bill->number_of_brand][bill->ProductNumber]);
-        for (int i = 1; i <= 3 -(strlen(code[bill->number_of_brand][bill->ProductNumber]) * 2 +2) / 8; i++)printf("\t");
-        printf("|");
-        //产品容量?
-        printf("%d", bill->volume);
-        printf("\t\t|");
-        //包装大小?
-        printf("%d", bill->packagingsize);
-        printf("\t\t\t|");
-        //销售单价?
-        printf("%.2lf", bill->Unit_Price);
-        char Unit_Price[20];
-        sprintf(Unit_Price, "%.2lf", bill->Unit_Price);
+                       "编号\t|订单状态\t\t|交易时间\t\t|商品品牌\t|商品名称\t|商品容量(ml)\t|包装大小(瓶/箱)\t|销售单价\t|售出数目(箱)\t|总数(瓶)\t|买家\t\t|买家等级\t|优惠\t|总价\t\n");
+            //订单编号
+            printf("%d\t", count);
+            printf("|");
+            //订单状态
+            switch(bill->status)
+            {
+            	case(0):
+            {
+                printf("订单取消\t\t");
+                printf("|");
+                break;
+            }
+                case(1):
+                {
+                    printf("订单正常\t\t");
+                    printf("|");
+                    break;
+                }
+                case(2):
+                {
+                    printf("申请换货中\t\t");
+                    printf("|");
+                    break;
+                }
+                case(3):
+                {
+                    printf("申请退货中\t\t");
+                    printf("|");
+                    break;
+                }
+                case(4):
+                {
+                    printf("已换货\t\t");
+                    printf("|");
+                    break;
+                }
+                case(5):
+                {
+                    printf("已退货\t\t");
+                    printf("|");
+                    break;
+                }
+            }
+            //交易时间?
+            printf("%d-", bill->year);
+            if (bill->month < 10)printf("0%d-", bill->month);
+            else printf("%d-", bill->month);
+            if (bill->day < 10)printf("0%d ", bill->day);
+            else printf("%d ", bill->day);
+            if (bill->hour < 10)printf("0%d:", bill->hour);
+            else printf("%d:", bill->hour);
+            if (bill->minute < 10)printf("0%d:", bill->minute);
+            else printf("%d:", bill->minute);
+            if (bill->second < 10)printf("0%d", bill->second);
+            else printf("%d", bill->second);
+            printf("\t|");
+            //产品品牌?
+            printf("%s", bill->brand);
+            for (int i = 1; i <= 2 - (strlen(bill->brand) +1) / 8; i++)printf("\t");
+            printf("|");
+            //产品名称?
+            printf("%s", code[bill->number_of_brand][bill->ProductNumber]);
+            for (int i = 1; i <= 3 -(strlen(code[bill->number_of_brand][bill->ProductNumber]) * 2 +2) / 8; i++)printf("\t");
+            printf("|");
+            //产品容量?
+            printf("%d", bill->volume);
+            printf("\t\t|");
+            //包装大小?
+            printf("%d", bill->packagingsize);
+            printf("\t\t\t|");
+            //销售单价?
+            printf("%.2lf", bill->Unit_Price);
+            char Unit_Price[20];
+            sprintf(Unit_Price, "%.2lf", bill->Unit_Price);
 //        int n=strlen(Unit_Price);
-        for (int i = 1; i <= 2 - (strlen(Unit_Price) +1) / 8; i++)printf("\t");
-        printf("|");
-        //出售个数
-        printf("%d", bill->number_of_packagingzise);
-        char numberofpackagingsize[20];
-        sprintf(numberofpackagingsize, "%d",bill->number_of_packagingzise);
-        for (int i = 1; i <= 2 - (strlen(numberofpackagingsize) +1) / 8; i++)printf("\t");
-        printf("|");
-        //总数?
-        printf("%d", bill->total_number);
-        char total_number[20];
-        sprintf(total_number, "%d", bill->total_number);
-        for (int i = 1; i <= 2 - (strlen(total_number) +1) / 8; i++)printf("\t");
-        printf("|");
-        //买家?
-        printf("%s", bill->buyer->name);
-        for (int i = 1; i <= 2 - (strlen(bill->buyer->name)+1) / 8; i++)printf("\t");
-        printf("|");
-        //买家等级?
-        printf("%d", bill->buyer->level);
-        printf("\t\t|");
-        //优惠?
-        printf("%.2lf", bill->discount_for_client);
-        printf("\t|");
-        //总价?
-        printf("%.2lf\n", bill->total_price);
+            for (int i = 1; i <= 2 - (strlen(Unit_Price) +1) / 8; i++)printf("\t");
+            printf("|");
+            //出售个数
+            printf("%d", bill->number_of_packagingzise);
+            char numberofpackagingsize[20];
+            sprintf(numberofpackagingsize, "%d",bill->number_of_packagingzise);
+            for (int i = 1; i <= 2 - (strlen(numberofpackagingsize) +1) / 8; i++)printf("\t");
+            printf("|");
+            //总数?
+            printf("%d", bill->total_number);
+            char total_number[20];
+            sprintf(total_number, "%d", bill->total_number);
+            for (int i = 1; i <= 2 - (strlen(total_number) +1) / 8; i++)printf("\t");
+            printf("|");
+            //买家?
+            printf("%s", bill->buyer->name);
+            for (int i = 1; i <= 2 - (strlen(bill->buyer->name)+1) / 8; i++)printf("\t");
+            printf("|");
+            //买家等级?
+            printf("%d", bill->buyer->level);
+            printf("\t\t|");
+            //优惠?
+            printf("%.2lf", bill->discount_for_client);
+            printf("\t|");
+            //总价?
+            printf("%.2lf\n", bill->total_price);
         }
         bill = bill->next;
     }
 }
-void Print_Bills_Of_Given_Id(void)
+int Scanf_ID(void)
 {
-     printf("请输入您要查询的用户ID：");
+    printf("请输入您要查询的用户ID：");
     int ID_of_client;
     while(1)
     {
@@ -423,6 +474,10 @@ void Print_Bills_Of_Given_Id(void)
         }
         break;
     }
+    return ID_of_client;
+}
+int Print_Bills_Of_Given_Id(int ID_of_client)
+{
     int count=0;
     struct sell_bill* bill=bill_pre->next;
     while(bill!=NULL)
@@ -432,75 +487,117 @@ void Print_Bills_Of_Given_Id(void)
             count++;
             if (count == 1)
                 printf("—————————————————————————————————————————————————————————历史订单——————————————————————————————————————————————————————\n"
-           "编号\t|交易时间\t\t|商品品牌\t|商品名称\t|商品容量(ml)\t|包装大小(瓶/箱)\t|销售单价\t|售出数目(箱)\t|总数(瓶)\t|买家\t\t|买家等级\t|优惠\t|总价\t\n");
-    		//订单编号
-        printf("%d\t", bill->order);
-        printf("|");
-        //交易时间?
-        printf("%d-", bill->year);
-        if (bill->month < 10)printf("0%d-", bill->month);
-        else printf("%d-", bill->month);
-        if (bill->day < 10)printf("0%d ", bill->day);
-        else printf("%d ", bill->day);
-        if (bill->hour < 10)printf("0%d:", bill->hour);
-        else printf("%d:", bill->hour);
-        if (bill->minute < 10)printf("0%d:", bill->minute);
-        else printf("%d:", bill->minute);
-        if (bill->second < 10)printf("0%d", bill->second);
-        else printf("%d", bill->second);
-        printf("\t|");
-        //产品品牌?
-        printf("%s", bill->brand);
-        for (int i = 1; i <= 2 - (strlen(bill->brand) +1) / 8; i++)printf("\t");
-        printf("|");
-        //产品名称?
-        printf("%s", code[bill->number_of_brand][bill->ProductNumber]);
-        for (int i = 1; i <= 3 -(strlen(code[bill->number_of_brand][bill->ProductNumber]) * 2 +2) / 8; i++)printf("\t");
-        printf("|");
-        //产品容量?
-        printf("%d", bill->volume);
-        printf("\t\t|");
-        //包装大小?
-        printf("%d", bill->packagingsize);
-        printf("\t\t\t|");
-        //销售单价?
-        printf("%.2lf", bill->Unit_Price);
-        char Unit_Price[20];
-        sprintf(Unit_Price, "%.2lf", bill->Unit_Price);
+                       "编号\t|订单状态\t\t|交易时间\t\t|商品品牌\t|商品名称\t|商品容量(ml)\t|包装大小(瓶/箱)\t|销售单价\t|售出数目(箱)\t|总数(瓶)\t|买家\t\t|买家等级\t|优惠\t|总价\t\n");
+            //订单编号
+            printf("%d\t", count);
+            printf("|");
+            //订单状态
+            switch(bill->status)
+            {
+	            	case(0):
+	            {
+	                printf("订单取消\t\t");
+	                printf("|");
+	                break;
+	            }
+                case(1):
+                {
+                    printf("订单正常\t\t");
+                    printf("|");
+                    break;
+                }
+                case(2):
+                {
+                    printf("申请换货中\t\t");
+                    printf("|");
+                    break;
+                }
+                case(3):
+                {
+                    printf("申请退货中\t\t");
+                    printf("|");
+                    break;
+                }
+                case(4):
+                {
+                    printf("已换货\t\t");
+                    printf("|");
+                    break;
+                }
+                case(5):
+                {
+                    printf("已退货\t\t");
+                    printf("|");
+                    break;
+                }
+            }
+            //交易时间?
+            printf("%d-", bill->year);
+            if (bill->month < 10)printf("0%d-", bill->month);
+            else printf("%d-", bill->month);
+            if (bill->day < 10)printf("0%d ", bill->day);
+            else printf("%d ", bill->day);
+            if (bill->hour < 10)printf("0%d:", bill->hour);
+            else printf("%d:", bill->hour);
+            if (bill->minute < 10)printf("0%d:", bill->minute);
+            else printf("%d:", bill->minute);
+            if (bill->second < 10)printf("0%d", bill->second);
+            else printf("%d", bill->second);
+            printf("\t|");
+            //产品品牌?
+            printf("%s", bill->brand);
+            for (int i = 1; i <= 2 - (strlen(bill->brand) +1) / 8; i++)printf("\t");
+            printf("|");
+            //产品名称?
+            printf("%s", code[bill->number_of_brand][bill->ProductNumber]);
+            for (int i = 1; i <= 3 -(strlen(code[bill->number_of_brand][bill->ProductNumber]) * 2 +2) / 8; i++)printf("\t");
+            printf("|");
+            //产品容量?
+            printf("%d", bill->volume);
+            printf("\t\t|");
+            //包装大小?
+            printf("%d", bill->packagingsize);
+            printf("\t\t\t|");
+            //销售单价?
+            printf("%.2lf", bill->Unit_Price);
+            char Unit_Price[20];
+            sprintf(Unit_Price, "%.2lf", bill->Unit_Price);
 //        int n=strlen(Unit_Price);
-        for (int i = 1; i <= 2 - (strlen(Unit_Price) +1) / 8; i++)printf("\t");
-        printf("|");
-        //出售个数
-        printf("%d", bill->number_of_packagingzise);
-        char numberofpackagingsize[20];
-        sprintf(numberofpackagingsize, "%d",bill->number_of_packagingzise);
-        for (int i = 1; i <= 2 - (strlen(numberofpackagingsize) +1) / 8; i++)printf("\t");
-        printf("|");
-        //总数?
-        printf("%d", bill->total_number);
-        char total_number[20];
-        sprintf(total_number, "%d", bill->total_number);
-        for (int i = 1; i <= 2 - (strlen(total_number) +1) / 8; i++)printf("\t");
-        printf("|");
-        //买家?
-        printf("%s", bill->buyer->name);
-        for (int i = 1; i <= 2 - (strlen(bill->buyer->name)+1) / 8; i++)printf("\t");
-        printf("|");
-        //买家等级?
-        printf("%d", bill->buyer->level);
-        printf("\t\t|");
-        //优惠?
-        printf("%.2lf", bill->discount_for_client);
-        printf("\t|");
-        //总价?
-        printf("%.2lf\n", bill->total_price);
+            for (int i = 1; i <= 2 - (strlen(Unit_Price) +1) / 8; i++)printf("\t");
+            printf("|");
+            //出售个数
+            printf("%d", bill->number_of_packagingzise);
+            char numberofpackagingsize[20];
+            sprintf(numberofpackagingsize, "%d",bill->number_of_packagingzise);
+            for (int i = 1; i <= 2 - (strlen(numberofpackagingsize) +1) / 8; i++)printf("\t");
+            printf("|");
+            //总数?
+            printf("%d", bill->total_number);
+            char total_number[20];
+            sprintf(total_number, "%d", bill->total_number);
+            for (int i = 1; i <= 2 - (strlen(total_number) +1) / 8; i++)printf("\t");
+            printf("|");
+            //买家?
+            printf("%s", bill->buyer->name);
+            for (int i = 1; i <= 2 - (strlen(bill->buyer->name)+1) / 8; i++)printf("\t");
+            printf("|");
+            //买家等级?
+            printf("%d", bill->buyer->level);
+            printf("\t\t|");
+            //优惠?
+            printf("%.2lf", bill->discount_for_client);
+            printf("\t|");
+            //总价?
+            printf("%.2lf\n", bill->total_price);
         }
         bill = bill->next;
     }
     if(count==0)
     {
-        printf("对不起，您想查询的用户没有历史订单\n");
+        printf("对不起，该用户用户没有历史订单\n");
+        return 0;
     }
+    return count;
 }
 void Print_Bills_Of_Given_Name(void)
 {
@@ -508,7 +605,7 @@ void Print_Bills_Of_Given_Name(void)
     char Name_of_client[30];
     while(1)
     {
-        int ret,count=0;
+        int count=0;
         char c;
         do
         {
@@ -539,68 +636,108 @@ void Print_Bills_Of_Given_Name(void)
             count++;
             if (count == 1)
                 printf("—————————————————————————————————————————————————————————历史订单——————————————————————————————————————————————————————\n"
-           "编号\t|交易时间\t\t|商品品牌\t|商品名称\t|商品容量(ml)\t|包装大小(瓶/箱)\t|销售单价\t|售出数目(箱)\t|总数(瓶)\t|买家\t\t|买家等级\t|优惠\t|总价\t\n");
-    		//订单编号
-        printf("%d\t", bill->order);
-        printf("|");
-        //交易时间?
-        printf("%d-", bill->year);
-        if (bill->month < 10)printf("0%d-", bill->month);
-        else printf("%d-", bill->month);
-        if (bill->day < 10)printf("0%d ", bill->day);
-        else printf("%d ", bill->day);
-        if (bill->hour < 10)printf("0%d:", bill->hour);
-        else printf("%d:", bill->hour);
-        if (bill->minute < 10)printf("0%d:", bill->minute);
-        else printf("%d:", bill->minute);
-        if (bill->second < 10)printf("0%d", bill->second);
-        else printf("%d", bill->second);
-        printf("\t|");
-        //产品品牌?
-        printf("%s", bill->brand);
-        for (int i = 1; i <= 2 - (strlen(bill->brand) +1) / 8; i++)printf("\t");
-        printf("|");
-        //产品名称?
-        printf("%s", code[bill->number_of_brand][bill->ProductNumber]);
-        for (int i = 1; i <= 3 -(strlen(code[bill->number_of_brand][bill->ProductNumber]) * 2 +2) / 8; i++)printf("\t");
-        printf("|");
-        //产品容量?
-        printf("%d", bill->volume);
-        printf("\t\t|");
-        //包装大小?
-        printf("%d", bill->packagingsize);
-        printf("\t\t\t|");
-        //销售单价?
-        printf("%.2lf", bill->Unit_Price);
-        char Unit_Price[20];
-        sprintf(Unit_Price, "%.2lf", bill->Unit_Price);
+                       "编号\t|订单状态\t\t|交易时间\t\t|商品品牌\t|商品名称\t|商品容量(ml)\t|包装大小(瓶/箱)\t|销售单价\t|售出数目(箱)\t|总数(瓶)\t|买家\t\t|买家等级\t|优惠\t|总价\t\n");
+            //订单编号
+            printf("%d\t", count);
+            printf("|");
+            //订单状态
+            switch(bill->status)
+            {
+            	case(0):
+            {
+                printf("订单取消\t\t");
+                printf("|");
+                break;
+            }
+                case(1):
+                {
+                    printf("订单正常\t\t");
+                    printf("|");
+                    break;
+                }
+                case(2):
+                {
+                    printf("申请换货中\t\t");
+                    printf("|");
+                    break;
+                }
+                case(3):
+                {
+                    printf("申请退货中\t\t");
+                    printf("|");
+                    break;
+                }
+                case(4):
+                {
+                    printf("已换货\t\t");
+                    printf("|");
+                    break;
+                }
+                case(5):
+                {
+                    printf("已退货\t\t");
+                    printf("|");
+                    break;
+                }
+            }
+            //交易时间?
+            printf("%d-", bill->year);
+            if (bill->month < 10)printf("0%d-", bill->month);
+            else printf("%d-", bill->month);
+            if (bill->day < 10)printf("0%d ", bill->day);
+            else printf("%d ", bill->day);
+            if (bill->hour < 10)printf("0%d:", bill->hour);
+            else printf("%d:", bill->hour);
+            if (bill->minute < 10)printf("0%d:", bill->minute);
+            else printf("%d:", bill->minute);
+            if (bill->second < 10)printf("0%d", bill->second);
+            else printf("%d", bill->second);
+            printf("\t|");
+            //产品品牌?
+            printf("%s", bill->brand);
+            for (int i = 1; i <= 2 - (strlen(bill->brand) +1) / 8; i++)printf("\t");
+            printf("|");
+            //产品名称?
+            printf("%s", code[bill->number_of_brand][bill->ProductNumber]);
+            for (int i = 1; i <= 3 -(strlen(code[bill->number_of_brand][bill->ProductNumber]) * 2 +2) / 8; i++)printf("\t");
+            printf("|");
+            //产品容量?
+            printf("%d", bill->volume);
+            printf("\t\t|");
+            //包装大小?
+            printf("%d", bill->packagingsize);
+            printf("\t\t\t|");
+            //销售单价?
+            printf("%.2lf", bill->Unit_Price);
+            char Unit_Price[20];
+            sprintf(Unit_Price, "%.2lf", bill->Unit_Price);
 //        int n=strlen(Unit_Price);
-        for (int i = 1; i <= 2 - (strlen(Unit_Price) +1) / 8; i++)printf("\t");
-        printf("|");
-        //出售个数
-        printf("%d", bill->number_of_packagingzise);
-        char numberofpackagingsize[20];
-        sprintf(numberofpackagingsize, "%d",bill->number_of_packagingzise);
-        for (int i = 1; i <= 2 - (strlen(numberofpackagingsize) +1) / 8; i++)printf("\t");
-        printf("|");
-        //总数?
-        printf("%d", bill->total_number);
-        char total_number[20];
-        sprintf(total_number, "%d", bill->total_number);
-        for (int i = 1; i <= 2 - (strlen(total_number) +1) / 8; i++)printf("\t");
-        printf("|");
-        //买家?
-        printf("%s", bill->buyer->name);
-        for (int i = 1; i <= 2 - (strlen(bill->buyer->name)+1) / 8; i++)printf("\t");
-        printf("|");
-        //买家等级?
-        printf("%d", bill->buyer->level);
-        printf("\t\t|");
-        //优惠?
-        printf("%.2lf", bill->discount_for_client);
-        printf("\t|");
-        //总价?
-        printf("%.2lf\n", bill->total_price);
+            for (int i = 1; i <= 2 - (strlen(Unit_Price) +1) / 8; i++)printf("\t");
+            printf("|");
+            //出售个数
+            printf("%d", bill->number_of_packagingzise);
+            char numberofpackagingsize[20];
+            sprintf(numberofpackagingsize, "%d",bill->number_of_packagingzise);
+            for (int i = 1; i <= 2 - (strlen(numberofpackagingsize) +1) / 8; i++)printf("\t");
+            printf("|");
+            //总数?
+            printf("%d", bill->total_number);
+            char total_number[20];
+            sprintf(total_number, "%d", bill->total_number);
+            for (int i = 1; i <= 2 - (strlen(total_number) +1) / 8; i++)printf("\t");
+            printf("|");
+            //买家?
+            printf("%s", bill->buyer->name);
+            for (int i = 1; i <= 2 - (strlen(bill->buyer->name)+1) / 8; i++)printf("\t");
+            printf("|");
+            //买家等级?
+            printf("%d", bill->buyer->level);
+            printf("\t\t|");
+            //优惠?
+            printf("%.2lf", bill->discount_for_client);
+            printf("\t|");
+            //总价?
+            printf("%.2lf\n", bill->total_price);
         }
         bill = bill->next;
     }
@@ -611,7 +748,7 @@ void Print_Bills_Of_Given_Name(void)
 }
 void Print_Bills_Of_Given_Client(void)
 {
-     printf("您想通过什么方式查询用户订单？\n");
+    printf("您想通过什么方式查询用户订单？\n");
     printf("1.通过用户id来查询用户订单\n");
     printf("2.通过用户名字来查询用户订单\n");
     printf("请输入您需要的查询方式：\n");
@@ -636,7 +773,10 @@ void Print_Bills_Of_Given_Client(void)
         break;
     }
     if(way==1)
-        Print_Bills_Of_Given_Id();
+    {
+        int num=Scanf_ID();
+        Print_Bills_Of_Given_Id(num);
+    }
     if(way==2)
         Print_Bills_Of_Given_Name();
 }
@@ -670,7 +810,7 @@ void Search_For_The_Bills_Of_Given_Data(void)
         Print_Bills_Of_Given_Brand();
     if(kind_of_bill==2)
         Print_Bills_Of_Given_Client();
-}
+}//
 struct sell_bill* find_pointer_of_given_bill(int order, struct sell_bill* head)
 {
     struct sell_bill* point_of_bill = NULL;
@@ -687,7 +827,7 @@ struct sell_bill* find_pointer_of_given_bill(int order, struct sell_bill* head)
 }
 void Delete_Bill(void)
 {
-     if(bill_pre->next == NULL)
+    if(bill_pre->next == NULL)
     {
         printf("很抱歉，没有历史订单\n");
         return;
@@ -737,10 +877,13 @@ void Delete_Bill(void)
     printf("删除成功\n");
     FILE* filep= fopen("bill.txt","w");
     struct sell_bill* newbill=bill_pre->next;
-    int count=0; 
+    int count=0;
     while(newbill!=NULL)
     {
         fprintf(filep,"%d ",++count);
+	    fprintf(filep,"%d ",newbill->status);
+	    fprintf(filep,"%d ",newbill->reason_num);
+	    fprintf(filep,"%d ",newbill->change_num);
         fprintf(filep,"%d ",newbill->year);
         fprintf(filep,"%d ",newbill->month);
         fprintf(filep,"%d ",newbill->day);
@@ -775,7 +918,7 @@ void Check_Bills(void)
         return;
     }
     printf("—————————————————————————————————————————————————————————历史订单——————————————————————————————————————————————————————\n"
-           "编号\t|交易时间\t\t|商品品牌\t|商品名称\t|商品容量(ml)\t|包装大小(瓶/箱)\t|销售单价\t|售出数目(箱)\t|总数(瓶)\t|买家\t\t|买家等级\t|优惠\t|总价\t\n");
+           "订单编号|订单状态\t\t|交易时间\t\t|商品品牌\t|商品名称\t|商品容量(ml)\t|包装大小(瓶/箱)\t|销售单价\t|售出数目(箱)\t|总数(瓶)\t|买家\t\t|买家等级\t|优惠\t|总价\t\n");
     //
     struct sell_bill* bill=bill_pre->next;
     while(bill!=NULL)
@@ -783,6 +926,46 @@ void Check_Bills(void)
         //订单编号
         printf("%d\t", bill->order);
         printf("|");
+        //订单状态
+        switch(bill->status)
+        {
+        	case(0):
+            {
+                printf("订单取消\t\t");
+                printf("|");
+                break;
+            }
+            case(1):
+            {
+                printf("订单正常\t\t");
+                printf("|");
+                break;
+            }
+            case(2):
+            {
+                printf("申请换货中\t\t");
+                printf("|");
+                break;
+            }
+            case(3):
+            {
+                printf("申请退货中\t\t");
+                printf("|");
+                break;
+            }
+            case(4):
+            {
+                printf("已换货\t\t");
+                printf("|");
+                break;
+            }
+            case(5):
+            {
+                printf("已退货\t\t");
+                printf("|");
+                break;
+            }
+        }
         //交易时间?
         printf("%d-", bill->year);
         if (bill->month < 10)printf("0%d-", bill->month);
@@ -844,3 +1027,670 @@ void Check_Bills(void)
         bill=bill->next;
     }
 }
+//不正常订单
+struct sell_bill* Initiate_Bill_with_problem(void)
+{
+    struct sell_bill* head=(struct sell_bill*)malloc(sizeof(struct sell_bill));
+    head->next=NULL;
+    head->pre=NULL;
+    FILE *filep=fopen("billwithproblem.txt", "r");
+    if(filep == NULL)
+    {
+        fclose(filep);
+        return head;
+    }
+    struct sell_bill* point=head;
+    int nth_bill=0;//第几笔订单
+    while(1)
+    {
+        nth_bill++;
+        struct sell_bill* bill=(struct sell_bill*)malloc(sizeof(struct sell_bill));
+        if(fscanf(filep, "%d", &bill->order) == EOF)break;
+        if(fscanf(filep, "%d", &bill->status) == EOF)break;
+        if(fscanf(filep, "%d", &bill->reason_num) == EOF)break;
+        if(fscanf(filep, "%d", &bill->change_num) == EOF)break;
+        if(fscanf(filep, "%d%d%d%d%d%d", &bill->year, &bill->month, &bill->day, &bill->hour, &bill->minute, &bill->second) == EOF)break;
+        fscanf(filep, "%s", bill->brand);                //品牌
+        fscanf(filep, "%d", &bill->number_of_brand);      //品牌编号
+        fscanf(filep, "%d", &bill->ProductNumber);       // 商品编号
+        fscanf(filep, "%d", &bill->SpecificationNumber); //规格编号
+        fscanf(filep, "%d", &bill->packagingsize);       //包装大小
+        fscanf(filep, "%lf", &bill->Unit_Price);         //销售单价
+        fscanf(filep, "%d", &bill->volume);              //产品容量
+        fscanf(filep, "%d", &bill->number_of_packagingzise);//这个包装的买了多少箱
+        fscanf(filep, "%d", &bill->total_number);        //卖出的总数
+        fscanf(filep, "%lf", &bill->total_price);        //总价
+        int id_of_client;
+        fscanf(filep, "%d", &id_of_client);               //客户
+        bill->buyer= Find_pointer_of_client(id_of_client);
+        fscanf(filep, "%lf", &bill->discount_for_client);//优惠
+        struct sell_bill* pointer=bill_pre->next;
+        while(pointer!=NULL)
+        {
+            if(pointer->order==bill->order)
+            {
+                bill->related=pointer;
+                break;
+            }
+            pointer=pointer->next;
+        }
+        point->next=bill;
+        bill->pre=point;
+        bill->next=NULL;
+        struct Inventory* pointer_Inventory=Inv_head->next;
+        while(pointer_Inventory!=NULL)
+        {
+            if(pointer_Inventory->BrandNumber==bill->number_of_brand&&pointer_Inventory->SpecificationNumber==bill->SpecificationNumber) break;
+            pointer_Inventory=pointer_Inventory->next;
+        }
+        bill->product=pointer_Inventory;
+        point=bill;
+    }
+    if(head->next==NULL)
+    {
+        return head;
+    }
+    fclose(filep);
+    return head;
+}
+void Exchange(struct customer* user)
+{
+    int top=Print_Bills_Of_Given_Id(user->id);
+    if(top==0)
+    {
+        printf("因此无法进行换货操作\n");
+        return;
+    }
+    printf("请输入您想申请换货的订单所对应的编号:(输入0取消申请) ");
+    int order;
+    while(1)
+    {
+        int ret,count=0;
+        char c;
+        do
+        {
+            if(count!=0)printf("对不起，您输入的编号不正确，请您重新输入\n");
+            ret=scanf("%d",&order);
+            c = getchar();
+            fflush(stdin);
+            count++;
+        }while ((ret!=1)||(c!='\n'));
+        if(order<0||order>top)
+        {
+            printf("对不起，您输入的编号不正确，请您重新输入\n");
+            continue;
+        }
+        if(order==0)return;
+        int counter=0;
+	    struct sell_bill* bill=bill_pre->next;
+	    while(bill!=NULL)
+	    {
+	        if (bill->buyer->id == user->id)
+	        {
+	            counter++;
+	        }
+	        if(counter==order)break;
+	        bill=bill->next;
+	    }
+	    if(bill->status!=1)
+	    {
+	    	printf("对不起，您想申请换货的订单出于非正常状态，请您重新输入\n");
+            continue;
+		}
+        break;
+    }
+    printf("请问您想要换货的原因是什么？\n");
+    for(int i=0;i<Exchange_Reason_num;i++)
+    {
+        printf("%d.%s\n",i+1,Exchange_reason[i]);
+    }
+    printf("请输入您的原因所对应的编号:");
+    int reason;
+    while(1)
+    {
+        int ret,count=0;
+        char c;
+        do
+        {
+            if(count!=0)printf("对不起，您输入的编号不正确，请您重新输入\n");
+            ret=scanf("%d",&reason);
+            c = getchar();
+            fflush(stdin);
+            count++;
+        }while ((ret!=1)||(c!='\n'));
+        if(reason<=0||reason>Exchange_Reason_num)
+        {
+            printf("对不起，您输入的编号不正确，请您重新输入\n");
+            continue;
+        }
+        break;
+    }
+    struct sell_bill* newbill=bill_with_problem->next;
+    while(newbill!=NULL)newbill=newbill->next;
+    int counter=0;
+    struct sell_bill* bill=bill_pre->next;
+    while(bill!=NULL)
+    {
+        if (bill->buyer->id == user->id)
+        {
+            counter++;
+        }
+        if(counter==order)break;
+        bill=bill->next;
+    }
+    printf("请输入您要换货的数量(箱):");
+    int number;
+    while(1)
+    {
+        int ret,count=0;
+        char c;
+        do
+        {
+            if(count!=0)printf("对不起，您输入的数目不正确，请您重新输入\n");
+            ret=scanf("%d",&number);
+            c = getchar();
+            fflush(stdin);
+            count++;
+        }while ((ret!=1)||(c!='\n'));
+        if(number<=0||number>bill->number_of_packagingzise)
+        {
+            printf("对不起，您输入的数目不正确，请您重新输入\n");
+            continue;
+        }
+        break;
+    }
+    FILE *filep = fopen("billwithproblem.txt", "a");
+    bill->status=2;
+    bill->change_num=number;
+    bill->reason_num=reason-1;
+    fprintf(filep,"%d ",bill->order);
+    fprintf(filep,"%d ",bill->status);
+    fprintf(filep,"%d ",bill->reason_num);
+    fprintf(filep,"%d ",bill->change_num);
+    fprintf(filep,"%d ",bill->year);
+    fprintf(filep,"%d ",bill->month);
+    fprintf(filep,"%d ",bill->day);
+    fprintf(filep,"%d ",bill->hour);
+    fprintf(filep,"%d ",bill->minute);
+    fprintf(filep,"%d ",bill->second);
+    fprintf(filep,"%s ",bill->brand);
+    fprintf(filep,"%d ",bill->number_of_brand);
+    fprintf(filep,"%d ",bill->ProductNumber);
+    fprintf(filep,"%d ",bill->SpecificationNumber);
+    fprintf(filep,"%d ",bill->packagingsize);
+    fprintf(filep,"%.2lf ",bill->Unit_Price);
+    fprintf(filep,"%d ",bill->volume);
+    fprintf(filep,"%d ",bill->number_of_packagingzise);
+    fprintf(filep,"%d ",bill->total_number);
+    fprintf(filep,"%.2lf ",bill->total_price);
+    fprintf(filep,"%d ",bill->buyer->id);
+    fprintf(filep,"%.2lf\n",bill->discount_for_client);
+//    fprintf(filep);
+    fclose(filep);
+    printf("已成功申请换货，请等待管理员操作，给您带来不便实在抱歉，欢迎您的下次光临\n");
+    FILE* filep1= fopen("bill.txt","w");
+    struct sell_bill* newbill1=bill_pre->next;
+    while(newbill1!=NULL)
+    {
+        fprintf(filep1,"%d ",newbill1->order);
+	    fprintf(filep1,"%d ",newbill1->status);
+	    fprintf(filep1,"%d ",newbill1->reason_num);
+	    fprintf(filep1,"%d ",newbill1->change_num);
+        fprintf(filep1,"%d ",newbill1->year);
+        fprintf(filep1,"%d ",newbill1->month);
+        fprintf(filep1,"%d ",newbill1->day);
+        fprintf(filep1,"%d ",newbill1->hour);
+        fprintf(filep1,"%d ",newbill1->minute);
+        fprintf(filep1,"%d ",newbill1->second);
+        fprintf(filep1,"%s ",newbill1->brand);
+        fprintf(filep1,"%d ",newbill1->number_of_brand);
+        fprintf(filep1,"%d ",newbill1->ProductNumber);
+        fprintf(filep1,"%d ",newbill1->SpecificationNumber);
+        fprintf(filep1,"%d ",newbill1->packagingsize);
+        fprintf(filep1,"%.2lf ",newbill1->Unit_Price);
+        fprintf(filep1,"%d ",newbill1->volume);
+        fprintf(filep1,"%d ",newbill1->number_of_packagingzise);
+        fprintf(filep1,"%d ",newbill1->total_number);
+        fprintf(filep1,"%.2lf ",newbill1->total_price);
+        fprintf(filep1,"%d ",newbill1->buyer->id);
+        fprintf(filep1,"%.2lf\n",newbill1->discount_for_client);
+        newbill1=newbill1->next;
+    }
+    fclose(filep1);
+    bill_pre=Initiate_Bill();
+    bill_with_problem=Initiate_Bill_with_problem();
+    pau;
+}
+void Return(struct customer* user)
+{
+    int top=Print_Bills_Of_Given_Id(user->id);
+    if(top==0)
+    {
+        printf("因此无法进行退货操作\n");
+        return;
+    }
+    printf("请输入您想申请退货的订单所对应的编号: ");
+    int order;
+    while(1)
+    {
+        int ret,count=0;
+        char c;
+        do
+        {
+            if(count!=0)printf("对不起，您输入的编号不正确，请您重新输入\n");
+            ret=scanf("%d",&order);
+            c = getchar();
+            fflush(stdin);
+            count++;
+        }while ((ret!=1)||(c!='\n'));
+        if(order<=0||order>top)
+        {
+            printf("对不起，您输入的编号不正确，请您重新输入\n");
+            continue;
+        }
+        int counter=0;
+	    struct sell_bill* bill=bill_pre->next;
+	    while(bill!=NULL)
+	    {
+	        if (bill->buyer->id == user->id)
+	        {
+	            counter++;
+	        }
+	        if(counter==order)break;
+	        bill=bill->next;
+	    }
+	    if(bill->status!=1)
+	    {
+	    	printf("对不起，您想申请退货的订单出于非正常状态，请您重新输入\n");
+            continue;
+		}
+        break;
+    }
+    printf("请问您想要退货的原因是什么？\n");
+    for(int i=0;i<Return_Reason_num;i++)
+    {
+        printf("%d.%s\n",i+1,Return_reason[i]);
+    }
+    printf("请输入您的原因所对应的编号:");
+    int reason;
+    while(1)
+    {
+        int ret,count=0;
+        char c;
+        do
+        {
+            if(count!=0)printf("对不起，您输入的编号不正确，请您重新输入\n");
+            ret=scanf("%d",&reason);
+            c = getchar();
+            fflush(stdin);
+            count++;
+        }while ((ret!=1)||(c!='\n'));
+        if(reason<=0||reason>Return_Reason_num)
+        {
+            printf("对不起，您输入的编号不正确，请您重新输入\n");
+            continue;
+        }
+        break;
+    }
+    struct sell_bill* newbill=bill_with_problem->next;
+    while(newbill!=NULL)newbill=newbill->next;
+    int counter=0;
+    struct sell_bill* bill=bill_pre->next;
+    while(bill!=NULL)
+    {
+        if (bill->buyer->id == user->id)
+        {
+            counter++;
+        }
+        if(counter==order)break;
+        bill=bill->next;
+    }
+    FILE *filep = fopen("billwithproblem.txt", "a");
+    bill->status=3;
+    bill->change_num=bill->number_of_packagingzise;
+    bill->reason_num=reason-1;
+    fprintf(filep,"%d ",bill->order);
+    fprintf(filep,"%d ",bill->status);
+    fprintf(filep,"%d ",bill->reason_num);
+    fprintf(filep,"%d ",bill->change_num);
+    fprintf(filep,"%d ",bill->year);
+    fprintf(filep,"%d ",bill->month);
+    fprintf(filep,"%d ",bill->day);
+    fprintf(filep,"%d ",bill->hour);
+    fprintf(filep,"%d ",bill->minute);
+    fprintf(filep,"%d ",bill->second);
+    fprintf(filep,"%s ",bill->brand);
+    fprintf(filep,"%d ",bill->number_of_brand);
+    fprintf(filep,"%d ",bill->ProductNumber);
+    fprintf(filep,"%d ",bill->SpecificationNumber);
+    fprintf(filep,"%d ",bill->packagingsize);
+    fprintf(filep,"%.2lf ",bill->Unit_Price);
+    fprintf(filep,"%d ",bill->volume);
+    fprintf(filep,"%d ",bill->number_of_packagingzise);
+    fprintf(filep,"%d ",bill->total_number);
+    fprintf(filep,"%.2lf ",bill->total_price);
+    fprintf(filep,"%d ",bill->buyer->id);
+    fprintf(filep,"%.2lf\n",bill->discount_for_client);
+//    fprintf(filep);
+    fclose(filep);
+    printf("已成功申请退货，请等待管理员操作，给您带来不便实在抱歉，欢迎您的下次光临\n");
+    FILE* filep1= fopen("bill.txt","w");
+    struct sell_bill* newbill1=bill_pre->next;
+    while(newbill1!=NULL)
+    {
+        fprintf(filep1,"%d ",newbill1->order);
+	    fprintf(filep1,"%d ",newbill1->status);
+	    fprintf(filep1,"%d ",newbill1->reason_num);
+	    fprintf(filep1,"%d ",newbill1->change_num);
+        fprintf(filep1,"%d ",newbill1->year);
+        fprintf(filep1,"%d ",newbill1->month);
+        fprintf(filep1,"%d ",newbill1->day);
+        fprintf(filep1,"%d ",newbill1->hour);
+        fprintf(filep1,"%d ",newbill1->minute);
+        fprintf(filep1,"%d ",newbill1->second);
+        fprintf(filep1,"%s ",newbill1->brand);
+        fprintf(filep1,"%d ",newbill1->number_of_brand);
+        fprintf(filep1,"%d ",newbill1->ProductNumber);
+        fprintf(filep1,"%d ",newbill1->SpecificationNumber);
+        fprintf(filep1,"%d ",newbill1->packagingsize);
+        fprintf(filep1,"%.2lf ",newbill1->Unit_Price);
+        fprintf(filep1,"%d ",newbill1->volume);
+        fprintf(filep1,"%d ",newbill1->number_of_packagingzise);
+        fprintf(filep1,"%d ",newbill1->total_number);
+        fprintf(filep1,"%.2lf ",newbill1->total_price);
+        fprintf(filep1,"%d ",newbill1->buyer->id);
+        fprintf(filep1,"%.2lf\n",newbill1->discount_for_client);
+        newbill1=newbill1->next;
+    }
+    fclose(filep1);
+    bill_pre=Initiate_Bill();
+    bill_with_problem=Initiate_Bill_with_problem();
+    pau;
+}
+void Check_Bills_with_problem2(void)
+{
+    if(bill_with_problem->next == NULL)
+    {
+        printf("很抱歉，没有请求退换货的订单\n");
+        return;
+    }
+    printf("—————————————————————————————————————————————————————————历史订单——————————————————————————————————————————————————————\n"
+           "编号\t|申请状态|申请原因\t\t\t|交易时间\t\t|商品品牌\t|商品名称\t|包装大小(瓶/箱)\t|涉及数目(箱)\t|买家\t\t|买家等级\t\n");
+    //
+    struct sell_bill* bill=bill_with_problem->next;
+    int count=0;
+    while(bill!=NULL)
+    {
+    	if(bill->status==3||bill->status==4)
+    	{
+    		bill=bill->next;
+    		continue;
+		}
+        count++;
+        //订单编号
+        printf("%d\t", count);
+        printf("|");
+        //订单状态
+        switch(bill->status)
+        {
+            case(2):
+            {
+                printf("申请换货");
+                printf("|");
+                break;
+            }
+            case(3):
+            {
+                printf("申请退货");
+                printf("|");
+                break;
+            }
+        }
+        //申请原因
+        switch(bill->status)
+        {
+            case(2):
+            {	
+                printf("%-30s",Exchange_reason[bill->reason_num]);
+                printf("|");
+                break;
+            }
+            case(3):
+            {
+                printf("%-30s",Return_reason[bill->reason_num]);
+                printf("|");
+                break;
+            }
+        }
+        //交易时间?
+        printf("%d-", bill->year);
+        if (bill->month < 10)printf("0%d-", bill->month);
+        else printf("%d-", bill->month);
+        if (bill->day < 10)printf("0%d ", bill->day);
+        else printf("%d ", bill->day);
+        if (bill->hour < 10)printf("0%d:", bill->hour);
+        else printf("%d:", bill->hour);
+        if (bill->minute < 10)printf("0%d:", bill->minute);
+        else printf("%d:", bill->minute);
+        if (bill->second < 10)printf("0%d", bill->second);
+        else printf("%d", bill->second);
+        printf("\t|");
+        //产品品牌?
+        printf("%s", bill->brand);
+        for (int i = 1; i <= 2 - (strlen(bill->brand) +1) / 8; i++)printf("\t");
+        printf("|");
+        //产品名称?
+        printf("%s", code[bill->number_of_brand][bill->ProductNumber]);
+        for (int i = 1; i <= 3 -(strlen(code[bill->number_of_brand][bill->ProductNumber]) * 2 +2) / 8; i++)printf("\t");
+        printf("|");
+        //包装大小?
+        printf("%d", bill->packagingsize);
+        printf("\t\t\t|");
+        //出售个数
+        printf("%d", bill->number_of_packagingzise);
+        char numberofpackagingsize[20];
+        sprintf(numberofpackagingsize, "%d",bill->number_of_packagingzise);
+        for (int i = 1; i <= 2 - (strlen(numberofpackagingsize) +1) / 8; i++)printf("\t");
+        printf("|");
+        //买家?
+        printf("%s", bill->buyer->name);
+        for (int i = 1; i <= 2 - (strlen(bill->buyer->name)+1) / 8; i++)printf("\t");
+        printf("|");
+        //买家等级?
+        printf("%d\n", bill->buyer->level);
+        bill=bill->next;
+    }
+}
+void Check_Bills_with_problem(void)
+{
+    if(bill_with_problem->next == NULL)
+    {
+        printf("很抱歉，没有请求退换货的订单\n");
+        return;
+    }
+    printf("—————————————————————————————————————————————————————————历史订单——————————————————————————————————————————————————————\n"
+           "编号\t|申请状态|申请原因\t\t\t|交易时间\t\t|商品品牌\t|商品名称\t|包装大小(瓶/箱)\t|涉及数目(箱)\t|买家\t\t|买家等级\t\n");
+    //
+    struct sell_bill* bill=bill_with_problem->next;
+    int count=0;
+    while(bill!=NULL)
+    {
+        count++;
+        //订单编号
+        printf("%d\t", count);
+        printf("|");
+        //订单状态
+        switch(bill->status)
+        {
+            case(2):
+            {
+                printf("申请换货");
+                printf("|");
+                break;
+            }
+            case(3):
+            {
+                printf("申请退货");
+                printf("|");
+                break;
+            }
+        }
+        //申请原因
+        switch(bill->status)
+        {
+            case(2):
+            {	
+                printf("%-30s",Exchange_reason[bill->reason_num]);
+                printf("|");
+                break;
+            }
+            case(3):
+            {
+                printf("%-30s",Return_reason[bill->reason_num]);
+                printf("|");
+                break;
+            }
+        }
+        //交易时间?
+        printf("%d-", bill->year);
+        if (bill->month < 10)printf("0%d-", bill->month);
+        else printf("%d-", bill->month);
+        if (bill->day < 10)printf("0%d ", bill->day);
+        else printf("%d ", bill->day);
+        if (bill->hour < 10)printf("0%d:", bill->hour);
+        else printf("%d:", bill->hour);
+        if (bill->minute < 10)printf("0%d:", bill->minute);
+        else printf("%d:", bill->minute);
+        if (bill->second < 10)printf("0%d", bill->second);
+        else printf("%d", bill->second);
+        printf("\t|");
+        //产品品牌?
+        printf("%s", bill->brand);
+        for (int i = 1; i <= 2 - (strlen(bill->brand) +1) / 8; i++)printf("\t");
+        printf("|");
+        //产品名称?
+        printf("%s", code[bill->number_of_brand][bill->ProductNumber]);
+        for (int i = 1; i <= 3 -(strlen(code[bill->number_of_brand][bill->ProductNumber]) * 2 +2) / 8; i++)printf("\t");
+        printf("|");
+        //包装大小?
+        printf("%d", bill->packagingsize);
+        printf("\t\t\t|");
+        //出售个数
+        printf("%d", bill->number_of_packagingzise);
+        char numberofpackagingsize[20];
+        sprintf(numberofpackagingsize, "%d",bill->number_of_packagingzise);
+        for (int i = 1; i <= 2 - (strlen(numberofpackagingsize) +1) / 8; i++)printf("\t");
+        printf("|");
+        //买家?
+        printf("%s", bill->buyer->name);
+        for (int i = 1; i <= 2 - (strlen(bill->buyer->name)+1) / 8; i++)printf("\t");
+        printf("|");
+        //买家等级?
+        printf("%d\n", bill->buyer->level);
+        bill=bill->next;
+    }
+}
+void Decide_bill(void)
+{
+    Check_Bills_with_problem();
+    printf("您要进行什么操作:\n");
+    printf("1.同意订单\n");
+    printf("2.拒绝订单\n");
+    printf("请输入您要进行的操作所对应的编号:\n");
+    int choice;
+    while(1)
+    {
+        int ret,counter=0;
+        char c;
+        do
+        {
+            if(counter!=0)printf("对不起，您输入的编号不正确，请您重新输入\n");
+            ret=scanf("%d", &choice);
+            c = getchar();
+            fflush(stdin);
+            counter++;
+        }while ((ret!=1)||(c!='\n'));
+        if(choice<=0||choice>2)
+        {
+            printf("对不起，您输入的编号不正确，请您重新输入\n");
+            continue;
+        }
+        break;
+    }
+    if(choice==1)
+    {
+    	
+    }
+    if(choice==2)
+    {
+    }
+}
+
+
+void writebill(){
+	FILE* filep= fopen("bill.txt","w");
+    struct sell_bill* newbill=bill_pre->next;
+    int count=0;
+    while(newbill!=NULL)
+    {
+        fprintf(filep,"%d ",++count);
+	    fprintf(filep,"%d ",newbill->status);
+	    fprintf(filep,"%d ",newbill->reason_num);
+	    fprintf(filep,"%d ",newbill->change_num);
+        fprintf(filep,"%d ",newbill->year);
+        fprintf(filep,"%d ",newbill->month);
+        fprintf(filep,"%d ",newbill->day);
+        fprintf(filep,"%d ",newbill->hour);
+        fprintf(filep,"%d ",newbill->minute);
+        fprintf(filep,"%d ",newbill->second);
+        fprintf(filep,"%s ",newbill->brand);
+        fprintf(filep,"%d ",newbill->number_of_brand);
+        fprintf(filep,"%d ",newbill->ProductNumber);
+        fprintf(filep,"%d ",newbill->SpecificationNumber);
+        fprintf(filep,"%d ",newbill->packagingsize);
+        fprintf(filep,"%.2lf ",newbill->Unit_Price);
+        fprintf(filep,"%d ",newbill->volume);
+        fprintf(filep,"%d ",newbill->number_of_packagingzise);
+        fprintf(filep,"%d ",newbill->total_number);
+        fprintf(filep,"%.2lf ",newbill->total_price);
+        fprintf(filep,"%d ",newbill->buyer->id);
+        fprintf(filep,"%.2lf\n",newbill->discount_for_client);
+        newbill=newbill->next;
+    }
+    fclose(filep);
+}
+
+void writeproblembill(){
+	struct sell_bill* bill=bill_with_problem->next;
+		FILE *filep = fopen("billwithproblem.txt", "w");
+	while(bill)
+	{
+		fprintf(filep,"%d ",bill->order);
+	    fprintf(filep,"%d ",bill->status);
+	    fprintf(filep,"%d ",bill->reason_num);
+	    fprintf(filep,"%d ",bill->change_num);
+	    fprintf(filep,"%d ",bill->year);
+	    fprintf(filep,"%d ",bill->month);
+	    fprintf(filep,"%d ",bill->day);
+	    fprintf(filep,"%d ",bill->hour);
+	    fprintf(filep,"%d ",bill->minute);
+	    fprintf(filep,"%d ",bill->second);
+	    fprintf(filep,"%s ",bill->brand);
+	    fprintf(filep,"%d ",bill->number_of_brand);
+	    fprintf(filep,"%d ",bill->ProductNumber);
+	    fprintf(filep,"%d ",bill->SpecificationNumber);
+	    fprintf(filep,"%d ",bill->packagingsize);
+	    fprintf(filep,"%.2lf ",bill->Unit_Price);
+	    fprintf(filep,"%d ",bill->volume);
+	    fprintf(filep,"%d ",bill->number_of_packagingzise);
+	    fprintf(filep,"%d ",bill->total_number);
+	    fprintf(filep,"%.2lf ",bill->total_price);
+	    fprintf(filep,"%d ",bill->buyer->id);
+	    fprintf(filep,"%.2lf\n",bill->discount_for_client);
+	    bill = bill->next;
+	}
+
+//    fprintf(filep);
+    fclose(filep);
+}
+
