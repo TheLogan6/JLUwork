@@ -4,7 +4,7 @@ void showShoppingCart(client*cus){
     if(!cus)return ;
     shopping_cart*p=cus->cart; 
     if(!p){
-    	printf("\t\t\t\t啊哦,购物车里没有任何东西！\n");
+    	printf("\t\t\t\t\t\t啊哦,购物车里没有任何东西！\n");
     	return;
 	}
     int cnt=0;

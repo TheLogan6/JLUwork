@@ -236,7 +236,10 @@ void ManagerInterface_Write(){
 				system("cls");
 				char tempid_s[5];
 				int tempid;
-				printf("请输入您的id:");
+				printf("\t\t\t\t\t --------------------------------------- \n");
+			    printf("\t\t\t\t\t                修改用户信息                 \n");
+			    printf("\t\t\t\t\t --------------------------------------- \n");
+				printf("\t\t\t\t\t请输入您的id:");
 				scanf("%s", tempid_s);
 				tempid = inputcheck(tempid_s);
 				if(tempid == -1){
@@ -271,8 +274,12 @@ void ManagerInterface_Write(){
 					client* p=findClient(&L, tempid); 
 					if(!p) continue;
 					printf("\t\t\t\t 请输充值金额：");
-					scanf("%lf", &tempmoney);
-					if(!recharge(&L, &log_head, tempid, tempmoney)) ErrorHappens();
+					while(getchar()!='\n');
+					tempmoney=checkDouble();
+
+					if(!recharge(&L, &log_head, tempid, tempmoney)){
+						RefreshPage();continue;
+					}
 					else{printf("\t\t\t\t充值成功！本次充值金额：%.2lf",tempmoney);
 					writeClientInfo(L);
 					pau;
