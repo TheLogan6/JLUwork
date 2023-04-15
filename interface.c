@@ -217,7 +217,6 @@ void ManagerInterface_Write(){
 			case(3):{// 用户充值
 				int tempid;
 				double tempmoney;
-				printf("请输入用户id：");
 				while(1)
 				{
 					char tempid_s[5];
@@ -232,9 +231,13 @@ void ManagerInterface_Write(){
 					if(!p) continue;
 					printf("请输充值金额：");
 					scanf("%lf", &tempmoney);
-					if(!recharge(&p, NULL, tempid, tempmoney)) ErrorHappens();
-					else break;
-					writeClientInfo(L);
+					if(!recharge(&p, log_head, tempid, tempmoney)) ErrorHappens();
+					else{
+						 printf("\t\t\t\t您已充值成功，本次充值金额：%lf",tempmoney);
+						 writeClientInfo(L);
+						 pau;
+						 break;
+				}
 					pau;
 					break;
 				}
