@@ -347,8 +347,8 @@ void changeInfo(client**L,int id) {
     }
 }
 //支付与检查金额正确性
-bool checkBalance(client**L,double money){
-    client *p=(*L);
+bool checkBalance(client**cus,double money){
+    client *p=(*cus);
     if(!p)return false;
     if(p->balance<money)return false;
     if(!(isFiniteNumber(p->balance-money)))return false;

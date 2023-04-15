@@ -216,6 +216,8 @@ int Sell_confirm(struct sell_bill* newbill,struct customer* user)
             printf("\n您已成功购买，谢谢您的惠顾\n");
 //            addLogNode(&log_head,&L,user->id,0,newbill->total_price);
 //            writeLog(log_head);
+			update(&user,newbill->total_price);
+			writeClientInfo(L);
             flag=true;
             newbill->status=1;
             newbill->product->Reserve-=newbill->number_of_packagingzise;
@@ -224,11 +226,12 @@ int Sell_confirm(struct sell_bill* newbill,struct customer* user)
         if(buychoice==2)
         {
 //            if(chekBalance(&user,newbill->total_price)==true)
-            if(true)
+            if(checkBalance(&user,newbill->total_price))
             {
                 printf("\n您已成功购买，谢谢您的惠顾\n");
-//                addLogNode(&log_head,&L,user->id,0,newbill->total_price);
-//                writeLog(log_head);
+                addLogNode(&log_head,&L,user->id,0,newbill->total_price);
+                writeLog(log_head);
+                writeClientInfo(L);
                 flag=true;
                 newbill->status=1;
                 newbill->product->Reserve-=newbill->number_of_packagingzise;
@@ -243,6 +246,8 @@ int Sell_confirm(struct sell_bill* newbill,struct customer* user)
         if(buychoice==3)  //加入购物车 
         {
 			printf("期待您的下一次光临\n");
+			addShoppingCart(&user->cart,newbill->total_number,user->id,newbill->Unit_Price,newbill->number_of_brand,newbill->ProductNumber,newbill->SpecificationNumber);
+			writeShoppingCart(&L);
             newbill->status=0;
             flag=true;
             continue;

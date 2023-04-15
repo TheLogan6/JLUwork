@@ -3,10 +3,15 @@
 void showShoppingCart(client*cus){
     if(!cus)return ;
     shopping_cart*p=cus->cart; 
+    if(!p){
+    	printf("\t\t\t\t啊哦,购物车里没有任何东西！\n");
+    	return;
+	}
     int cnt=0;
     while(p) {
         p->id=++cnt;
         Inventory* q = Inv_head->next;
+        printf("\t订单编号 |    品牌名称    |   商品名称   | 酒水容量 |  包装大小  |  购买数量  |   单价   |  总金额\n");
         while(q)
         {
         	if(q->BrandNumber == p->x&& q->SpecificationNumber == p->z) break;
@@ -14,7 +19,7 @@ void showShoppingCart(client*cus){
 		}
 		if(q == NULL) printf("您曾选择的商品已售罄！");
         else{
-        	printf("\t订单编号 |    品牌名称    |   商品名称   | 酒水容量 |  包装大小  |  购买数量  |   单价   |  总金额\n");
+
 			printf("\t  %-9d%-20s%-15s", p->id, q->DrinksBrand, code[p->x][p->y]);
 			printf("%-12d%-12d%-12d%-9.2lf%-10.2lf\n", q->volume, q->packagingsize, p->cnt,p->single_cost,p->total_cost);
 		}
