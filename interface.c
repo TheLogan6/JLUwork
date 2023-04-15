@@ -231,7 +231,7 @@ void ManagerInterface_Write(){
 					if(!p) continue;
 					printf("请输充值金额：");
 					scanf("%lf", &tempmoney);
-					if(!recharge(&p, log_head, tempid, tempmoney)) ErrorHappens();
+					if(!recharge(&p, &log_head, tempid, tempmoney)) ErrorHappens();
 					else{
 						 printf("\t\t\t\t您已充值成功，本次充值金额：%lf",tempmoney);
 						 writeClientInfo(L);

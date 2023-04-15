@@ -365,6 +365,7 @@ bool recharge(client**L,LogNode**log,int id,double money){
     if(!checkBalance(&p,-money))return false;
 	addLogNode(log,L,id,1,money);
 	writeLog(*log);
+	return true;
     //更新订单节点
 }
 //打印用户订单

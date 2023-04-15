@@ -254,8 +254,9 @@ int Sell_confirm(struct sell_bill* newbill,struct customer* user)
             flag=true;
             continue;
         }
+        return buychoice;
     }
-    return buychoice;
+    
 }
 void sell_save(struct sell_bill* newbill)
 {

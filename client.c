@@ -67,7 +67,10 @@ void PurchaseProduct(client* cur_cus, int ChooseBrand, struct sell_bill* newbill
 			Sell_select_ProductNumber(ChooseProduct, newbill);
 			Sell_select_Number_of_goods(newbill,cur_cus);
 			int i = Sell_confirm(newbill, cur_cus);
-			sell_save(newbill);
+			if(i != 3) {
+				sell_save(newbill);
+				if(i!=4) UpdateInventory();
+			}
 //			printf("\n\t\t\t\t您已成功选择  ,容量为  ,包装为  "); 
 		}
 				

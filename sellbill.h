@@ -76,7 +76,7 @@ struct sell_bill* Initiate_Bill();						// ∂¡»°
 struct sell_bill* Sell_select_brand(int number_of_brand);    //—°∆∑≈∆
 void Sell_select_ProductNumber(int number, struct sell_bill* newbill);      //
 void Sell_select_Number_of_goods(struct sell_bill* newbill,struct customer* user);
-void Sell_confirm(struct sell_bill* newbill,struct customer* user);
+int Sell_confirm(struct sell_bill* newbill,struct customer* user);
 void Print_Bills_Of_Given_Brand(void);           //
 int Scanf_ID(void);
 int Print_Bills_Of_Given_Id(int ID_of_client);
