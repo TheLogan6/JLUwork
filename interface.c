@@ -231,17 +231,19 @@ void ManagerInterface_Write(){
 					if(!p) continue;
 					printf("请输充值金额：");
 					scanf("%lf", &tempmoney);
-					if(!recharge(&p, &log_head, tempid, tempmoney)) ErrorHappens();
+					if(!recharge(&p, &log_head, tempid, tempmoney)){
+						RefreshPage();
+						continue;
+					}
 					else{
-						 printf("\t\t\t\t您已充值成功，本次充值金额：%lf",tempmoney);
+						 printf("\t\t\t\t您已充值成功，本次充值金额：%.2lf",tempmoney);
 						 writeClientInfo(L);
 						 pau;
 						 break;
+					}
+					
 				}
-					pau;
-					break;
-				}
-				
+				break;
 			}
 			case(4):{//删除订单 
 				system("cls");
