@@ -55,22 +55,17 @@ void PrintInventory(Inventory* Inv_head){
 //	printf("  酒水品牌   |  品牌编号 |   商品名   |商品编号| 容量大小 | 包装大小 | 库存容量 |  批量标价\n");
 //	while(p)
 //	{
-//		printf("%-20s", p->DrinksBrand);
-//		printf("%-9d%", p->BrandNumber);
-//		printf("%-15s", code[p->BrandNumber][p->ProductNumber]);
-//		printf("%-7d%-11d%-11d%-9d", p->SpecificationNumber, p->volume, p->packagingsize, p->Reserve); 
-//		printf("%-10.2f\n", p->Price);
-//		p = p->next;
+
 //	}
-	printf("  酒水品牌  | 品牌编号 |   商品名称   | 商品编号 | 容量大小 | 包装大小 | 库存容量 |   价格   |          保质期\n");
+	printf("\t  酒水品牌  | 品牌编号 |   商品名称   | 商品编号 | 容量大小 | 包装大小 | 库存容量 |     价格     |       保质期\n");
 	while(p)
 	{
-		printf("%-18s%-9d", code[p->BrandNumber][0], p->BrandNumber);
-		printf("%-16s", code[p->BrandNumber][p->ProductNumber]);
-		printf("%-10d%-10d%-11d%-11d", p->SpecificationNumber, p->volume, p->packagingsize, p->Reserve);
+		printf("\t  %-15s%-9d", code[p->BrandNumber][0], p->BrandNumber);
+		printf(" %-16s", code[p->BrandNumber][p->ProductNumber]);
+		printf("%-10d%-10d %-11d %-11d", p->SpecificationNumber, p->volume, p->packagingsize, p->Reserve);
 		if(p->Reserve == 0) printf("(已售罄)");
-		printf("%-12.2f   ", p->Price);
-		printf("%d年%d月%d日\n", p->quality_year, p->quality_month, p->quality_day);
+		printf("%-12.2f  ", p->Price);
+		printf(" %d年%d月%d日\n", p->quality_year, p->quality_month, p->quality_day);
 		p = p->next;
 	}
 }
@@ -118,12 +113,18 @@ void ChangeInventory(){
 	while(1)
 	{
 		system("cls");
-		printf("\t\t----------------------------修改商品信息界面-----------------------------\n");
-		printf("\t\t                       (输入0可以返回上一个界面)\n") ;
+		
+		printf("\n\n\n\n"); 
+		
+    	printf("\t\t\t\t\t --------------------------------------- \n");
+    	printf("\t\t\t\t\t            修改商品信息界面             \n");
+    	printf("\t\t\t\t\t         (输入0可返回上一个界面)         \n"); 
+    	printf("\t\t\t\t\t --------------------------------------- \n");
 		PrintInventory(Inv_head);
 		int ChooseBrand, ChooseProduct;
 		char ChooseBrand_s[5], ChooseProduct_s[5];
-		printf("\t\t\t请选择你要更改的品牌编号：");
+		printf("\t\t\t\t\t --------------------------------------- \n");
+		printf("\t\t\t\t  请选择你要更改的品牌编号：");
 		scanf("%s", ChooseBrand_s);
 		ChooseBrand = inputcheck(ChooseBrand_s);
 		if(ChooseBrand == 0) return;
@@ -131,7 +132,7 @@ void ChangeInventory(){
 			RefreshPage();
 			continue;
 		}
-		printf("\t\t\t请选择你要更改的产品编号：");
+		printf("\t\t\t\t  请选择你要更改的产品编号：");
 		scanf("%s", ChooseProduct_s);
 		ChooseProduct = inputcheck(ChooseProduct_s);
 		int maxnum1 = countSpecification(ChooseBrand);
@@ -140,10 +141,10 @@ void ChangeInventory(){
 			continue;
 		}
 		Inventory* tar = FindInventory(ChooseBrand, ChooseProduct);
-		if(!tar)
+		if(tar == NULL)
 		{
-			printf("找不到该商品，您的输入有误！\n");
-			printf("请按任意键刷新后重新输入！");
+			printf("\t\t\t\t  找不到该商品，您的输入有误！\n");
+			printf("\t\t\t\t  请按任意键刷新后重新输入！");
 			system("pause");
 			continue;
 		}
@@ -152,21 +153,29 @@ void ChangeInventory(){
 			while(1)
 			{
 				system("cls");
-				printf("\n\n\n\n");
-				printf("\t\t-----------------------修改商品信息界面-----------------------\n");
-				printf("\t\t                  (输入0可以返回上一个界面)\n") ;	
-				printf("  酒水品牌  | 品牌编号 |   商品名称   | 商品编号 | 容量大小 | 包装大小 | 库存容量 |   价格   |          保质期\n");
-				printf("%-18s%-9d", tar->DrinksBrand, tar->BrandNumber);
+				
+				printf("\n\n\n\n"); 
+		    	printf("\t\t\t\t\t --------------------------------------- \n");
+		    	printf("\t\t\t\t\t            修改商品信息界面             \n");
+		    	printf("\t\t\t\t\t         (输入0可返回上一个界面)         \n"); 
+		    	printf("\t\t\t\t\t --------------------------------------- \n");
+				printf("\t  酒水品牌  | 品牌编号 |   商品名称   | 商品编号 | 容量大小 | 包装大小 | 库存容量 |   价格   |          保质期\n");
+				printf("\t%-17s%-9d ", tar->DrinksBrand, tar->BrandNumber);
 				printf("%-16s", code[tar->BrandNumber][tar->ProductNumber]);
 				printf("%-10d%-10d%-11d%-11d", tar->SpecificationNumber, tar->volume, tar->packagingsize, tar->Reserve);
 				if(tar->Reserve == 0) printf("(已售罄)");
 				printf("%-12.2f   ", tar->Price);
 				printf("%d年%d月%d日\n", tar->quality_year, tar->quality_month, tar->quality_day);
 
-				printf("\t\t\t\t\t  1. 修改库存容量\n");
-				printf("\t\t\t\t\t  2. 修改批发价格\n");
-				printf("\t\t\t\t\t  3. 修改保质期(无)\n");
-				printf("\t\t\t\t\t  3. 删除该商品\n");
+				printf("\t\t\t\t\t --------------------------------------- \n");
+			    printf("\t\t\t\t\t                                        \n");
+			    printf("\t\t\t\t\t         (1).   修改库存容量            \n");
+			    printf("\t\t\t\t\t         (2).   修改批发价格            \n");
+			    printf("\t\t\t\t\t         (3).    删除该商品             \n");
+			    printf("\t\t\t\t\t         (0).  返回上一个界面           \n");
+				printf("\t\t\t\t\t                                        \n");
+				printf("\t\t\t\t\t --------------------------------------- \n");
+
 				printf("\t\t\t\t\t 请选择你要进行的操作：");
 				int ChangeInfo;
 				char ChangeInfo_s[5];
@@ -179,7 +188,7 @@ void ChangeInventory(){
 				if(ChangeInfo == 0) break;
 				switch(ChangeInfo){
 					case(1):{   ////修改库存容量 
-						printf("\t\t\t\t\t请输入新的库存容量(不得超过库存最大量)：");
+						printf("\t\t\t\t  请输入新的库存容量(不得超过库存最大量)：");
 						int NewReserve;
 						char NewReserve_s[6];
 						scanf("%s", NewReserve_s);
@@ -190,12 +199,12 @@ void ChangeInventory(){
 						}
 						tar->Reserve = NewReserve;
 						UpdateInventory();
-						printf("\t\t\t\t您已成功修改库存容量，按任意键刷新！");
+						printf("\t\t\t\t  您已成功修改库存容量，按任意键刷新！");
 						system("pause");
 						break;
 					}
 					case(2):{ // 修改价格 
-						printf("\t\t\t\t请输入新的批发价格(只保留两位小数且不得小于1元)：");
+						printf("\t\t\t\t  请输入新的批发价格(只保留两位小数且不得小于1元)：");
 						float NewPrice;
 						if((scanf("%f", &NewPrice))==0 || NewPrice < 1)
 						{
@@ -206,28 +215,14 @@ void ChangeInventory(){
 						}
 						tar->Price = NewPrice;
 						UpdateInventory(); 
-						printf("\t\t\t\t您已成功修改价格，按任意键刷新！");
+						printf("\t\t\t\t  您已成功修改价格，按任意键刷新！");
 						system("pause");
 						break;
 					}
-//					case(3):{  // 修改商品保质期 
-//						printf("\t\t\t请输入新的商品保质期:");
-//						printf("\t\t\t  年：\n");
-//						int year, month, day;
-//						char year_s[5], month_s[5], day_s[5];
-//						scanf("%s", year_s);
-//						printf("\t\t\t  月：");
-//						scanf("%s", month_s);
-//						printf("\t\t\t  日：");
-//						scanf("%s", day_s);
-//						year = inputcheck(year_s);
-//						month = inputcheck(month_s);
-//						year = inputcheck(year_s);
-//					}
 					case(3):{ // 删除商品 
-						printf("\t\t\t\t\t 你确认要删除该商品吗？\n");
-						printf("\t\t\t\t\t    1.Yes\n");
-						printf("\t\t\t\t\t    2.No\n\t\t\t\t\t     ");
+						printf("\t\t\t\t  你确认要删除该商品吗？\n");
+						printf("\t\t\t\t    1.Yes\n");
+						printf("\t\t\t\t    2. No\n  ");
 						int checkdelete;
 						char checkdelete_s[6];
 						scanf("%s", checkdelete_s);
@@ -251,11 +246,11 @@ void ChangeInventory(){
 							}// 编号重排
 							
 							UpdateInventory(); 
-							printf("\t\t\t您已成功修改数据，按任意键返回至上一个界面！");
+							printf("\t\t\t\t  您已成功修改数据，按任意键返回至上一个界面！");
 							pau;return;
 						}
 						else if(checkdelete == 2){
-							printf("\t\t\t您未删除该数据，按任意键可刷新该界面！");
+							printf("\t\t\t\t  您未删除该数据，按任意键可刷新该界面！");
 							pau;continue;
 						}
 						break;
@@ -278,14 +273,22 @@ void InventorySortMode(){
 		system("cls");
 		int sortmode;
 		char sortmode_s[5];
-		printf("\t\t\t\t--------------库存信息查询界面------------------\n");
-		printf("\t\t\t\t    (输入0可以返回上一个界面)\n") ;	
-		printf("\t\t\t\t     1. 按产品编号(默认)\n"); 
-		printf("\t\t\t\t     2. 按库存容量大小\n"); 
-		printf("\t\t\t\t     3.  按价格高低\n"); 
-		printf("\t\t\t\t    请选择您想要排序的方式：");
-		scanf("%s", sortmode_s);
+		printf("\n\n\n\n"); 
+		printf("\t\t\t\t\t --------------------------------------- \n");
+		printf("\t\t\t\t\t               查看商品信息              \n");
+		printf("\t\t\t\t\t --------------------------------------- \n");
 		
+		printf("\t\t\t\t\t --------------------------------------- \n");
+		printf("\t\t\t\t\t|                                       |\n");
+		printf("\t\t\t\t\t|         (1). 按产品编号(默认)         |\n");
+		printf("\t\t\t\t\t|         (2). 按库存容量大小           |\n");
+		printf("\t\t\t\t\t|         (3).   按价格高低             |\n");
+		printf("\t\t\t\t\t|         (0).  返回上一个界面          |\n");
+		printf("\t\t\t\t\t|                                       |\n");
+		printf("\t\t\t\t\t --------------------------------------- \n");
+		printf("\t\t\t\t\t 请选择您想要排序的方式：");
+		
+		scanf("%s", sortmode_s);
 		sortmode = inputcheck(sortmode_s);
 		if(sortmode == -1){
 			RefreshPage();
@@ -294,25 +297,28 @@ void InventorySortMode(){
 		if(sortmode == 0) break;
 		switch(sortmode){
 			case(1):{
+				printf("\t\t\t\t\t --------------------------------------- \n");
 				SortByNumber(Inv_head);
 				PrintInventory(Inv_head);
-				printf("\t\t  按任意键刷新界面重新选择排序方式\n");
+				printf("\t\t\t\t  按任意键刷新界面重新选择排序方式\n");
 				pau;
 				break;
 			}
 			case(2):{
+				printf("\t\t\t\t\t --------------------------------------- \n");
 				SortByReserve(Inv_head);
 				PrintInventory(Inv_head);
 				SortByNumber(Inv_head);
-				printf("\t\t  按任意键刷新界面重新选择排序方式\n");
+				printf("\t\t\t\t  按任意键刷新界面重新选择排序方式\n");
 				pau;
 				break;
 			}
 			case(3):{
+				printf("\t\t\t\t\t --------------------------------------- \n");
 				SortByPrice(Inv_head);
 				PrintInventory(Inv_head);
 				SortByNumber(Inv_head);
-				printf("\t\t  按任意键刷新界面重新选择排序方式\n");
+				printf("\t\t\t\t  按任意键刷新界面重新选择排序方式\n");
 				pau;
 				break;
 			}

@@ -9,36 +9,52 @@ extern int total_brand;
 void LoginInterface(){
 	system("cls");
     system("color B4"); // B天蓝色   4：红色字 
-    printf("\n\n\n\n"); 
-    printf("\t\t\t\t\t          欢迎使用酒水管理系统！\n");
-    Sleep(300);
-    printf("\t\t\t\t\t--------------登录界面----------------\n");
+    printf("\n\n\n\n\n"); 
+    //printf("\t\t\t\t\t --------------------------------------- \n");
+    printf("\t\t\t\t\t           欢迎使用酒水管理系统！          \n");
+    //printf("\t\t\t\t\t --------------------------------------- \n");
+    Sleep(1000);
+    system("cls");
+    printf("\n\n\n\n\n"); 
+    printf("\t\t\t\t\t --------------------------------------- \n");
+    printf("\t\t\t\t\t                登录界面                 \n");
+    printf("\t\t\t\t\t --------------------------------------- \n");
     Sleep(100);
-    printf("\t\t\t\t\t|          (1). 客户登录             |\n");
+    printf("\t\t\t\t\t|                                      |\n");
+    printf("\t\t\t\t\t|            (1). 客户登录             |\n");
     Sleep(100);
-    printf("\t\t\t\t\t|          (2).管理员登录            |\n");
+    printf("\t\t\t\t\t|            (2).管理员登录            |\n");
+    Sleep(100);  
+    printf("\t\t\t\t\t|            (3).新客户注册            |\n");
     Sleep(100);
-    printf("\t\t\t\t\t|          (3).新客户注册            |\n");
+    printf("\t\t\t\t\t|            (4). 退出系统             |\n");
+    printf("\t\t\t\t\t|                                      |\n");
     Sleep(100);
-    printf("\t\t\t\t\t|          (4).退出系统              |\n");
-    Sleep(100);
-    printf("\t\t\t\t\t-------------------------------------\n");
-    printf("\t\t\t\t请选择你要进行的服务：（1-4）:");
+    printf("\t\t\t\t\t --------------------------------------- \n");
+    printf("\t\t\t\t请选择你要进行的服务（1-4）:");
 }
 
 void ClientLogin(){
 	system("cls");
-	printf("\n\n\n\n");
-	printf("\t\t\t\t\t-----------用户登录界面----------------\n");
-	printf("\t\t\t\t\t    (在账号输入处输入0可以返回上一个界面)\n");
+	
+	printf("\n\n\n\n\n"); 
+    printf("\t\t\t\t\t --------------------------------------- \n");
+    printf("\t\t\t\t\t               用户登录界面              \n");
+    printf("\t\t\t\t\t    (在账号输入处输入0可以返回上一个界面)\n");
+    printf("\t\t\t\t\t --------------------------------------- \n");
+	printf("\n"); 
+
     printf("\t\t\t\t\t 请输入您的账号：");
 }
 
 void ManagerLogin(){
 	system("cls");
-	printf("\n\n\n\n");
-	printf("\t\t\t\t\t-----------管理员登录界面----------------\n");
-	printf("\t\t\t\t\t     (输入0可以返回上一个界面)\n");
+	printf("\n\n\n\n\n"); 
+    printf("\t\t\t\t\t --------------------------------------- \n");
+    printf("\t\t\t\t\t              管理员登录界面             \n");
+    printf("\t\t\t\t\t         (输入0可以返回上一个界面)       \n");
+    printf("\t\t\t\t\t --------------------------------------- \n");
+	printf("\n"); 
     printf("\t\t\t\t\t 请输入管理者密钥：");
 } 
 
@@ -50,9 +66,12 @@ void PasswordOutput(){
 
 void NewClientInterface(){
 	system("cls");
-	printf("\n\n\n\n");
-	printf("\t\t\t\t\t-----------新用户注册界面----------------\n");
-    printf("\t\t\t\t\t   您的账号是：");
+	printf("\n\n\n\n\n"); 
+    printf("\t\t\t\t\t --------------------------------------- \n");
+    printf("\t\t\t\t\t              新用户注册界面             \n");
+    printf("\t\t\t\t\t         (输入0可以返回上一个界面)       \n");
+    printf("\t\t\t\t\t --------------------------------------- \n");
+    printf("\t\t\t\t\t    您的账号是：");
 }
  
 /*-------------------------------管理者界面---------------------*/ 
@@ -60,13 +79,18 @@ void ManagerChooseMode(){
 	while(1)
 	{
 		system("cls");
-		printf("\n\n\n\n");
-		printf("\t\t\t\t\t------------店铺管理界面----------------\n");
-		printf("\t\t\t\t\t     (输入0可以返回上一个界面)\n");
-		printf("\t\t\t\t\t       1. 信息查询模式(只读)\n");
-		printf("\t\t\t\t\t       2. 信息修改模式\n"); 
-		printf("\t\t\t\t\t       3. 进货模式\n");
-		printf("\t\t\t\t\t       4. 用户订单处理\n");
+		printf("\n\n\n\n\n"); 
+    	printf("\t\t\t\t\t --------------------------------------- \n");
+    	printf("\t\t\t\t\t               店铺管理界面              \n");
+    	printf("\t\t\t\t\t --------------------------------------- \n");
+    	printf("\t\t\t\t\t|                                      |\n");
+    	printf("\t\t\t\t\t|        (1). 信息查询模式(只读)       |\n");
+    	printf("\t\t\t\t\t|        (2).   信息修改模式           |\n");
+    	printf("\t\t\t\t\t|        (3).     进货模式             |\n");
+    	printf("\t\t\t\t\t|        (4).   用户订单处理           |\n");
+    	printf("\t\t\t\t\t|        (0).  返回上一个界面          |\n");
+		printf("\t\t\t\t\t|                                      |\n");
+		printf("\t\t\t\t\t --------------------------------------- \n");
 		printf("\t\t\t\t       请输入你要选择的服务：");
 		int Mana_mode;
 		char Mana_mode_s[5];
@@ -106,17 +130,22 @@ void ManagerInterface_Read(){
 	while(1)
 	{
 		system("cls");
-		printf("\n\n\n\n");
-		printf("\t\t\t\t\t------------店铺管理界面(查询模式)----------------\n");
-		printf("\t\t\t\t\t   (输入0可以返回上一个界面)\n");
-		printf("\t\t\t\t\t (1). 查看仓库货品清单\n");
-		printf("\t\t\t\t\t (2). 查看客户信息\n"); 
-		printf("\t\t\t\t\t (3). 查看销售订单\n");
-		printf("\t\t\t\t\t (4). 查看进货订单\n");
-		printf("\t\t\t\t\t (5).  订单查询\n");
-		printf("\t\t\t\t\t (10). 查看机器建议？\n");
-		printf("\t\t\t\t 请输入你想要进行的服务：(1-6)");
+		printf("\n\n\n\n\n"); 
 		
+    	printf("\t\t\t\t\t --------------------------------------- \n");
+    	printf("\t\t\t\t\t         店铺管理界面(查询模式)          \n");
+    	printf("\t\t\t\t\t --------------------------------------- \n");
+    	printf("\t\t\t\t\t|                                      |\n");
+    	printf("\t\t\t\t\t|        (1). 查看仓库货品清单         |\n");
+    	printf("\t\t\t\t\t|        (2).   查看客户信息           |\n");
+    	printf("\t\t\t\t\t|        (3).   查看销售订单           |\n");
+    	printf("\t\t\t\t\t|        (4).   查看进货订单           |\n");
+    	printf("\t\t\t\t\t|        (5).     订单查询             |\n");
+    	printf("\t\t\t\t\t|        (0).  返回上一个界面          |\n");
+		printf("\t\t\t\t\t|                                      |\n");
+		printf("\t\t\t\t\t --------------------------------------- \n");
+		printf("\t\t\t\t       请输入你要选择的服务：");
+
 		int ManagerOp;
 //		ManagerInterface();
 		char ManagerOp_s[5];
@@ -172,18 +201,23 @@ void ManagerInterface_Write(){
 	while(1)
 	{
 		system("cls");
-		Sleep(300);
-		printf("\n\n\n\n");
-		printf("\t\t\t\t\t------------店铺管理界面(修改模式)----------------\n");
-		printf("\t\t\t\t\t   (输入0可以返回上一个界面)\n");
-		printf("\t\t\t\t\t (1). 修改仓库商品信息\n");
-		printf("\t\t\t\t\t (2). 修改客户信息\n");
-		printf("\t\t\t\t\t (3). 客户充值\n");
-		printf("\t\t\t\t\t (4). 删除销售订单\n");
-		printf("\t\t\t\t\t (5). 修改进货订单\n");
-		printf("\t\t\t\t\t (6). 删除进货订单\n");
-		printf("\t\t\t\t\t (10). 查看机器建议？\n");
-		printf("\t\t\t\t 请输入你想要进行的服务：(1-6)");
+		printf("\n\n\n\n\n"); 
+    	printf("\t\t\t\t\t --------------------------------------- \n");
+    	printf("\t\t\t\t\t         店铺管理界面(修改模式)          \n");
+    	printf("\t\t\t\t\t --------------------------------------- \n");
+    	printf("\t\t\t\t\t|                                      |\n");
+    	printf("\t\t\t\t\t|        (1). 修改仓库商品信息         |\n");
+    	printf("\t\t\t\t\t|        (2).   修改客户信息           |\n");
+    	printf("\t\t\t\t\t|        (3).     客户充值             |\n");
+    	printf("\t\t\t\t\t|        (4).   删除销售订单           |\n");
+    	printf("\t\t\t\t\t|        (5).   修改进货订单           |\n");
+    	printf("\t\t\t\t\t|        (6).   删除进货订单           |\n");
+    	printf("\t\t\t\t\t|        (0).  返回上一个界面          |\n");
+		printf("\t\t\t\t\t|                                      |\n");
+		printf("\t\t\t\t\t --------------------------------------- \n");
+		printf("\t\t\t\t       请输入你要选择的服务：");
+		
+		
 		int ManagerOp;
 		char ManagerOp_s[5];
 		scanf("%s", ManagerOp_s);
@@ -219,28 +253,32 @@ void ManagerInterface_Write(){
 				double tempmoney;
 				while(1)
 				{
-					char tempid_s[5];
-					printf("请输入您的id:");
+					system("cls");
+					printf("\n\n\n\n\n"); 
+			    	printf("\t\t\t\t\t --------------------------------------- \n");
+			    	printf("\t\t\t\t\t                充值界面                 \n");
+			    	printf("\t\t\t\t\t     (在账号处输入0可以返回上一个界面)   \n");
+			    	printf("\t\t\t\t\t --------------------------------------- \n");
+					char tempid_s[6];
+					printf("\t\t\t\t 请输入您的id: ");
 					scanf("%s", tempid_s);
 					tempid = inputcheck(tempid_s);
 					if(tempid == -1){
 						RefreshPage();
 						continue;
-					}		
+					}	
+					if(tempid == 0)	break;
 					client* p=findClient(&L, tempid); 
 					if(!p) continue;
-					printf("请输充值金额：");
+					printf("\t\t\t\t 请输充值金额：");
 					scanf("%lf", &tempmoney);
-					if(!recharge(&p, &log_head, tempid, tempmoney)){
-						RefreshPage();
-						continue;
-					}
-					else{
-						 printf("\t\t\t\t您已充值成功，本次充值金额：%.2lf",tempmoney);
-						 writeClientInfo(L);
-						 pau;
-						 break;
-					}
+					if(!recharge(&L, &log_head, tempid, tempmoney)) ErrorHappens();
+					else{printf("\t\t\t\t充值成功！本次充值金额：%.2lf",tempmoney);
+					writeClientInfo(L);
+					pau;
+					break;
+					} 
+					pau;
 					
 				}
 				break;
@@ -277,18 +315,24 @@ void ManagerInterface_Write(){
 void ClientChooseMode(client* cur_cus){
 	while(1)
 	{
+		
 		system("cls");
-		printf("\n\n\n\n");
-		printf("\t\t\t\t\t-------------客户界面----------------\n");
-		printf("\t\t\t\t\t     (输入0可以返回上一个界面)\n");
-		printf("\t\t\t\t\t       1.   批发\n");
-		printf("\t\t\t\t\t       2. 查询历史订单\n"); 
-		printf("\t\t\t\t\t       3.  商品换货\n"); 
-		printf("\t\t\t\t\t       4.  商品退货\n"); 
-		printf("\t\t\t\t\t       5.  购物车\n"); 
-		printf("\t\t\t\t\t       6. 临期商品大促销\n"); 
-
+		printf("\n\n\n\n\n"); 
+    	printf("\t\t\t\t\t --------------------------------------- \n");
+    	printf("\t\t\t\t\t                客户界面                 \n");
+    	printf("\t\t\t\t\t --------------------------------------- \n");
+    	printf("\t\t\t\t\t|                                      |\n");
+    	printf("\t\t\t\t\t|        (1).       批发               |\n");
+    	printf("\t\t\t\t\t|        (2).   查询历史订单           |\n");
+    	printf("\t\t\t\t\t|        (3).     商品换货             |\n");
+    	printf("\t\t\t\t\t|        (4).     商品退货             |\n");
+    	printf("\t\t\t\t\t|        (5).      购物车              |\n");
+    	printf("\t\t\t\t\t|        (6).  临期商品大促销          |\n");
+    	printf("\t\t\t\t\t|        (0).  返回上一个界面          |\n");
+		printf("\t\t\t\t\t|                                      |\n");
+		printf("\t\t\t\t\t --------------------------------------- \n");
 		printf("\t\t\t\t       请输入你要选择的服务：");
+		
 		int Cli_mode;
 		char Cli_mode_s[5];
 		scanf("%s", Cli_mode_s);
@@ -339,8 +383,11 @@ void SalePromotion(client* cur_cus){
 	{
 		system("cls");
 		printf("\n\n\n\n");
-		printf("\t\t\t\t\t-----------------促销界面----------------\n");
-		printf("\t\t\t\t\t    (在品牌编号出输入0可直接返回上一个界面)\n");
+    	printf("\t\t\t\t\t --------------------------------------- \n");
+    	printf("\t\t\t\t\t                促销界面                 \n");
+    	printf("\t\t\t\t\t  (在品牌编号出输入0可直接返回上一个界面)\n");
+    	printf("\t\t\t\t\t --------------------------------------- \n");
+		
 		PrintSpecialInv(); 
 		printf("\t\t\t\t       请输入你要选择的品牌编号：");
 		int ChooseBrand, ChooseProduct;
@@ -508,6 +555,7 @@ int inputcheck(char numstring[]){
 	int n = strlen(numstring);
 	if(n > 20) return -1;
 	int ans = 0;
+	if(n > 1 && numstring[0] == '0') return -1;
 	for(int i = 0; i < n; i++)
 	{
 		if(numstring[i] > '9' || numstring[i] < '0') return -1;
@@ -524,13 +572,21 @@ void ShoppintcartInterface(client* cur_cus){          // 当前客户信息
 	{
 		system("cls");
 		printf("\n\n\n\n");
-		printf("\t\t\t\t\t------------购物车界面----------------\n");
-		printf("\t\t\t\t\t    (输入0可以返回客户界面)\n");	
+    	printf("\t\t\t\t\t --------------------------------------- \n");
+    	printf("\t\t\t\t\t               购物车界面                \n");
+    	printf("\t\t\t\t\t --------------------------------------- \n");
+    	
 		showShoppingCart(cur_cus);
-		printf("\n\t\t\t\t   1. 删除订单\n");
-		printf("\t\t\t\t   2. 修改购买数量\n");
-		printf("\t\t\t\t   3. 支付结算");
-		printf("\n\t\t\t\t 请选择您要对你的购物车进行的服务：");
+		printf("\t\t\t\t\t --------------------------------------- \n");
+    	printf("\t\t\t\t\t                                        \n");
+    	printf("\t\t\t\t\t         (1).     删除订单              \n");
+    	printf("\t\t\t\t\t         (2).   修改购买数量            \n");
+    	printf("\t\t\t\t\t         (3).     支付结算              \n");
+    	printf("\t\t\t\t\t         (0).  返回上一个界面           \n");
+		printf("\t\t\t\t\t                                        \n");
+		printf("\t\t\t\t\t --------------------------------------- \n");
+		printf("\t\t\t\t  请选择您要对你的购物车进行的操作：");
+		
 		char ShoppingcartOp_s[5];
 		int ShoppingcartOp;
 		scanf("%s", ShoppingcartOp_s);
@@ -544,7 +600,7 @@ void ShoppintcartInterface(client* cur_cus){          // 当前客户信息
 			case(1):{
 				int  delete_id;
 				char delete_id_s2[10];
-				printf("\t\t\t\t请输入你想要删除的订单号："); 
+				printf("\t\t\t\t  请输入你想要删除的订单号："); 
 				scanf("%s", delete_id_s2);
 				delete_id = inputcheck(delete_id_s2);
 				if(delete_id == -1) {
@@ -552,7 +608,7 @@ void ShoppintcartInterface(client* cur_cus){          // 当前客户信息
 					continue;
 				}
 				delShoppingCart(cur_cus, delete_id);
-				printf("\t\t\t您已成功删除购物车内容！");
+				printf("\t\t\t\t  您已成功删除购物车内容！");
 				writeShoppingCart(&L);
 				pau;
 				break;
@@ -560,7 +616,7 @@ void ShoppintcartInterface(client* cur_cus){          // 当前客户信息
 			case(2):{
 				int  change_id;
 				char change_id_s[10];
-				printf("\t\t\t\t请输入你想要修改的订单号："); 
+				printf("\t\t\t\t  请输入你想要修改的订单号："); 
 				scanf("%s", change_id_s);
 				change_id = inputcheck(change_id_s);
 				int l = 0;
