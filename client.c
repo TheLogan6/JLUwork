@@ -6,12 +6,10 @@ extern client* L;
 extern char* code[12][5];
 
 void PurchaseInterface(client* cur_cus){
-	int position=0,row=8,ChooseBrand;
+	int position=0,row=8,ChooseBrand=0;
 	while(1)
 	{
 		system("cls");
-		
-		
 		printf("\n\n\n\n\n"); 
     	printf("\t\t\t\t\t --------------------------------------- \n");
     	printf("\t\t\t\t\t               商品批发界面              \n");
@@ -35,13 +33,14 @@ void PurchaseInterface(client* cur_cus){
 //			continue;
 //		}
 		int op=getchoice(&position,row,&ChooseBrand);
-		if(op>0)continue;
-		if(ChooseBrand == 8) return ;
-		else{
-			struct sell_bill* newbill = Sell_select_brand(ChooseBrand);
-			PurchaseProduct(cur_cus, ChooseBrand, newbill);
-		}	
+		if(op<0)break;
+			
 	} 
+	if(ChooseBrand == 8) return ;
+	else{
+		struct sell_bill* newbill = Sell_select_brand(ChooseBrand);
+		PurchaseProduct(cur_cus, ChooseBrand, newbill);
+	}
 }
 
 void PurchaseProduct(client* cur_cus, int ChooseBrand, struct sell_bill* newbill){

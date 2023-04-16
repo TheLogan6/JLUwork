@@ -64,15 +64,8 @@ int main(int argc, char *argv[]) {
 	while(1){
 		system("cls");
 		LoginInterface(position);
-		char ch=getch();
-		if(ch=='w'){
-			position=(position-1+row)%row;
-		}
-		if(ch=='s')position=(position+1)%row;
-		if(ch=='\r'){
-			ChooseLogin=position+1;
-			break;
-		};
+		int op=getchoice(&position,row,&ChooseLogin);
+		if(op<0)break;
 	}
         switch(ChooseLogin){
             case(1) : {

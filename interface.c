@@ -1,5 +1,5 @@
 #include"interface.h"
-
+#include"customer.h"
 extern Inventory* Inv_head;
 extern client* L;
 extern ProductSource* Sou_head;
@@ -96,6 +96,8 @@ void ManInferface(int i){
 }
 
 void ManagerChooseMode(){
+	while(1){
+	
 	int i = 1;
 	char temp;
 	int Mana_mode;
@@ -103,8 +105,8 @@ void ManagerChooseMode(){
 	{
 		ManInferface(i);
 		temp = getch();
-		if(temp == 'w') i = (i-1+5)%5;
-		else if(temp == 's') i = (i+1)%5;
+		if(temp == 'w'||temp=='W') i = (i-1+5)%5;
+		else if(temp == 's'||temp=='S') i = (i+1)%5;
 		else if(temp == '\r'){
 			Mana_mode = i;break;
 		}
@@ -133,6 +135,7 @@ void ManagerChooseMode(){
 		}
 	
 	}
+}
 	
 	
 }
@@ -143,7 +146,7 @@ void ManagerInterface_Read(){
 		int i = 1;
 		char temp;
 		int ManagerOp;
-
+		
 		while(1)
 		{
 			system("cls");
@@ -169,8 +172,8 @@ void ManagerInterface_Read(){
 			printf("\t\t\t\t       请选择你要进行的操作：");
 			
 			temp = getch();	
-			if(temp == 'w') i = (i-1+6)%6;
-			else if(temp == 's') i = (i+1)%6;
+			if(temp == 'w'||temp=='W') i = (i-1+6)%6;
+			else if(temp == 's'||temp=='S') i = (i+1)%6;
 			else if(temp == '\r'){
 				ManagerOp = i;break;
 			}
@@ -248,8 +251,8 @@ void ManagerInterface_Write(){
 			printf("\t\t\t\t       请输入你要选择的服务：");	
 			
 			temp = getch();	
-			if(temp == 'w') i = (i-1+5)%5;
-			else if(temp == 's') i = (i+1)%5;
+			if(temp == 'w'||temp=='W') i = (i-1+5)%5;
+			else if(temp == 's'||temp=='S') i = (i+1)%5;
 			else if(temp == '\r'){
 				ManagerOp = i;break;
 			}
@@ -349,11 +352,11 @@ void ManagerInterface_Write(){
 
 /*------------------------------------------客户界面------------------------------------*/ 
 void ClientChooseMode(client* cur_cus){
-	int position=0,row=7,Cli_mode; 
+
 	while(1){
-	
+		int position=0,row=7,Cli_mode; 
 	while(1)
-	{
+	{	
 		
 		system("cls");
 		printf("\n\n\n\n\n"); 
@@ -383,16 +386,9 @@ void ClientChooseMode(client* cur_cus){
 //		char Cli_mode_s[5];
 //		scanf("%s", Cli_mode_s);
 //		Cli_mode = inputcheck(Cli_mode_s);
-		char ch=getch();
-		if(ch=='w'){
-			position=(position-1+row)%row;
-		}
-		if(ch=='s')position=(position+1)%row;
-		if(ch=='\r'){
-			Cli_mode=position+1;
-			break;
-		};
-}
+		int op=getchoice(&position,row,&Cli_mode);
+		if(op<0)break;
+	}
 //		if(Cli_mode == -1){
 //			RefreshPage();
 //			continue;
@@ -623,8 +619,9 @@ int inputcheck(char numstring[]){
 
 /*-------------------------------购物车界面-----------------------------------*/
 void ShoppintcartInterface(client* cur_cus){          // 当前客户信息 
-	int position=0,row=4,ShoppingcartOp;
-	first:
+int position=0,row=4,ShoppingcartOp;
+	while(1){
+	
 	while(1)
 	{
 		system("cls");
@@ -647,7 +644,6 @@ void ShoppintcartInterface(client* cur_cus){          // 当前客户信息
 		printf("\t\t\t\t\t                                        \n");
 		printf("\t\t\t\t\t --------------------------------------- \n");
 		printf("\t\t\t\t  请选择您要对你的购物车进行的操作：");
-		
 //		char ShoppingcartOp_s[5];
 //		int ShoppingcartOp;
 //		scanf("%s", ShoppingcartOp_s);
@@ -659,6 +655,7 @@ void ShoppintcartInterface(client* cur_cus){          // 当前客户信息
 //		if(ShoppingcartOp == 0) return;
 		int op=getchoice(&position,row,&ShoppingcartOp);
 		if(op<0)break;
+		else continue;
 	}	
 	if(ShoppingcartOp==4)return;
 	switch(ShoppingcartOp){
@@ -670,7 +667,7 @@ void ShoppintcartInterface(client* cur_cus){          // 当前客户信息
 				delete_id = inputcheck(delete_id_s2);
 				if(delete_id == -1) {
 					RefreshPage();
-					goto first;
+					break;
 				}
 				delShoppingCart(cur_cus, delete_id);
 				printf("\t\t\t\t  您已成功删除购物车内容！");
@@ -693,7 +690,7 @@ void ShoppintcartInterface(client* cur_cus){          // 当前客户信息
 				}
 				if(change_id > l || change_id == -1){
 					RefreshPage();
-					goto first;
+					break;
 				}
 				//ChangeNumber(cur_cus, change_id);
 				break;
@@ -704,4 +701,5 @@ void ShoppintcartInterface(client* cur_cus){          // 当前客户信息
 			} 
 		}
 	}
+}
 

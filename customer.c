@@ -431,15 +431,15 @@ bool cmp(const client*p,client*q){
 }
 int getchoice(int *position,int row,int *choice){
 		char ch=getch();
-		if(ch=='w'){
-			*position=(*position-1+row)%row;
+		if(ch=='w'||ch=='W'){
+			*position=((*position)-1+row)%row;
 		}
-		if(ch=='s')*position=(*position+1)%row;
+		if(ch=='s'||ch=='S')*position=((*position)+1)%row;
 		if(ch=='\r'){
-			*choice=*position+1;
+			*choice=(*position)+1;
 			return -1;
 		}
-		return choice;
+		return *choice;
 }
 void InitLog(LogNode**L,client**cus){
     log_cnt=0;

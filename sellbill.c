@@ -1,4 +1,5 @@
 #include"sellbill.h"
+#include"customer.h"
 //Õý³£¶©µ¥
 struct customer* Find_pointer_of_client(int id)
 {
