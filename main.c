@@ -65,7 +65,6 @@ int main(int argc, char *argv[]) {
 		system("cls");
 		LoginInterface(position);
 		char ch=getch();
-		
 		if(ch=='w'){
 			position=(position-1+row)%row;
 		}

@@ -14,7 +14,7 @@
 #include"shiningpoints.h"
 #include"supplier.h" 
 
-void LoginInterface();    //登录界面
+void LoginInterface(int position);    //登录界面
 void ManagerInterface(); // 店铺管理界面 
 void NewClientInterface();
 
@@ -28,6 +28,7 @@ void ManagerLogin();
 void PasswordOutput();
 
 void ManagerChooseMode();
+void ManInferface(int i);
 void ClientChooseMode(client* cur_cus);
 
 
