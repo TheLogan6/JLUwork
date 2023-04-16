@@ -4,6 +4,7 @@ extern char* code[12][5];
 extern Inventory* Inv_head;
 extern ProductSource* Sou_head;
 extern int total_brand;
+extern Gift* Gift_head;
 //extern SpecialInv* SpeInv_head;
 
 void encode_product(){
@@ -39,7 +40,7 @@ Inventory* InitInventory(){
 		fscanf(Storehouse_fp, "%s", p->DrinksBrand);
 //		fgets(p->DrinksBrand, 20, fp);
 		fscanf(Storehouse_fp, "%d%d%d%d%d%d", &p->BrandNumber, &p->ProductNumber, &p->SpecificationNumber, &p->volume, &p->Reserve, &p->packagingsize);
-		fscanf(Storehouse_fp, "%f\n", &p->Price);
+		fscanf(Storehouse_fp, "%f", &p->Price);
 		fscanf(Storehouse_fp, "%d%d%d%d\n", &p->quality_year, &p->quality_month, &p->quality_day, &p->nearexpiry);	
 		p->pre = Inv_tail;
 		p->next = NULL;
@@ -441,10 +442,8 @@ void SortByPrice(Inventory* Inv_head){
 		}
 		else
 		{
-			
 			tar->pre->next = tar->next;
-			tar->next->pre = tar->pre; // 删除
-			 
+			tar->next->pre = tar->pre; // 删除 
 			tar->next = p->next;
 			tar->pre = p;
 			p->next->pre = tar;
@@ -475,7 +474,7 @@ ProductSource* ReadSource(){
 		fscanf(source_fp, "%s", p->DrinksBrand_sou);
 //		fgets(p->DrinksBrand, 20, fp);
 		fscanf(source_fp, "%d%d%d%d%d", &p->BrandNumber_sou, &p->ProductNumber_sou, &p->SpecificationNumber_sou, &p->volume_sou, &p->packagingsize_sou);
-		fscanf(source_fp, "%f\n", &p->Price_sou);	
+		fscanf(source_fp, "%f", &p->Price_sou);	
 		fscanf(source_fp, "%d%d%d\n", &p->quality_year_sou, &p->quality_month_sou, &p->quality_day_sou);
 		p->pre = Sou_tail;
 		p->next = NULL;
@@ -490,7 +489,7 @@ void PrintSource(ProductSource* Sou_head){
 	printf("  酒水品牌  | 品牌编号 |   商品名称   | 商品编号 | 容量大小 | 包装大小 |  价格  |          保质期\n");
 	while(p)
 	{
-		printf("%-18s%-9d", p->DrinksBrand_sou, p->BrandNumber_sou);
+		printf("%-18s%-9d", code[p->BrandNumber_sou][0], p->BrandNumber_sou);
 		printf("%-16s", code[p->BrandNumber_sou][p->ProductNumber_sou]);
 		printf("%-10d%-9d%-11d", p->SpecificationNumber_sou, p->volume_sou, p->packagingsize_sou);
 		printf("%-12.2f   ", p->Price_sou);
@@ -577,16 +576,26 @@ void JudgeNearexpiry(){
 //
 void PrintSpecialInv(){
 	Inventory* p = Inv_head->next;
-	printf("  酒水品牌  | 品牌编号 |   商品名称   | 商品编号 | 容量大小 | 包装大小 | 库存容量 |  促销价格  |          保质期\n");
+
+	printf("\t  酒水品牌  | 品牌编号 |   商品名称   | 商品编号 | 容量大小 | 包装大小 | 库存容量 |   促销价格   |       保质期\n");
 	while(p)
 	{
 		if(p->nearexpiry == 1)
 		{
-			printf("%-18s%-9d", code[p->BrandNumber][0], p->BrandNumber);
-			printf("%-16s", code[p->BrandNumber][p->ProductNumber]);
-			printf("%-10d%-9d%-11d%-8d", p->SpecificationNumber, p->volume, p->packagingsize,p->Reserve);
-			printf("%-12.2f   ", p->Price);
-			printf("%d年%d月%d日\n", p->quality_year, p->quality_month, p->quality_day); 
+			
+			printf("\t  %-15s%-9d", code[p->BrandNumber][0], p->BrandNumber);
+			printf(" %-16s", code[p->BrandNumber][p->ProductNumber]);
+			printf("%-10d%-10d %-11d ", p->SpecificationNumber, p->volume, p->packagingsize);
+			if(p->Reserve == 0) printf("  (已售罄)  ");
+			else printf("%-11d",p->Reserve); 
+			printf("%-12.2f  ", p->Price);
+			printf(" %d年%d月%d日\n", p->quality_year, p->quality_month, p->quality_day);
+			p = p->next;
+//			printf("%-18s%-9d", code[p->BrandNumber][0], p->BrandNumber);
+//			printf("%-16s", code[p->BrandNumber][p->ProductNumber]);
+//			printf("%-10d%-9d%-11d%-8d", p->SpecificationNumber, p->volume, p->packagingsize,p->Reserve);
+//			printf("%-12.2f   ", p->Price);
+//			printf("%d年%d月%d日\n", p->quality_year, p->quality_month, p->quality_day); 
 		}
 		p = p->next;	
 	}	
@@ -610,11 +619,11 @@ Gift* InitGift(){
 
 	while(!feof(Gift_fp))
 	{
-//		char garbage[50];
-//		fgets(garbage, sizeof(Inventory), Storehouse_fp);
 		Gift* p = (Gift*)malloc(sizeof(Gift));
-		fscanf(Gift_fp, "%d%d%d%d", &p->reorder, &p->brand, &p->product, &p->specification);
-		fscanf(Gift_fp, "%d\n", &p->Reserve_gift);
+		fscanf(Gift_fp, "%d%d%d%d", &p->reorder, &p->brand, &p->product, &p->gif_volume);
+		fscanf(Gift_fp, "%d", &p->bottle);
+		fscanf(Gift_fp, "%f", &p->value);
+		fscanf(Gift_fp, "%d%d%d\n", &p->gif_year, &p->gif_month, &p->gif_day);
 		p->pre = Gift_tail;
 		p->next = NULL;
 		Gift_tail->next = p;
@@ -622,6 +631,41 @@ Gift* InitGift(){
 	} 
 	return Gift_head; 
 } 
+void PrintGift(){
+	Gift* p = Gift_head->next;
+	printf("\t 赠品编号 | 酒水品牌  | 品牌编号 |   商品名称   | 容量大小 | 库存容量(瓶) |  商品价值  |       保质期\n");
+	while(p)
+	{
+		printf("\t %-5d %-15s%-9d", p->reorder, code[p->brand][0], p->brand);
+		printf(" %-16s", code[p->brand][p->product]);
+		printf("%-11d",p->gif_volume); 
+		printf("%-11d",p->bottle); 
+		printf("%-12.2f  ", p->value);
+		printf(" %d年%d月%d日\n", p->gif_year, p->gif_month, p->gif_day);
+		p = p->next;
+	}
+}
+
+void UpdateGift(){
+	FILE* Gift_fp;
+	Gift_fp = fopen("gift.txt","r+");
+    if (Gift_fp == NULL)
+    {
+        printf("giftFile cannot open, error happens!");
+        exit(-1);
+	}
+    Gift* p = Gift_head->next;
+    while (p != NULL)
+    {
+        fprintf(Gift_fp, "%-5d%-5d%-5d%-5d", p->reorder, p->brand, p->product, p->gif_volume);
+		fprintf(Gift_fp, "%-5d", p->bottle);
+		fprintf(Gift_fp, "%-10.2ff", p->value);
+		fprintf(Gift_fp, "%-5d%-5d%-5d\n", p->gif_year, p->gif_month, p->gif_day);
+		p = p->next;
+    }
+    fclose(Gift_fp);
+    return;
+}
 
 void addintogift(){
 	return; 

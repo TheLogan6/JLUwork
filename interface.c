@@ -436,10 +436,12 @@ void SalePromotion(client* cur_cus){
 		printf("\n\n\n\n");
     	printf("\t\t\t\t\t --------------------------------------- \n");
     	printf("\t\t\t\t\t                促销界面                 \n");
+    	printf("\t\t\t\t\t 购买金额超过999即有机会获得对应价格的赠品！  \n");
     	printf("\t\t\t\t\t  (在品牌编号出输入0可直接返回上一个界面)\n");
     	printf("\t\t\t\t\t --------------------------------------- \n");
 		
 		PrintSpecialInv(); 
+		printf("\t\t\t\t\t --------------------------------------- \n");
 		printf("\t\t\t\t       请输入你要选择的品牌编号：");
 		int ChooseBrand, ChooseProduct;
 		char ChooseBrand_s[5], ChooseProduct_s[5];
@@ -459,11 +461,11 @@ void SalePromotion(client* cur_cus){
 			continue;
 		}
 		else if(q == NULL){
-			printf("\t\t未找到该促销商品，您的输入有误，请在页面刷新后重新输入！"); 
+			printf("\t\t\t未找到该促销商品，您的输入有误，请在页面刷新后重新输入！\n"); 
 			pau;
 			continue;
 		}	
-		printf("\n\t\t\t\t请选择正在促销中的产品编号：");
+		printf("\t\t\t\t       请选择正在促销中的产品编号：");
 		scanf("%s", ChooseProduct_s);
 		ChooseProduct = inputcheck(ChooseProduct_s);
 		if(ChooseProduct == -1){
@@ -479,13 +481,13 @@ void SalePromotion(client* cur_cus){
 		}
 		if(tar == NULL)
 		{
-			printf("\t\t未找到该促销商品，您的输入有误，请在页面刷新后重新输入！"); 
+			printf("\t\t\t未找到该促销商品，您的输入有误，请在页面刷新后重新输入！\n"); 
 			pau;
 			continue;
 		}
 		int  buy_amount;
 		char buy_amount_s[5]; 
-		printf("\n\t\t\t\t请选择你要批发的数量(单次不得超过100箱)：");
+		printf("\t\t\t\t       请选择你要批发的数量(单次不得超过100箱)：");
 		scanf("%s", buy_amount_s);
 		buy_amount = inputcheck(buy_amount_s);
 		if(buy_amount == -1  || buy_amount == 0 ){
@@ -494,14 +496,15 @@ void SalePromotion(client* cur_cus){
 		}
 		if( buy_amount > 100 || tar->Reserve < buy_amount)
 		{
-			printf("\t\t您输入的商品数量不符合规范，请按任意键刷新后重新输入！\n"); 
+			printf("\t\t\t您输入的商品数量不符合规范，请按任意键刷新后重新输入！\n"); 
 			pau;
 			continue;
 		}
 		double buy_money;
 		buy_money = buy_amount * tar->Price;
-		printf("-------------------------------------------------------------------------------------------------------------\n");
-		printf("\t\t\t\t              支付选择          \n"); 
+		printf("\t\t\t\t          本次购买共计%.2f元！\n",buy_money);
+		printf("\t\t\t\t\t --------------------------------------- \n");
+		printf("\t\t\t\t\t                支付选择                 \n");
 		printf("\t\t\t\t\t 1. 现金支付\n");
 		printf("\t\t\t\t\t 2. 余额支付\n");
 		printf("\t\t\t\t\t 3. 加入购物车\n");
@@ -548,18 +551,23 @@ void SalePromotion(client* cur_cus){
 			    }
 			    newbill->buyer = cur_cus;
 			    newbill->status = 1;
-				printf("\n\t\t\t\t现金支付成功！\n");
-				printf("\t\t\t您已成功购买%s品牌的%s%d箱,",code[tar->BrandNumber][0], code[tar->BrandNumber][tar->ProductNumber], buy_amount);
+			    //struct sell_bill* related;
+			    //struct Inventory* product; 这要连接啥 
+			    printf("\t\t\t\t\t --------------------------------------- \n");
+				printf("\t\t\t\t\t              现金支付成功！                 \n");
+				printf("\t\t\t\t\t您已成功购买%s品牌的%s%d箱,",code[tar->BrandNumber][0], code[tar->BrandNumber][tar->ProductNumber], buy_amount);
 				printf("每箱%d瓶, 每瓶%d毫升！\n", tar->packagingsize, tar->volume);
-				printf("\t\t\t\t 共计%.2f元!\n", buy_money);
+				printf("\t\t\t\t\t共计%.2f元!\n", buy_money);
 				sell_save(newbill);
+				if(buy_money > 999) choosegift(buy_money);
 				break;
 			}
 			case(2):{
-				printf("\n\t\t\t余额支付成功！\n");
-				printf("\t\t您已成功购买%s品牌的%s%d箱,",code[tar->BrandNumber][0], code[tar->BrandNumber][tar->ProductNumber], buy_amount);
+				printf("\t\t\t\t\t              余额支付成功！\n");
+				printf("\t\t\t\t\t您已成功购买%s品牌的%s%d箱,",code[tar->BrandNumber][0], code[tar->BrandNumber][tar->ProductNumber], buy_amount);
 				printf(" 每箱%d瓶, 每瓶%d毫升！\n", tar->packagingsize, tar->volume);
-				printf("\t\t\t 共计%.2f元!\n", buy_money);
+				printf("\t\t\t\t\t 共计%.2f元!\n", buy_money);
+				//这里还差余额成功操作！ 
 				system("pause");
 				break;
 			}
@@ -588,6 +596,9 @@ void SalePromotion(client* cur_cus){
 	
 } 
 
+void choosegift(double buy_money){
+	
+} 
 
 
 /*------------------------------------------其他功能----------------------------------------------*/

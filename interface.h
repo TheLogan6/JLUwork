@@ -38,4 +38,5 @@ void ManagerInterface_Read();    //只读模式
 void ManagerInterface_Write();    // 修改模式 
 
 void SalePromotion(client* cur_cus);            // 促销界面 
+void choosegift(double buy_money);
 

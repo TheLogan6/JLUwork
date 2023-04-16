@@ -190,7 +190,7 @@ int Sell_confirm(struct sell_bill* newbill,struct customer* user)
         printf("1.现金支付\n");
         printf("2.余额支付\n");
         printf("3.加入购物车\n");
-        printf("3.取消购买\n");
+        printf("4.取消购买\n");
         printf("请输入您的支付方式所对应的编号：\n");
         int buychoice;
         while(1)

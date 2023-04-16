@@ -11,7 +11,6 @@
 #include"manager.h" 
 #include"sellbill.h"
 #include"shiningpoints.h"
-#include"supplier.h" 
 #include"interface.h"
 
 void ClientInput();

@@ -43,9 +43,12 @@ typedef struct ProductSource{							//货源结构体
 
 typedef struct Gift{
 	struct Gift* pre;
-	int reorder;                                 // 重编号 
-	int brand, product, specification;         // 确立唯一一个商品 
-	int Reserve_gift;
+	int 	reorder;                                 // 重编号 
+	int 	brand, product;         // 确立唯一一个商品 
+	int     gif_volume; 
+	int 	bottle;									//用瓶来管理 
+	int     gif_year, gif_month, gif_day;
+	float   value;                                // 赠品价值 
 	struct Gift* next;
 }Gift;
 
@@ -81,8 +84,10 @@ ProductSource* FindSource(int Brand, int Specification);
 
 /*-------------------------------- 赠品操作---------------------------*/
 void addintogift(); 
-Gift* InitGift(); 
 
+Gift* InitGift(); 
+void PrintGift();
+void UpdateGift();	    //赠品写刷新 
 /*-------------------------------管理员订单售后处理-----------------*/
 void agree();      // 同意退换货
 void reject();     // 拒绝退换货 

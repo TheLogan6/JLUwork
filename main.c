@@ -20,6 +20,7 @@ char Return_reason[Return_Reason_num][50]={"不想要了","不喜欢","商品与描述不符",
 char* code[12][5];
 char* BillType[6];
 Inventory* Inv_head;                // 库存商品 
+Gift* Gift_head;                     // 赠品管理 
 //SpecialInv* SpeInv_head;             // 特价商品 
 ProductSource* Sou_head;            // 货源结构体 
 client* L;                         //客户节点 没有哨位节点 
@@ -40,6 +41,9 @@ double total_money = 50000.00;    //
 int main(int argc, char *argv[]) {
 	encode_product();
 	Inv_head = InitInventory();
+	Gift_head = InitGift();
+	PrintGift();
+	pau;
 	readClient(&L);
 	InitLog(&log_head,&L);
 	Sou_head = ReadSource();
