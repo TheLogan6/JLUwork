@@ -68,3 +68,5 @@ void printLog(LogNode*L);
 void writeLog(LogNode*L);
 int checkNum();
 double checkDouble();
+
+int getchoice(int *position,int row,int *choice );

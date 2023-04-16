@@ -6,6 +6,7 @@ extern client* L;
 extern char* code[12][5];
 
 void PurchaseInterface(client* cur_cus){
+	int position=0,row=8,ChooseBrand;
 	while(1)
 	{
 		system("cls");
@@ -14,23 +15,28 @@ void PurchaseInterface(client* cur_cus){
 		printf("\n\n\n\n\n"); 
     	printf("\t\t\t\t\t --------------------------------------- \n");
     	printf("\t\t\t\t\t               商品批发界面              \n");
-    	printf("\t\t\t\t\t         (输入0可以返回上一个界面)       \n");
+//    	printf("\t\t\t\t\t         (输入0可以返回上一个界面)       \n");
     	printf("\t\t\t\t\t --------------------------------------- \n");
 		for(int i = 1; i <= 7; i++)
 		{
-		printf("\t\t\t\t\t|            (%d) : %-14s        |\n", i , code[i][0]);
+		if(position==i-1)printf("\t\t\t\t\t|            --->   %-14s        |\n",code[i][0]);
+		else printf("\t\t\t\t\t|                   %-14s        |\n",  code[i][0]);
 		}
+		if(position==7)printf("\t\t\t\t\t|            --->   %-14s        |\n","退出"); 
+		else  printf("\t\t\t\t\t|                   %-14s        |\n","退出"); 
 		printf("\t\t\t\t\t --------------------------------------- \n");
 		printf("\n\t\t\t\t\t请选择你需要选购的品牌：");
-		int ChooseBrand;
-		char ChooseBrand_s[5];
-		scanf("%s", ChooseBrand_s);
-		ChooseBrand = inputcheck(ChooseBrand_s);
-		if(ChooseBrand == -1 || ChooseBrand > total_brand){
-			RefreshPage();
-			continue;
-		}
-		if(ChooseBrand == 0) return ;
+//		int ChooseBrand;
+//		char ChooseBrand_s[5];
+//		scanf("%s", ChooseBrand_s);
+//		ChooseBrand = inputcheck(ChooseBrand_s);
+//		if(ChooseBrand == -1 || ChooseBrand > total_brand){
+//			RefreshPage();
+//			continue;
+//		}
+		int op=getchoice(&position,row,&ChooseBrand);
+		if(op>0)continue;
+		if(ChooseBrand == 8) return ;
 		else{
 			struct sell_bill* newbill = Sell_select_brand(ChooseBrand);
 			PurchaseProduct(cur_cus, ChooseBrand, newbill);

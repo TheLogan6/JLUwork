@@ -6,32 +6,30 @@ extern ProductSource* Sou_head;
 extern char* code[12][5]; 
 //extern SpecialInv* SpeInv_head;
 extern int total_brand;
-void LoginInterface(){
+void LoginInterface(int position){
 	system("cls");
     system("color B4"); // B天蓝色   4：红色字 
     printf("\n\n\n\n\n"); 
     //printf("\t\t\t\t\t --------------------------------------- \n");
     printf("\t\t\t\t\t           欢迎使用酒水管理系统！          \n");
     //printf("\t\t\t\t\t --------------------------------------- \n");
-    Sleep(1000);
     system("cls");
     printf("\n\n\n\n\n"); 
     printf("\t\t\t\t\t --------------------------------------- \n");
     printf("\t\t\t\t\t                登录界面                 \n");
     printf("\t\t\t\t\t --------------------------------------- \n");
-    Sleep(100);
     printf("\t\t\t\t\t|                                      |\n");
-    printf("\t\t\t\t\t|            (1). 客户登录             |\n");
-    Sleep(100);
-    printf("\t\t\t\t\t|            (2).管理员登录            |\n");
-    Sleep(100);  
-    printf("\t\t\t\t\t|            (3).新客户注册            |\n");
-    Sleep(100);
-    printf("\t\t\t\t\t|            (4). 退出系统             |\n");
+    if(position==0)printf("\t\t\t\t\t|         -->(1). 客户登录             |\n");
+    else printf("\t\t\t\t\t|            (1). 客户登录             |\n");
+    if(position==1)printf("\t\t\t\t\t|         -->(2).管理员登录            |\n"); 
+    else printf("\t\t\t\t\t|            (2).管理员登录            |\n"); 
+    if(position==2)printf("\t\t\t\t\t|         -->(3).新客户注册            |\n");
+    else printf("\t\t\t\t\t|            (3).新客户注册            |\n");
+    if(position==3)printf("\t\t\t\t\t|         -->(4). 退出系统             |\n");
+    else printf("\t\t\t\t\t|            (4). 退出系统             |\n");
     printf("\t\t\t\t\t|                                      |\n");
-    Sleep(100);
     printf("\t\t\t\t\t --------------------------------------- \n");
-    printf("\t\t\t\t请选择你要进行的服务（1-4）:");
+    printf("\t\t\t\t请选择你要进行的服务");
 }
 
 void ClientLogin(){
@@ -320,6 +318,9 @@ void ManagerInterface_Write(){
 
 /*------------------------------------------客户界面------------------------------------*/ 
 void ClientChooseMode(client* cur_cus){
+	int position=0,row=7,Cli_mode; 
+	while(1){
+	
 	while(1)
 	{
 		
@@ -329,27 +330,44 @@ void ClientChooseMode(client* cur_cus){
     	printf("\t\t\t\t\t                客户界面                 \n");
     	printf("\t\t\t\t\t --------------------------------------- \n");
     	printf("\t\t\t\t\t|                                      |\n");
-    	printf("\t\t\t\t\t|        (1).       批发               |\n");
-    	printf("\t\t\t\t\t|        (2).   查询历史订单           |\n");
-    	printf("\t\t\t\t\t|        (3).     商品换货             |\n");
-    	printf("\t\t\t\t\t|        (4).     商品退货             |\n");
-    	printf("\t\t\t\t\t|        (5).      购物车              |\n");
-    	printf("\t\t\t\t\t|        (6).  临期商品大促销          |\n");
-    	printf("\t\t\t\t\t|        (0).  返回上一个界面          |\n");
+    	if(position==0)printf("\033[1;42m\t\t\t\t\t|     -->        批发                  |\033[0m\n\033[1;44m");
+    	else printf("\t\t\t\t\t|                批发                  |\n");
+    	if(position==1)printf("\033[1;42m\t\t\t\t\t|     -->    查询历史订单              |\033[0m\n\033[1;44m");
+    	else printf("\t\t\t\t\t|            查询历史订单              |\n");
+    	if(position==2)printf("\033[1;42m\t\t\t\t\t|     -->      商品换货                |\033[0m\n\033[1;44m");
+    	else printf("\t\t\t\t\t|              商品换货                |\n");
+    	if(position==3)printf("\033[1;42m\t\t\t\t\t|     -->      商品退货                |\033[0m\n\033[1;44m");
+    	else printf("\t\t\t\t\t|              商品退货                |\n");
+    	if(position==4)printf("\033[1;42m\t\t\t\t\t|     -->       购物车                 |\033[0m\n\033[1;44m");
+    	else printf("\t\t\t\t\t|               购物车                 |\n");
+    	if(position==5)printf("\033[1;42m\t\t\t\t\t|     -->   临期商品大促销             |\033[0m\n\033[1;44m");
+    	else printf("\t\t\t\t\t|           临期商品大促销             |\n");
+    	if(position==6)printf("\033[1;42m\t\t\t\t\t|     -->   返回上一个界面             |\033[0m\n\033[1;44m");
+    	else printf("\t\t\t\t\t|           返回上一个界面             |\n");
 		printf("\t\t\t\t\t|                                      |\n");
 		printf("\t\t\t\t\t --------------------------------------- \n");
 		printf("\t\t\t\t       请输入你要选择的服务：");
 		
-		int Cli_mode;
-		char Cli_mode_s[5];
-		scanf("%s", Cli_mode_s);
-		Cli_mode = inputcheck(Cli_mode_s);
-		if(Cli_mode == -1){
-			RefreshPage();
-			continue;
+//		int Cli_mode;
+//		char Cli_mode_s[5];
+//		scanf("%s", Cli_mode_s);
+//		Cli_mode = inputcheck(Cli_mode_s);
+		char ch=getch();
+		if(ch=='w'){
+			position=(position-1+row)%row;
 		}
-		if(Cli_mode == 0)
+		if(ch=='s')position=(position+1)%row;
+		if(ch=='\r'){
+			Cli_mode=position+1;
 			break;
+		};
+}
+//		if(Cli_mode == -1){
+//			RefreshPage();
+//			continue;
+//		}
+		if(Cli_mode == 7)
+			return;
 		switch(Cli_mode){
 			case(1):{
 				PurchaseInterface(cur_cus);
@@ -380,10 +398,9 @@ void ClientChooseMode(client* cur_cus){
 			
 		
 		}
-		
 	}
-	
 }
+	
 /* ------------------------------------------- 促销界面-------------------------------------------*/
 void SalePromotion(client* cur_cus){
 	while(1)
@@ -575,6 +592,8 @@ int inputcheck(char numstring[]){
 
 /*-------------------------------购物车界面-----------------------------------*/
 void ShoppintcartInterface(client* cur_cus){          // 当前客户信息 
+	int position=0,row=4,ShoppingcartOp;
+	first:
 	while(1)
 	{
 		system("cls");
@@ -586,24 +605,32 @@ void ShoppintcartInterface(client* cur_cus){          // 当前客户信息
 		showShoppingCart(cur_cus);
 		printf("\t\t\t\t\t --------------------------------------- \n");
     	printf("\t\t\t\t\t                                        \n");
-    	printf("\t\t\t\t\t         (1).     删除订单              \n");
-    	printf("\t\t\t\t\t         (2).   修改购买数量            \n");
-    	printf("\t\t\t\t\t         (3).     支付结算              \n");
-    	printf("\t\t\t\t\t         (0).  返回上一个界面           \n");
+    	if(position==0)printf("\t\t\t\t\t         --->     删除订单              \n");
+    	else printf("\t\t\t\t\t                  删除订单              \n");
+    	if(position==1)printf("\t\t\t\t\t         --->   修改购买数量            \n");
+    	else printf("\t\t\t\t\t                修改购买数量            \n");
+    	if(position==2)printf("\t\t\t\t\t         --->     支付结算              \n");
+    	else printf("\t\t\t\t\t                  支付结算              \n");
+    	if(position==3)printf("\t\t\t\t\t         --->  返回上一个界面           \n");
+    	else printf("\t\t\t\t\t               返回上一个界面           \n");
 		printf("\t\t\t\t\t                                        \n");
 		printf("\t\t\t\t\t --------------------------------------- \n");
 		printf("\t\t\t\t  请选择您要对你的购物车进行的操作：");
 		
-		char ShoppingcartOp_s[5];
-		int ShoppingcartOp;
-		scanf("%s", ShoppingcartOp_s);
-		ShoppingcartOp = inputcheck(ShoppingcartOp_s);
-		if(ShoppingcartOp == -1){
-			RefreshPage();
-			continue;
-		} 
-		if(ShoppingcartOp == 0) return;
-		switch(ShoppingcartOp){
+//		char ShoppingcartOp_s[5];
+//		int ShoppingcartOp;
+//		scanf("%s", ShoppingcartOp_s);
+//		ShoppingcartOp = inputcheck(ShoppingcartOp_s);
+//		if(ShoppingcartOp == -1){
+//			RefreshPage();
+//			continue;
+//		} 
+//		if(ShoppingcartOp == 0) return;
+		int op=getchoice(&position,row,&ShoppingcartOp);
+		if(op<0)break;
+	}	
+	if(ShoppingcartOp==4)return;
+	switch(ShoppingcartOp){
 			case(1):{
 				int  delete_id;
 				char delete_id_s2[10];
@@ -612,7 +639,7 @@ void ShoppintcartInterface(client* cur_cus){          // 当前客户信息
 				delete_id = inputcheck(delete_id_s2);
 				if(delete_id == -1) {
 					RefreshPage();
-					continue;
+					goto first;
 				}
 				delShoppingCart(cur_cus, delete_id);
 				printf("\t\t\t\t  您已成功删除购物车内容！");
@@ -635,7 +662,7 @@ void ShoppintcartInterface(client* cur_cus){          // 当前客户信息
 				}
 				if(change_id > l || change_id == -1){
 					RefreshPage();
-					continue; 
+					goto first;
 				}
 				//ChangeNumber(cur_cus, change_id);
 				break;
@@ -646,4 +673,4 @@ void ShoppintcartInterface(client* cur_cus){          // 当前客户信息
 			} 
 		}
 	}
-} 
+

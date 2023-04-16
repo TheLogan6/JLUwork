@@ -54,11 +54,27 @@ int main(int argc, char *argv[]) {
 	while(1)                //用作返回上一级 
 	{
         system("cls"); 
-		LoginInterface();
+	
         char ChooseLogin_s[10];
 //       system("taskkill /im process.exe>nul 2>nul");
-        scanf("%s", ChooseLogin_s);
-        int ChooseLogin = inputcheck(ChooseLogin_s);
+//        scanf("%s", ChooseLogin_s);
+//        int ChooseLogin = inputcheck(ChooseLogin_s);
+	int ChooseLogin;
+    int position=0;int row=4;
+	while(1){
+		system("cls");
+		LoginInterface(position);
+		char ch=getch();
+		
+		if(ch=='w'){
+			position=(position-1+row)%row;
+		}
+		if(ch=='s')position=(position+1)%row;
+		if(ch=='\r'){
+			ChooseLogin=position+1;
+			break;
+		};
+	}
         switch(ChooseLogin){
             case(1) : {
                 ClientInput();

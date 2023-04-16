@@ -206,6 +206,7 @@ client*findClient(client**L,int id){
 void printCustomer(client*L){
 	system("cls");
 	printf("\t\t\t\t\t --------------------------------------- \n");
+	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY | FOREGROUND_RED|FOREGROUND_BLUE|FOREGROUND_GREEN|BACKGROUND_GREEN);
     printf("\t\t\t\t\t                客户信息                 \n");
     printf("\t\t\t\t\t --------------------------------------- \n");
     if(!L){
@@ -428,10 +429,17 @@ bool recharge(client**L,LogNode**log,int id,double money){
 bool cmp(const client*p,client*q){
     return p->level<q->level||p->level==q->level&&p->point<q->point;
 }
-void cusSort(client**L,int op){
-    client *dummy=*L,*p=*L;
-    if(!p)return;
-
+int getchoice(int *position,int row,int *choice){
+		char ch=getch();
+		if(ch=='w'){
+			*position=(*position-1+row)%row;
+		}
+		if(ch=='s')*position=(*position+1)%row;
+		if(ch=='\r'){
+			*choice=*position+1;
+			return -1;
+		}
+		return choice;
 }
 void InitLog(LogNode**L,client**cus){
     log_cnt=0;
