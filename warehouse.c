@@ -717,12 +717,21 @@ void wornout(ProductSource* tar, int amount){
 		pau;
 		printf("\t\t\t 很遗憾在运输途中有%d箱货物产生意外,共损失%d瓶酒水！\n", n,loss);
 		printf("\t\t\t  剩余%d瓶酒水因无法售卖, 已成功加入赠品中！\n", num_gift);
+		
+		//加入库存中//
+//		addinwarehouse(tar); 
 	}
 	else
 	{
 		printf("\t\t\t 运输途中无意外发生, 货物以安全送达仓库！\n");
 	}
 	return; 
+}
+
+
+void addinwarehouse(ProductSource* tar, int amount){
+	return;	
+
 }
 
 

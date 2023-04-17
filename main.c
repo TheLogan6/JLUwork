@@ -42,8 +42,8 @@ int main(int argc, char *argv[]) {
 	encode_product();
 	Inv_head = InitInventory();
 	Gift_head = InitGift();
-	PrintGift();
-	pau;
+//	PrintGift();
+//	pau;
 	readClient(&L);
 	InitLog(&log_head,&L);
 	Sou_head = ReadSource();

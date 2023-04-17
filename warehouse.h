@@ -69,6 +69,9 @@ void SortByReserve(Inventory* Inv_head);              // 按库存量排序
 void SortByPrice(Inventory* Inv_head);                // 按价格排序 
 int countSpecification(int Brand); 
 
+
+void addinwarehouse(ProductSource* tar, int amount);      // 在货源购买后加入库存 
+
 /* --------------------------------- 特价商品操作----------------------------------*/
 //SpecialInv* InitSpecialInv(); 
 
