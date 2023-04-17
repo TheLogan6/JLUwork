@@ -714,3 +714,14 @@ int position=0,row=4,ShoppingcartOp;
 	}
 }
 
+
+void giftinterface(){
+	system("cls");
+	printf("\n"); 
+    printf("\t\t\t\t\t --------------------------------------- \n");
+    printf("\t\t\t\t\t                赠品信息                 \n");
+    printf("\t\t\t\t\t     (在账号处输入0可以返回上一个界面)   \n");
+    printf("\t\t\t\t\t --------------------------------------- \n");
+    PrintGift(); 
+}
+

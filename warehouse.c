@@ -486,14 +486,15 @@ ProductSource* ReadSource(){
 
 void PrintSource(ProductSource* Sou_head){
 	ProductSource* p = Sou_head->next;
-	printf("  酒水品牌  | 品牌编号 |   商品名称   | 商品编号 | 容量大小 | 包装大小 |  价格  |          保质期\n");
+	
+	printf("\t  酒水品牌  | 品牌编号 |   商品名称   | 商品编号 | 容量大小 | 包装大小 |    价格    |            保质期\n");
 	while(p)
 	{
-		printf("%-18s%-9d", code[p->BrandNumber_sou][0], p->BrandNumber_sou);
-		printf("%-16s", code[p->BrandNumber_sou][p->ProductNumber_sou]);
-		printf("%-10d%-9d%-11d", p->SpecificationNumber_sou, p->volume_sou, p->packagingsize_sou);
+		printf("\t  %-15s%-9d", code[p->BrandNumber_sou][0], p->BrandNumber_sou);
+		printf(" %-16s", code[p->BrandNumber_sou][p->ProductNumber_sou]);
+		printf("%-10d%-10d %-11d ", p->SpecificationNumber_sou, p->volume_sou, p->packagingsize_sou);
 		printf("%-12.2f   ", p->Price_sou);
-		printf("%d年%d月%d日\n", p->quality_year_sou, p->quality_month_sou, p->quality_day_sou);
+		printf(" %d年%d月%d日\n", p->quality_year_sou, p->quality_month_sou, p->quality_day_sou);
 		p = p->next;
 	}
 }
@@ -512,8 +513,9 @@ ProductSource* FindSource(int Brand, int Specification){
 	ProductSource* p = Sou_head->next;
 	while(p)
 	{
-		if(p->BrandNumber_sou == Brand && p->SpecificationNumber_sou)
+		if(p->BrandNumber_sou == Brand && p->SpecificationNumber_sou == Specification)
 			return p;
+		p = p->next;
 	}
 	return NULL;
 }
@@ -633,22 +635,22 @@ Gift* InitGift(){
 } 
 void PrintGift(){
 	Gift* p = Gift_head->next;
-	printf("\t 赠品编号 | 酒水品牌  | 品牌编号 |   商品名称   | 容量大小 | 库存容量(瓶) |  商品价值  |       保质期\n");
+	printf("\t  赠品编号 | 酒水品牌  | 品牌编号 |   商品名称   | 容量大小 | 库存容量(瓶) |  商品价值  |       保质期\n");
 	while(p)
 	{
-		printf("\t %-5d %-15s%-9d", p->reorder, code[p->brand][0], p->brand);
-		printf(" %-16s", code[p->brand][p->product]);
-		printf("%-11d",p->gif_volume); 
-		printf("%-11d",p->bottle); 
+		printf("\t     %-8d%-15s%-9d", p->reorder, code[p->brand][0], p->brand);
+		printf(" %-15s", code[p->brand][p->product]);
+		printf("%-12d",p->gif_volume); 
+		printf("%-14d",p->bottle); 
 		printf("%-12.2f  ", p->value);
-		printf(" %d年%d月%d日\n", p->gif_year, p->gif_month, p->gif_day);
+		printf("%d年%d月%d日\n", p->gif_year, p->gif_month, p->gif_day);
 		p = p->next;
 	}
 }
 
 void UpdateGift(){
 	FILE* Gift_fp;
-	Gift_fp = fopen("gift.txt","r+");
+	Gift_fp = fopen("gift.txt","w+");
     if (Gift_fp == NULL)
     {
         printf("giftFile cannot open, error happens!");
@@ -659,7 +661,7 @@ void UpdateGift(){
     {
         fprintf(Gift_fp, "%-5d%-5d%-5d%-5d", p->reorder, p->brand, p->product, p->gif_volume);
 		fprintf(Gift_fp, "%-5d", p->bottle);
-		fprintf(Gift_fp, "%-10.2ff", p->value);
+		fprintf(Gift_fp, "%-10.2f", p->value);
 		fprintf(Gift_fp, "%-5d%-5d%-5d\n", p->gif_year, p->gif_month, p->gif_day);
 		p = p->next;
     }
@@ -668,6 +670,58 @@ void UpdateGift(){
 }
 
 void addintogift(){
+	return; 
+}
+
+void wornout(ProductSource* tar, int amount){
+//	int odds = rand()%10;
+	int odds = 1; 
+	if(odds == 1) 
+	{
+		int n = (int) (amount/10);  //n箱 
+		int loss = rand()%2+1;      // 随机损失1—2瓶 
+		int num_gift = n * (tar->packagingsize_sou - loss);
+		//直接在赠品中查找 
+		Gift* p = Gift_head->next;
+		Gift* temp = p;
+		int i = 0;
+		while(p)
+		{
+			i++;
+			if(p->brand==tar->BrandNumber_sou&&p->product==tar->ProductNumber_sou&& p->gif_volume == tar->volume_sou  &&p->gif_year==tar->quality_year_sou&&p->gif_month==tar->quality_month_sou&&p->gif_day==tar->quality_day_sou)
+			{
+				p->bottle += num_gift;
+				break;
+			}
+			p = p->next;
+			if(p) temp = p;
+		}
+		if(p==NULL) 
+		{
+			Gift* newgift = (Gift*)malloc(sizeof(Gift));
+			temp->next = newgift;
+			newgift->next = NULL;
+			newgift->pre = temp;
+			newgift->reorder = ++i;
+			newgift->brand = tar->BrandNumber_sou;
+			newgift->product = tar->ProductNumber_sou;
+			newgift->bottle = num_gift;
+			newgift->gif_year=tar->quality_year_sou;
+			newgift->gif_month=tar->quality_month_sou;
+			newgift->gif_day=tar->quality_day_sou;
+			newgift->value = (tar->Price_sou)/(tar->packagingsize_sou);
+			newgift->gif_volume = tar->volume_sou;
+		}
+		UpdateGift();
+		PrintGift();
+		pau;
+		printf("\t\t\t 很遗憾在运输途中有%d箱货物产生意外,共损失%d瓶酒水！\n", n,loss);
+		printf("\t\t\t  剩余%d瓶酒水因无法售卖, 已成功加入赠品中！\n", num_gift);
+	}
+	else
+	{
+		printf("\t\t\t 运输途中无意外发生, 货物以安全送达仓库！\n");
+	}
 	return; 
 }
 

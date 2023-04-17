@@ -12,9 +12,10 @@
 #include"customer.h" 
 #include"sellbill.h"
 #include"shiningpoints.h"
+
 void ManagerInput();
 void Restock();
-//void wornout(ProductSource* tar, int amount); // Ëæ»ú²úÉú
+
 //void wornout(ProductSource* tar, int amount);
 
 	

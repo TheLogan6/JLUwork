@@ -48,7 +48,7 @@ typedef struct Gift{
 	int     gif_volume; 
 	int 	bottle;									//用瓶来管理 
 	int     gif_year, gif_month, gif_day;
-	float   value;                                // 赠品价值 
+	float   value;                                // 粗略赠品价值 
 	struct Gift* next;
 }Gift;
 
@@ -88,6 +88,9 @@ void addintogift();
 Gift* InitGift(); 
 void PrintGift();
 void UpdateGift();	    //赠品写刷新 
+
+void wornout(ProductSource* tar, int amount); // 随机产生
+
 /*-------------------------------管理员订单售后处理-----------------*/
 void agree();      // 同意退换货
 void reject();     // 拒绝退换货 

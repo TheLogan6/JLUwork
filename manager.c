@@ -15,9 +15,11 @@ void Restock(){
 	while(1)
 	{
 		system("cls");
-		printf("\n");
-		printf("\t\t-----------------------------进货界面------------------------------------\n");
-		printf("\t\t                     (输入0可以返回上一个界面)\n");
+		printf("\n"); 
+    	printf("\t\t\t\t\t --------------------------------------- \n");
+    	printf("\t\t\t\t\t                进货界面                 \n");
+    	printf("\t\t\t\t\t     (在账号处输入0可以返回上一个界面)   \n");
+    	printf("\t\t\t\t\t --------------------------------------- \n");
 		PrintSource(Sou_head);
 		printf("\n\t\t\t\t请选择你需要购买的品牌：");
 		int ChooseBrand, ChooseProduct;
@@ -48,70 +50,28 @@ void Restock(){
 			continue;
 		}
 		else if(buy_amount == 0) return;
-		ProductSource* tar_sou = FindSource(ChooseBrand, ChooseProduct);
+		ProductSource* tar_sou = FindSource(ChooseBrand, ChooseProduct); //找到货源目标 
 		if(tar_sou == NULL){
 			RefreshPage();
 			continue;
 		}
 		double buy_money;
 		buy_money = buy_amount * tar_sou->Price_sou;
+		
 		printf("\t\t您已成功购买%s品牌的%s%d箱,",tar_sou->DrinksBrand_sou, code[tar_sou->BrandNumber_sou][tar_sou->ProductNumber_sou], buy_amount);
 		printf(" 每箱%d瓶, 每瓶%d毫升！\n", tar_sou->packagingsize_sou, tar_sou->volume_sou);
-		printf("\t\t\t 共计%.2f元!\n", buy_money);
+		printf("\t\t\t\t 共计%.2f元!\n", buy_money);
 		// （加入）这里加入成功写入订单的操作 
+		printf("\t\t\t\t\t --------------------------------------- \n");
+		
 		wornout(tar_sou, buy_amount);
+		
 		system("pause");
 	}
 	return ;
 };
 
-void wornout(ProductSource* tar, int amount){
-//	int odds = rand()%10;
-//	if(odds == 1) 
-//	{
-//		int n = (int) (amount/10);  //n箱 
-//		int loss = rand()%3;      // 随机损失1—2瓶 或  包装坏了容量没事 
-//		int num_gift = n * (tar->packagingsize_sou - loss);
-//		//直接在赠品中查找 
-//		Gift* p = Gift_head->next;
-//		Gift* temp = p;
-//		int i = 0;
-//		while(p)
-//		{
-//			i++;
-//			if(p->brand==tar->BrandNumber_sou&&p->product==tar->ProductNumber_sou&&p->gif_year==tar->quality_year_sou&&p->gif_month==tar->quality_month_sou&&p->gif_day==tar->quality_day_sou)
-//			{
-//				p->bottle += num_gift;
-//				break;
-//			}
-//			p = p->next;
-//			if(p) temp = p;
-//		}
-//		if(p==NULL) 
-//		{
-//			Gift* newgift = (Gift*)malloc(sizeof(Gift));
-//			newgift->next = NULL;
-//			newgift->pre = temp;
-//			newgift->reorder = ++i;
-//			newgift->brand = tar->BrandNumber_sou;
-//			newgift->product = tar->ProductNumber_sou;
-//			newgift->bottle = num_gift;
-//			p->gif_year=tar->quality_year_sou;
-//			p->gif_month=tar->quality_month_sou;
-//			p->gif_day=tar->quality_day_sou;
-//			p->value = tar->Price_sou;
-//			p->gif_volume = tar->volume_sou;
-//		}
-//		UpdateGift();
-//		printf("\t\t 很遗憾在运输途中有%d箱货物产生意外,共损失%d瓶酒水！\n", n,loss);
-//		printf("\t\t\t  剩余%d瓶酒水因无法售卖, 已成功加入赠品中！\n", num_gift);
-//	}
-//	else
-//	{
-//		printf("\t\t\t 运输途中无意外发生, 货物以安全送达仓库！\n");
-//	}
-	return; 
-}
+
 
 
 void ManagerInput(){
