@@ -68,7 +68,7 @@ void SortByNumber(Inventory* Inv_head);                  // 按编号排序
 void SortByReserve(Inventory* Inv_head);              // 按库存量排序 
 void SortByPrice(Inventory* Inv_head);                // 按价格排序 
 int countSpecification(int Brand); 
-
+void reduceinventory(Inventory* tar, int num);
 
 void addinwarehouse(ProductSource* tar, int amount);      // 在货源购买后加入库存 
 
@@ -91,6 +91,8 @@ void addintogift();
 Gift* InitGift(); 
 void PrintGift();
 void UpdateGift();	    //赠品写刷新 
+void Giftsort(Gift* Gift_head);
+void reducegift(Gift* tar, int num);            //赠品送出后减少 
 
 void wornout(ProductSource* tar, int amount); // 随机产生
 

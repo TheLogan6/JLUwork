@@ -400,7 +400,7 @@ bool checkBalance(client**cus,double money){
     if(p->balance<money)return false;
     if(!(isFiniteNumber(p->balance-money)))return false;
     p->balance-=money;
-    if(money>0)update(&p,money);
+    if(money>0) update(&p,money);
     return true;
 }
 //³äÖµ

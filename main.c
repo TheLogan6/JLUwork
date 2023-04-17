@@ -42,7 +42,9 @@ int main(int argc, char *argv[]) {
 	encode_product();
 	Inv_head = InitInventory();
 	Gift_head = InitGift();
-
+	Giftsort(Gift_head);
+//	PrintGift();
+//	pau;
 	readClient(&L);
 	InitLog(&log_head,&L);
 	Sou_head = ReadSource();
@@ -52,7 +54,6 @@ int main(int argc, char *argv[]) {
 	total_brand = 10; 
 	readShoppingCart(&L);	
 	JudgeNearexpiry();
-
 	bill_with_problem=Initiate_Bill_with_problem();
 	while(1)                //用作返回上一级 
 	{
@@ -90,7 +91,6 @@ int main(int argc, char *argv[]) {
 				break;
 			}
             default:{
-//            	ErrorHappens(); 
             	RefreshPage();
 				break;
 			}

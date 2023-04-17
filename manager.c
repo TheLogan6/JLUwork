@@ -75,42 +75,7 @@ void Restock(){
 
 
 void ManagerInput(){
-//    int errorflag = 0;
-//    while(1)
-//    {
-//		char* ManagerPassword; 
-//		if(errorflag == 1)
-//		{
-//			printf("\n\t\t\t\t  您的输入有误, 请按任意键刷新后重新输入!\n\t\t\t\t");
-//			system("pause");
-//		}
-//		system("cls");
-//    	ManagerLogin();
-//    	char temp;
-//    	int i = 0;
-//		while(1)
-//		{
-//			temp = _getch();
-//			if(temp == '\r' || temp == '\n') break;
-//			else if (temp == '\b') {             // 退格符特判 
-//				if(i!=0){
-//					printf("\b \b");
-//					i--;
-//				}
-//			}
-//			else{
-//				printf("*");
-//				ManagerPassword[i++] = temp;
-//			}
-//		}
-//		ManagerPassword[i] = '\0';
-//        if(i > 0 && ManagerPassword[i-1] == '0') return;
-//        else if(strcmp(ManagerPassword, passwordans) == 0) {
-//        	errorflag = 0;
-//        	ManagerChooseMode();
-//		}
-//		else errorflag = 1;
-//    }
+
 	while(1)
 	{
 		ManagerLogin();

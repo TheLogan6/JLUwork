@@ -8,23 +8,28 @@ void showShoppingCart(client*cus){
     	return;
 	}
     int cnt=0;
-    while(p) {
+    double total_price=0;
+    printf("\t订单编号 |    品牌名称    |   商品名称   | 酒水容量 |  包装大小  |  购买数量  |   单价   |  总金额\n");
+    while(p) 
+	{
         p->id=++cnt;
         Inventory* q = Inv_head->next;
-        printf("\t订单编号 |    品牌名称    |   商品名称   | 酒水容量 |  包装大小  |  购买数量  |   单价   |  总金额\n");
         while(q)
         {
         	if(q->BrandNumber == p->x&& q->SpecificationNumber == p->z) break;
         	q = q->next;
 		}
-		if(q == NULL) printf("您曾选择的商品已售罄！");
+		if(q == NULL || q->Reserve==0) printf("您曾选择的商品已售罄！");
         else{
 
 			printf("\t  %-9d%-20s%-15s", p->id, q->DrinksBrand, code[p->x][p->y]);
 			printf("%-12d%-12d%-12d%-9.2lf%-10.2lf\n", q->volume, q->packagingsize, p->cnt,p->single_cost,p->total_cost);
+			total_price += p->total_cost;
 		}
         p=p->next;
     }
+    printf("\t\t\t\t\t --------------------------------------- \n");
+    printf("\t\t\t\t\t      当前购物车总金额为%.2f元！\n",total_price);
 }
 void addShoppingCart(shopping_cart**p,int cnt,int cus_id,double money,int x,int y,int z){
     if((*p)&&(*p)->x==x&&(*p)->y==y&&(*p)->z==z){
@@ -98,8 +103,8 @@ void ChangeNumber(client*cur_cus, int tarid){
 		if(p->id == tarid) break;
 		p = p->next;
 	}
-	if(p==NULL) printf("未找到该订单,请刷新后重新输入！");
-	printf("请输入您想要修改的数量(单次不得超过300箱)：");
+	if(p==NULL) printf("\t\t\t\t 未找到该订单,请刷新后重新输入！");
+	printf("\t\t\t\t 请输入您想要修改的数量(单次不得超过300箱)：");
 	int  change_num;
 	char change_num_s[10];
 	scanf("%s",change_num_s);

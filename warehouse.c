@@ -38,7 +38,6 @@ Inventory* InitInventory(){
 //		fgets(garbage, sizeof(Inventory), Storehouse_fp);
 		Inventory* p = (Inventory*)malloc(sizeof(Inventory));
 		fscanf(Storehouse_fp, "%s", p->DrinksBrand);
-//		fgets(p->DrinksBrand, 20, fp);
 		fscanf(Storehouse_fp, "%d%d%d%d%d%d", &p->BrandNumber, &p->ProductNumber, &p->SpecificationNumber, &p->volume, &p->Reserve, &p->packagingsize);
 		fscanf(Storehouse_fp, "%f", &p->Price);
 		fscanf(Storehouse_fp, "%d%d%d%d\n", &p->quality_year, &p->quality_month, &p->quality_day, &p->nearexpiry);	
@@ -53,18 +52,14 @@ Inventory* InitInventory(){
 
 void PrintInventory(Inventory* Inv_head){
 	Inventory* p = Inv_head->next;
-//	printf("  酒水品牌   |  品牌编号 |   商品名   |商品编号| 容量大小 | 包装大小 | 库存容量 |  批量标价\n");
-//	while(p)
-//	{
-
-//	}
 	printf("\t  酒水品牌  | 品牌编号 |   商品名称   | 商品编号 | 容量大小 | 包装大小 | 库存容量 |     价格     |       保质期\n");
 	while(p)
 	{
 		printf("\t  %-15s%-9d", code[p->BrandNumber][0], p->BrandNumber);
 		printf(" %-16s", code[p->BrandNumber][p->ProductNumber]);
-		printf("%-10d%-10d %-11d %-11d", p->SpecificationNumber, p->volume, p->packagingsize, p->Reserve);
-		if(p->Reserve == 0) printf("(已售罄)");
+		printf("%-10d%-10d %-11d", p->SpecificationNumber, p->volume, p->packagingsize, p->Reserve);
+		if(p->Reserve == 0) printf("(已售罄)   ");
+		else printf(" %-11d", p->Reserve);
 		printf("%-12.2f  ", p->Price);
 		printf(" %d年%d月%d日\n", p->quality_year, p->quality_month, p->quality_day);
 		p = p->next;
@@ -163,8 +158,9 @@ void ChangeInventory(){
 				printf("\t  酒水品牌  | 品牌编号 |   商品名称   | 商品编号 | 容量大小 | 包装大小 | 库存容量 |   价格   |          保质期\n");
 				printf("\t%-17s%-9d ", tar->DrinksBrand, tar->BrandNumber);
 				printf("%-16s", code[tar->BrandNumber][tar->ProductNumber]);
-				printf("%-10d%-10d%-11d%-11d", tar->SpecificationNumber, tar->volume, tar->packagingsize, tar->Reserve);
+				printf("%-10d%-10d%-11d", tar->SpecificationNumber, tar->volume, tar->packagingsize);
 				if(tar->Reserve == 0) printf("(已售罄)");
+				else printf("%-11d", tar->Reserve);
 				printf("%-12.2f   ", tar->Price);
 				printf("%d年%d月%d日\n", tar->quality_year, tar->quality_month, tar->quality_day);
 
@@ -221,9 +217,9 @@ void ChangeInventory(){
 						break;
 					}
 					case(3):{ // 删除商品 
-						printf("\t\t\t\t  你确认要删除该商品吗？\n");
-						printf("\t\t\t\t    1.Yes\n");
-						printf("\t\t\t\t    2. No\n  ");
+						printf("\t\t\t\t\t  你确认要删除该商品吗？\n");
+						printf("\t\t\t\t\t       1.Yes\n");
+						printf("\t\t\t\t\t       2. No\n  ");
 						int checkdelete;
 						char checkdelete_s[6];
 						scanf("%s", checkdelete_s);
@@ -233,19 +229,19 @@ void ChangeInventory(){
 							continue;
 						}
 						if(checkdelete == 1) {
-							Inventory* fro = tar->pre;
-							fro->next = fro->next->next;
-							if(fro->next != NULL)  // 删除最后一个元素 
-								fro->next->pre = fro;
-							// 编号重排
-							Inventory* temp = Inv_head->next;
-							while(temp)
-							{
-								if(temp->BrandNumber == ChooseBrand && temp->SpecificationNumber > ChooseProduct)
-									temp->SpecificationNumber -- ;
-								temp = temp->next;
-							}// 编号重排
-							
+//							Inventory* fro = tar->pre;
+//							fro->next = fro->next->next;
+//							if(fro->next != NULL)  // 删除最后一个元素 
+//								fro->next->pre = fro;
+//							// 编号重排
+//							Inventory* temp = Inv_head->next;
+//							while(temp)
+//							{
+//								if(temp->BrandNumber == ChooseBrand && temp->SpecificationNumber > ChooseProduct)
+//									temp->SpecificationNumber -- ;
+//								temp = temp->next;
+//							}// 编号重排
+							tar->Reserve = 0;
 							UpdateInventory(); 
 							printf("\t\t\t\t  您已成功修改数据，按任意键返回至上一个界面！");
 							pau;return;
@@ -326,6 +322,10 @@ void InventorySortMode(){
 			default: RefreshPage();continue;
 		}
 	} 
+}
+
+void reduceinventory(Inventory* tar, int num){
+	if(tar->Reserve >= num) tar->Reserve-=num;
 }
 
 int countSpecification(int Brand){
@@ -593,11 +593,6 @@ void PrintSpecialInv(){
 			printf("%-12.2f  ", p->Price);
 			printf(" %d年%d月%d日\n", p->quality_year, p->quality_month, p->quality_day);
 			p = p->next;
-//			printf("%-18s%-9d", code[p->BrandNumber][0], p->BrandNumber);
-//			printf("%-16s", code[p->BrandNumber][p->ProductNumber]);
-//			printf("%-10d%-9d%-11d%-8d", p->SpecificationNumber, p->volume, p->packagingsize,p->Reserve);
-//			printf("%-12.2f   ", p->Price);
-//			printf("%d年%d月%d日\n", p->quality_year, p->quality_month, p->quality_day); 
 		}
 		p = p->next;	
 	}	
@@ -631,6 +626,7 @@ Gift* InitGift(){
 		Gift_tail->next = p;
 		Gift_tail = p;
 	} 
+	
 	return Gift_head; 
 } 
 void PrintGift(){
@@ -669,16 +665,75 @@ void UpdateGift(){
     return;
 }
 
-void addintogift(){
+
+void Giftsort(Gift* Gift_head){
+	Gift* p = Gift_head;
+	if(p->next == NULL) return;
+	while(p)
+	{
+		Gift* q = p->next;
+		Gift* tar = q;
+		while(q)
+		{
+			if(q->gif_year < tar->gif_year) tar = q;
+			else if(q->gif_month < tar->gif_month) tar = q;
+			else if(q->gif_day < tar->gif_day) tar = q;
+			q = q->next;
+		}
+		if(p->next == tar)
+			p = p->next;
+		else if(tar->next == NULL)
+		{
+			tar->pre->next = NULL;
+			tar->next = p->next;
+			tar->pre = p;
+			p->next->pre = tar;
+			p->next = tar;
+			p = p->next;
+		}
+		else
+		{
+			
+			tar->pre->next = tar->next;
+			tar->next->pre = tar->pre; // 删除
+			tar->next = p->next;
+			tar->pre = p;
+			p->next->pre = tar;
+			p->next = tar;
+			p = p->next;
+		}
+	}
+	//编号重排 
+	Gift* q = Gift_head->next;
+	int i = 1;
+	while(q)
+	{
+		q->reorder = i++;
+		q = q->next;
+	}
+	UpdateGift();
 	return; 
 }
+
+void reducegift(Gift* tar, int num){              // 减少赠品 
+	if(tar->bottle > num) tar->bottle-=num;
+	else if(tar->bottle == num)            // 删除该赠品 
+	{
+		Gift* temp = tar->pre;
+		temp->next = temp->next->next;
+		temp->next->pre = temp;
+	}
+	Giftsort(Gift_head);//编号重排 
+}
+
+
 
 void wornout(ProductSource* tar, int amount){
 //	int odds = rand()%10;
 	int odds = 1; 
 	if(odds == 1) 
 	{
-		int n = (int) (amount/10);  //n箱 
+		int n = (int) (amount/10);   //n箱 
 		int loss = rand()%2+1;      // 随机损失1—2瓶 
 		int num_gift = n * (tar->packagingsize_sou - loss);
 		//直接在赠品中查找 
@@ -725,6 +780,7 @@ void wornout(ProductSource* tar, int amount){
 	}
 	else
 	{
+		
 		printf("\t\t\t 运输途中无意外发生, 货物以安全送达仓库！\n");
 		addinwarehouse(tar, amount);
 		UpdateInventory();
@@ -768,5 +824,6 @@ void addinwarehouse(ProductSource* tar, int amount){
 		p->Reserve += amount;
 	}
 }
+
 
 

@@ -55,12 +55,10 @@ void writeClientInfo(client* L);// ����ͻ���Ϣ
 void delClient(client **L,int id);//删除用户
 void readClient(client** L);//从文件中读取用户信息
 void printCustomer(client*L);//打印所有用户信息
-bool checkPassword(client*L,int id,char *s);//检验用户密码正确性
+bool checkPassword(client*L,int id,char *s);
 
 bool recharge(client**L,LogNode **log_head,int id,double money);
-//支付与检验金额正确性
 bool checkBalance(client**L,double money);
-//排序用户链表
 void cusSort(client**L,int op);
 void InitLog(LogNode**l,client**cus);
 void addLogNode(LogNode **l,client**L,int cus_id,int op,double money);  // ��¼�˵��ڵ� 
