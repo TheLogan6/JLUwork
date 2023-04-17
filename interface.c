@@ -893,9 +893,16 @@ void ShoppintcartInterface(client* cur_cus){          // 当前客户信息
 				    newbill->buyer = cur_cus;
 				    newbill->status = 1;
 					sell_save(newbill);
+					
+					reduceinventory(tar, p->cnt);
+					UpdateInventory();	
+					//加入订单  减少库存 
 					p = p->next;
 				}
 				if(flag == 1) break;
+				else {
+					printf("\t\t\t\t\t  您已成功购买所有商品！\n");
+				}
 			} 
 				break;
 		} 
