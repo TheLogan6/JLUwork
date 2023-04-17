@@ -716,22 +716,57 @@ void wornout(ProductSource* tar, int amount){
 		PrintGift();
 		pau;
 		printf("\t\t\t 很遗憾在运输途中有%d箱货物产生意外,共损失%d瓶酒水！\n", n,loss);
-		printf("\t\t\t  剩余%d瓶酒水因无法售卖, 已成功加入赠品中！\n", num_gift);
+		printf("\t\t\t  其余%d瓶酒水因无法售卖, 已成功加入赠品中！\n", num_gift);
 		
 		//加入库存中//
-//		addinwarehouse(tar); 
+		addinwarehouse(tar , amount - n); 
+		printf("\t\t\t  剩余%d箱酒水正常, 已成功添加入库存！\n", amount-n);
+		UpdateInventory();
 	}
 	else
 	{
 		printf("\t\t\t 运输途中无意外发生, 货物以安全送达仓库！\n");
+		addinwarehouse(tar, amount);
+		UpdateInventory();
 	}
 	return; 
 }
 
 
 void addinwarehouse(ProductSource* tar, int amount){
-	return;	
-
+	Inventory* p = Inv_head->next;
+	Inventory* temp = p;
+	while(p)
+	{
+		if(p->BrandNumber == tar->BrandNumber_sou && p->ProductNumber==tar->ProductNumber_sou && p->volume==tar->volume_sou&& p->packagingsize==tar->packagingsize_sou &&p->quality_year==tar->quality_year_sou &&p->quality_month&&tar->quality_month_sou&&p->quality_day==tar->quality_day_sou)
+		{
+			break;
+		}	
+		else p = p->next;
+		if(p) temp = p;
+	}
+	if(p == NULL)
+	{
+		Inventory* newinv = (Inventory*)malloc(sizeof(Inventory));
+		strcpy(newinv->DrinksBrand,tar->DrinksBrand_sou);
+		newinv->BrandNumber = tar->BrandNumber_sou;
+		newinv->nearexpiry = 0;
+		newinv->packagingsize = tar->packagingsize_sou;
+		newinv->Price = tar->Price_sou * 1.5;
+		newinv->ProductNumber = tar->ProductNumber_sou;
+		newinv->quality_day = tar->quality_day_sou;
+		newinv->quality_month = tar->quality_month_sou;
+		newinv->quality_year = tar->quality_year_sou;
+		newinv->Reserve = amount;
+		newinv->SpecificationNumber = countSpecification(tar->BrandNumber_sou)+1;
+		newinv->volume = tar->volume_sou; 
+		newinv->pre = temp;
+		temp->next = newinv;
+		newinv->next = NULL;
+	}
+	else{
+		p->Reserve += amount;
+	}
 }
 
 

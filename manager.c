@@ -18,7 +18,7 @@ void Restock(){
 		printf("\n"); 
     	printf("\t\t\t\t\t --------------------------------------- \n");
     	printf("\t\t\t\t\t                进货界面                 \n");
-    	printf("\t\t\t\t\t     (在账号处输入0可以返回上一个界面)   \n");
+    	printf("\t\t\t\t\t     (在品牌处输入0可以返回上一个界面)   \n");
     	printf("\t\t\t\t\t --------------------------------------- \n");
 		PrintSource(Sou_head);
 		printf("\n\t\t\t\t请选择你需要购买的品牌：");
