@@ -24,16 +24,14 @@ void Restock(){
 		printf("\n\t\t\t\t请选择你需要购买的品牌：");
 		int ChooseBrand, ChooseProduct;
 		char ChooseBrand_s[5], ChooseProduct_s[5];
-		scanf("%s", ChooseBrand_s);
-		ChooseBrand = inputcheck(ChooseBrand_s);
+		ChooseBrand = checkNum();
 		if(ChooseBrand == -1 || ChooseBrand > total_brand){
 			RefreshPage();
 			continue;
 		}
 		if(ChooseBrand == 0) return ;
 		printf("\n\t\t\t\t请选择你要批发的产品编号：");
-		scanf("%s", ChooseProduct_s);
-		ChooseProduct = inputcheck(ChooseProduct_s);
+		ChooseProduct = checkNum();
 		int maxproduct = countSpecification_sou(ChooseBrand);
 		if(ChooseProduct == -1 || ChooseProduct > maxproduct){
 			RefreshPage();
@@ -43,8 +41,8 @@ void Restock(){
 		int  buy_amount;
 		char buy_amount_s[5]; 
 		printf("\n\t\t\t\t请选择你要批发的数量(单次不得超过100箱 不得少于10箱)：");
-		scanf("%s", buy_amount_s);
-		buy_amount = inputcheck(buy_amount_s);
+
+		buy_amount = checkNum();
 		if(buy_amount == -1 || buy_amount > 100 || buy_amount < 10){
 			RefreshPage();
 			continue;
@@ -121,12 +119,12 @@ void aftersercive_check(){        // 售后订单处理
 	{
 		system("cls"); 
 		printf("\n\t---------------------售后订单处理界面--------------------\n");
-		Check_Bills_with_problem2();
+		Check_Bills_with_problem();
 		printf("请选择您要处理的订单编号:");
 		int billid;
 		char billid_s[5];
-		scanf("%s", billid_s);
-		billid = inputcheck(billid_s);
+
+		billid =checkNum();
 		if(billid == -1){
 			RefreshPage();
 			continue;
@@ -152,8 +150,7 @@ void aftersercive_check(){        // 售后订单处理
     	printf("\t\t   请输入您要进行的操作:");
     	int choice;
 		char choice_s[5];
-		scanf("%s", choice_s);
-		choice = inputcheck(choice_s);
+		choice = checkNum();
 		if(choice == -1 || choice > 2){
 			RefreshPage();
 			continue;

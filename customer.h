@@ -56,7 +56,7 @@ void delClient(client **L,int id);//删除用户
 void readClient(client** L);//从文件中读取用户信息
 void printCustomer(client*L);//打印所有用户信息
 bool checkPassword(client*L,int id,char *s);
-
+void update(client**L,double money);
 bool recharge(client**L,LogNode **log_head,int id,double money);
 bool checkBalance(client**L,double money);
 void cusSort(client**L,int op);

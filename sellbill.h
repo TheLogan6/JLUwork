@@ -11,7 +11,7 @@
 #include"warehouse.h" 
 
 //宏
-#define Number_Of_Brand 7
+#define Number_Of_Brand 10
 #define Return_Reason_num 8
 #define Exchange_Reason_num 6
 //结构体?
@@ -80,10 +80,8 @@ int Sell_confirm(struct sell_bill* newbill,struct customer* user);
 void Print_Bills_Of_Given_Brand(void);           //
 int Scanf_ID(void);
 int Print_Bills_Of_Given_Id(int ID_of_client);
-void Print_Bills_Of_Given_Name(void);
-void Print_Bills_Of_Given_Client(void);
 void Search_For_The_Bills_Of_Given_Data(void);
-void Delete_Bill(void);                                  //  删除订单
+int Delete_Bill(void);                                  //  删除订单
 void Check_Bills(void);
 void sell_save(struct sell_bill* newbill);              // 保存
 //不正常订单
@@ -92,7 +90,6 @@ struct sell_bill* Initiate_Bill_with_problem(void);
 void Exchange(struct customer* user);
 void Return(struct customer* user);
 void Check_Bills_with_problem(void);
-void Check_Bills_with_problem2(void); 
 void Decide_bill(void);
 
 void writeproblembill();

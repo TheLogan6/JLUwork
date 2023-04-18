@@ -83,7 +83,6 @@ int main(int argc, char *argv[]) {
             case(3) : { //新用户添加 
                 addClient(&L,NULL); 
                 writeClientInfo(L);
-                pau;
                 break;
             }
             case(4):{ // 退出程序 

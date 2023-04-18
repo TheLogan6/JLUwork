@@ -42,6 +42,6 @@ typedef struct Bill_Aftersales{
 }Bill_Aftersales;
 
 void ShoppintcartInterface(client* cur_cus); // 购物车界面 
-
+void ChangeNumber(client*cur_cus, int tarid);
 void Deleteitems();					//删除订单 
 void Changequantity();

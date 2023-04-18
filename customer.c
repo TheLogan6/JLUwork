@@ -7,8 +7,11 @@ extern int log_cnt;
 //读取文件中的客户信息
 int checkNum(){
 	char s[100]={'\0'};int l=0;char ch;
+flag:
+	l=0;
     while((ch=getchar())!='\n')s[l++]=ch;
     s[l]='\0';
+    if(s[0]=='\0')goto flag;
     if(l==1&&s[0]=='0')return 0;
 	int ret=0;
 	for(int i=0;s[i];i++){
@@ -101,22 +104,40 @@ void writeClientInfo(client *L) {
 }
 //添加用户
 void addClient(client **L, client *p) {
-	while(1)
-	{
 		system("cls");
 		printf("\n\n\n\n\n");
 		printf("\t\t\t\t\t-------------新用户注册界面----------------\n");
-//		printf("\t\t\t\t\t      (在姓名处输入0可以返回上一个界面)\n");
+		printf("\t\t\t\t\t-------(在姓名处输入!q可以返回上一个界面)--\n");
+		printf("\t\t\t\t\t-------------------------------------------\n");
 		if (!*L) {
-        *L = (client *) malloc(sizeof(client));
-        (*L)->ne = NULL, (*L)->pre = p;
+
         int id, level=1, point;
-        char password[10];
+        char password[11];
         char phoneNumber[12];
         char s[20];
-        cout("\t\t\t请输入顾客的姓名：");
-        cin("%s", s);
-        getchar();
+        cout("\t\t\t\t请输入顾客的姓名：");
+        while(1){
+        	 char ch;
+            int l = 0;
+            while ((ch = getchar()) != '\n') {
+                if (ch == ' ' ) {
+                    cout("\t\t\t\t输入的名称不能含有空格！\n\t\t\t\t请重新输入名称：");
+                    while ((getchar()) != '\n');
+                    l = 0;
+                    continue;
+                }
+                s[l++] = ch;
+            }
+            if(l==0)continue;
+            else if(l<19){
+            	if(l==2&&s[0]=='!'&&s[1]=='q')return;
+            	s[l]='\0';
+            	break;
+			}
+            else{
+            	printf("\t\t\t\t名称长度过长！\n\t\t\t\t请重新输入名称！\n") ;
+			}
+		}
 //        cout("请分配用户等级:(等级1,2,3)\n");
 //        while (1) {
 //            int con = cin("%d", &level);
@@ -125,13 +146,13 @@ void addClient(client **L, client *p) {
 //                while (getchar() != '\n');
 //            } else
 //                break;
-        cout("请输入用户电话号码：\n");
+        cout("\t\t\t\t请输入用户电话号码:");
         while (1) {
             char ch;
             int l = 0;
             while ((ch = getchar()) != '\n') {
                 if (ch == ' ' || ch > '9' || ch < '0') {
-                    cout("输入的手机号不能含有空格或非数字！\n请重新输入手机号：");
+                    cout("\t\t\t\t输入的手机号不能含有空格或非数字！\n\t\t\t\t请重新输入手机号：");
                     while ((getchar()) != '\n');
                     l = 0;
                     continue;
@@ -143,32 +164,92 @@ void addClient(client **L, client *p) {
                     phoneNumber[l] = '\0';
                     break;
                 } else {
-                    cout("手机号码长度不符合要求,请重新输入：");
+                	system("cls");
+                    cout("\t\t\t\t手机号码长度不符合要求,请重新输入：");
                 }
             }
         }
-        cout("请输入用户密码(大于等于6位，不多于10位)：");
+        cout("\t\t\t\t请输入用户密码(大于等于6位，不多于10位)：");
+         int l = 0;
         while (1) {
             char ch;
-            int l = 0;
-            while ((ch = getchar()) != '\n') {
-                if (ch == ' ') {
-                    cout("输入的密码不能含有空格！\n请重新输入密码：");
-                    while ((ch = getchar()) != '\n');
-                    continue;
-                }
-                password[l++] = ch;
-            }
-            if (ch == '\n') {
+           
+//            while ((ch = getchar()) != '\n') {
+//                if (ch == ' ') {
+//                    cout("\t\t\t\t输入的密码不能含有空格！\n请重新输入密码：");
+//                    while ((ch = getchar()) != '\n');
+//                    continue;
+//                }
+//                password[l++] = ch;
+//            }
+			while(1){
+			ch = _getch();
+			if(ch == '\r' || ch == '\n') break;
+			else if (ch == '\b') {             // 退格符特判 
+				if(l!=0){
+					printf("\b \b");
+					l--;
+				}
+			}
+			else{
+				printf("*");
+				password[l++] = ch;
+			}
+			password[l] = '\0';
+			}
+            if (ch == '\r') {
+            	for(int i=0;password[i];i++)if(password[i]==' '){
+                	 cout("\t\t\t\t输入的密码不能含有空格！\n请重新输入密码：");
+                	 break;
+				}
                 if (l >= 6 && l <= 10) {
                     password[l] = '\0';
                     break;
                 } else {
-                    cout("密码长度不符合要求,请重新输入密码：");
+                    cout("\t\t\t\t密码长度不符合要求,请重新输入密码：");
                 }
+                
             }
-        }
+            
+		}
+            printf("\n\t\t\t\t请再次确认密码："); 
+        while(1){
+			char temp[12];int k=0;char ch;
+            while(1){
+            ch = _getch();
+			if(ch == '\r' || ch == '\n') break;
+			else if (ch == '\b') {             // 退格符特判 
+				if(k!=0){
+					printf("\b \b");
+					k--;
+				}
+			}
+			else{
+				printf("*");
+				temp[k++] = ch;
+			}
+			temp[k] = '\0';
+			}
+			if(ch=='\r')
+			{
+				if(l!=k||l>10){
+					 cout("\n\t\t\t\t输入的密码与之前的不一致！请重新输入：");
+					 continue; 
+				}
+				bool flag=true;
+				for(int i=0;temp[i];i++){
+					if(temp[i]!=password[i]){
+						cout("\n\t\t\t\t输入的密码与之前的不一致！请重新输入：");
+					 	flag=false;
+					 	break;
+					}
+				}
+				if(flag)break;
+			}	
+		}
 
+		*L = (client *) malloc(sizeof(client));
+        (*L)->ne = NULL, (*L)->pre = p;
         (*L)->level = level;
         srand((unsigned int) time(NULL));
         int rdx = rand() % 89998 + 10000;
@@ -184,14 +265,11 @@ void addClient(client **L, client *p) {
         (*L)->phoneNumber[i] = '\0';
         (*L)->balance=0.0;
         if (p)p->ne = *L;
-        cout("创建用户成功！当前用户的id是：%d\n", (*L)->id);
+        cout("\n\t\t\t\t创建用户成功！当前用户的id是：%d\n", (*L)->id);
         cus_cnt++;
-    } else
+        system("pause");
+    	}else
         addClient(&(*L)->ne, *L);
-		
-		
-	} 
-    
 }
 //寻找用户
 client*findClient(client**L,int id){

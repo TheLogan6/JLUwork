@@ -57,6 +57,7 @@ void PurchaseProduct(client* cur_cus, int ChooseBrand, struct sell_bill* newbill
 		printf("\t\t\t\t\t      当前选择的品牌是: %s       ",code[ChooseBrand][0]);
 		printf("\n\n\n");
 		printf("\t\t 产品名称  |  产品编号  |  酒水容量(/瓶) | 仓库库存 | 包装大小(/箱) |  售价(/箱) \n"); 
+		int max=-0x3f3f3f3f;
 		Inventory* p = Inv_head->next;
 		while(p)
 		{
@@ -65,20 +66,38 @@ void PurchaseProduct(client* cur_cus, int ChooseBrand, struct sell_bill* newbill
 				printf("\t\t  %-14s", code[p->BrandNumber][p->ProductNumber]);
 				printf(" %-12d %-14d%-14d%-13d", p->SpecificationNumber, p->volume, p->Reserve, p->packagingsize);
 				printf("%-10.2f\n", p->Price);
+				if(max<p->SpecificationNumber)
+				{
+					max=p->SpecificationNumber;
+				}
 			} 
 			p = p->next;
 		}
 		int ChooseProduct;
 		printf("\t\t------------------------------------------------------------------------------------- \n");
-		printf("\t\t\t\t\t 请选择你要批发的产品编号：");
+		printf("\t\t\t\t\t请选择你要批发的产品编号：");
 		char ChooseProduct_s[5];
-		scanf("%s", ChooseProduct_s);
-		ChooseProduct = inputcheck(ChooseProduct_s);
-		if(ChooseProduct == -1 || ChooseProduct > 7){
+		ChooseProduct = checkNum();
+		if(ChooseProduct == -1 || ChooseProduct > max){
 			RefreshPage();
 			continue;
 		}
+		Inventory* pointer = Inv_head->next;
+		while(pointer!=NULL)
+		{
+			if(pointer->BrandNumber == ChooseBrand&&pointer->SpecificationNumber==ChooseProduct)
+			{
+				break;
+			} 
+			p = p->next;
+		}
 		if(ChooseProduct == 0) return; 
+		else if(pointer->Reserve==0)
+		{
+			printf("\t\t\t\t\t您想要批发的商品已售罄");
+			pau;
+			continue;
+		}
 		else{
 			Sell_select_ProductNumber(ChooseProduct, newbill);
 			Sell_select_Number_of_goods(newbill,cur_cus);
@@ -101,11 +120,9 @@ void ClientInput(){
     while(1)
     {
         ClientLogin();
-		while((scanf("%d", &ClientId)) == 0)
-		{
-        	char garbage[20];
-            gets(garbage);
-			ErrorHappens();
+        ClientId=checkNum();
+        if(ClientId==-1){
+        	ErrorHappens();
 		}
         if(ClientId == 0) return;
         PasswordOutput();

@@ -205,7 +205,6 @@ void ManagerInterface_Read(){
 			}
 			case(5):{//修改客户信息 
 				Search_For_The_Bills_Of_Given_Data();
-				pau;
 				break;
 			}
 			case(6):{// 用户充值
@@ -274,8 +273,7 @@ void ManagerInterface_Write(){
 			    printf("\t\t\t\t\t                修改用户信息                 \n");
 			    printf("\t\t\t\t\t --------------------------------------- \n");
 				printf("\t\t\t\t\t请输入您的id:");
-				scanf("%s", tempid_s);
-				tempid = inputcheck(tempid_s);
+				tempid = checkNum();
 				if(tempid == -1){
 					RefreshPage();
 					continue;
@@ -326,8 +324,9 @@ void ManagerInterface_Write(){
 			}
 			case(4):{//删除订单 
 				system("cls");
-				Delete_Bill();
-				pau;
+				int num;
+				num=Delete_Bill();
+				if(num==1)pau;
 				break;
 			}
 //			case(5):{
@@ -452,8 +451,7 @@ void SalePromotion(client* cur_cus){
 		printf("\t\t\t\t\t输入你要选择的品牌编号：");
 		int ChooseBrand, ChooseProduct;
 		char ChooseBrand_s[5], ChooseProduct_s[5];
-		scanf("%s", ChooseBrand_s);
-		ChooseBrand = inputcheck(ChooseBrand_s);
+		ChooseBrand = checkNum();
 		Inventory* q = Inv_head->next;
 		while(q)
 		{
@@ -471,8 +469,7 @@ void SalePromotion(client* cur_cus){
 			continue;
 		}	
 		printf("\t\t\t\t\t请选择正在促销中的产品编号：");
-		scanf("%s", ChooseProduct_s);
-		ChooseProduct = inputcheck(ChooseProduct_s);
+		ChooseProduct = checkNum();
 		if(ChooseProduct == -1){
 			RefreshPage();
 			continue;
@@ -493,8 +490,7 @@ void SalePromotion(client* cur_cus){
 		int  buy_amount;
 		char buy_amount_s[5]; 
 		printf("\t\t\t\t\t请选择你要批发的数量(单次不得超过100箱)：");
-		scanf("%s", buy_amount_s);
-		buy_amount = inputcheck(buy_amount_s);
+		buy_amount = checkNum();
 		if(buy_amount == -1  || buy_amount == 0 ){
 			RefreshPage();
 			continue;
@@ -526,8 +522,7 @@ void SalePromotion(client* cur_cus){
 		printf("\t\t\t\t\t\t    请选择您支付方式: ");
 		int paychoice;
 		char paychoice_s[5];
-		scanf("%s", paychoice_s);
-		paychoice = inputcheck(paychoice_s);
+		paychoice = checkNum();
 		if(paychoice == -1){
 			RefreshPage();
 			continue;
@@ -548,12 +543,13 @@ void SalePromotion(client* cur_cus){
 				strcpy(newbill->brand,tar->DrinksBrand);
 				newbill->number_of_brand = tar->BrandNumber;
 				newbill->ProductNumber = tar->ProductNumber;
-				newbill->SpecificationNumber = tar->SpecificationNumber;
+				newbill->SpecificationNumber = tar->SpecificationNumber;			
 				newbill->packagingsize = tar->packagingsize;
+				newbill->number_of_packagingzise = buy_amount;
 				newbill->Unit_Price = tar->Price;
 				newbill->volume = tar->volume;
 				newbill->number_of_packagingzise = tar->packagingsize;
-				newbill->total_number = buy_amount;
+				newbill->total_number = newbill->packagingsize * newbill->number_of_packagingzise;
 				newbill->total_price = buy_money;
 				if (cur_cus->level == 1) {
 			        newbill->discount_for_client = 0.98;
@@ -704,8 +700,7 @@ void choosegift(double buy_money){
 		printf("\t\t\t\t\t    请输入您的选择:");
 		int giftchoice;
 		char giftchoice_s[5];
-		scanf("%s",giftchoice_s);
-		giftchoice = inputcheck(giftchoice_s);
+		giftchoice = checkNum();
 		if(giftchoice > n || giftchoice <= 0){
 			printf("\t\t\t\t 您的输入有误，请重新输入！\n");	
 			continue;
@@ -813,8 +808,7 @@ void ShoppintcartInterface(client* cur_cus){          // 当前客户信息
 				int  delete_id;
 				char delete_id_s2[10];
 				printf("\n\t\t\t\t  请输入你想要删除的订单号："); 
-				scanf("%s", delete_id_s2);
-				delete_id = inputcheck(delete_id_s2);
+				delete_id = checkNum();
 				if(delete_id == -1) {
 					RefreshPage();
 					break;
@@ -829,8 +823,7 @@ void ShoppintcartInterface(client* cur_cus){          // 当前客户信息
 				int  change_id;
 				char change_id_s[10];
 				printf("\n\t\t\t\t  请输入你想要修改的订单号："); 
-				scanf("%s", change_id_s);
-				change_id = inputcheck(change_id_s);
+				change_id = checkNum();
 				int l = 0;
 				shopping_cart *p = cur_cus->cart;
 				while(p)

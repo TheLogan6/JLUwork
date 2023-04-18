@@ -121,16 +121,14 @@ void ChangeInventory(){
 		char ChooseBrand_s[5], ChooseProduct_s[5];
 		printf("\t\t\t\t\t --------------------------------------- \n");
 		printf("\t\t\t\t  请选择你要更改的品牌编号：");
-		scanf("%s", ChooseBrand_s);
-		ChooseBrand = inputcheck(ChooseBrand_s);
+		ChooseBrand = checkNum();
 		if(ChooseBrand == 0) return;
 		else if(ChooseBrand == -1 || ChooseBrand > total_brand){
 			RefreshPage();
 			continue;
 		}
 		printf("\t\t\t\t  请选择你要更改的产品编号：");
-		scanf("%s", ChooseProduct_s);
-		ChooseProduct = inputcheck(ChooseProduct_s);
+		ChooseProduct = checkNum();
 		int maxnum1 = countSpecification(ChooseBrand);
 		if(ChooseProduct == -1 || ChooseProduct > maxnum1){
 			RefreshPage();
@@ -176,8 +174,7 @@ void ChangeInventory(){
 				printf("\t\t\t\t\t 请选择你要进行的操作：");
 				int ChangeInfo;
 				char ChangeInfo_s[5];
-				scanf("%s", ChangeInfo_s);
-				ChangeInfo = inputcheck(ChangeInfo_s);
+				ChangeInfo = checkNum();
 				if(ChangeInfo == -1 || ChangeInfo > 3) {
 					RefreshPage();
 					continue;
@@ -188,8 +185,7 @@ void ChangeInventory(){
 						printf("\t\t\t\t  请输入新的库存容量(不得超过库存最大量)：");
 						int NewReserve;
 						char NewReserve_s[6];
-						scanf("%s", NewReserve_s);
-						NewReserve = inputcheck(NewReserve_s);
+						NewReserve = checkNum();
 						if(NewReserve == -1 || NewReserve > 1000) {
 							RefreshPage();
 							continue;
@@ -222,8 +218,7 @@ void ChangeInventory(){
 						printf("\t\t\t\t\t       2. No\n  ");
 						int checkdelete;
 						char checkdelete_s[6];
-						scanf("%s", checkdelete_s);
-						checkdelete = inputcheck(checkdelete_s);
+						checkdelete = checkNum();
 						if(checkdelete == -1 || checkdelete == 0) {
 							RefreshPage();
 							continue;
@@ -285,8 +280,7 @@ void InventorySortMode(){
 		printf("\t\t\t\t\t --------------------------------------- \n");
 		printf("\t\t\t\t\t 请选择您想要排序的方式：");
 		
-		scanf("%s", sortmode_s);
-		sortmode = inputcheck(sortmode_s);
+		sortmode = checkNum();
 		if(sortmode == -1){
 			RefreshPage();
 			continue;

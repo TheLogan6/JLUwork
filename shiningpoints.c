@@ -107,8 +107,8 @@ void ChangeNumber(client*cur_cus, int tarid){
 	printf("\t\t\t\t 请输入您想要修改的数量(单次不得超过300箱)：");
 	int  change_num;
 	char change_num_s[10];
-	scanf("%s",change_num_s);
-	change_num = inputcheck(change_num_s);
+
+	change_num = checkNum();
 	if(change_num == -1 || change_num == 0){
 		RefreshPage();
 		return;
