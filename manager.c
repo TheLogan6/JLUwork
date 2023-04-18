@@ -73,7 +73,6 @@ void Restock(){
 
 
 void ManagerInput(){
-
 	while(1)
 	{
 		ManagerLogin();

@@ -1,3 +1,0 @@
-NongFuSpring 1  NongFuSpring 100
-NongFuSpring 2  NongFuSpring 2000
-endcorrect

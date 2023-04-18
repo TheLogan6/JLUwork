@@ -433,7 +433,7 @@ int Scanf_ID(void)
     while(1)
     {
         ID_of_client=checkNum();
-        if(ID_of_client==0)return;
+        if(ID_of_client==0) return ID_of_client;
         if(ID_of_client<10000||ID_of_client>99999)
         {
             printf("\t\t\t\t\t对不起，您输入的用户ID不正确，请您重新输入:");
@@ -450,7 +450,7 @@ int Scanf_ID(void)
 }
 int Print_Bills_Of_Given_Id(int ID_of_client)
 {//根据用户id去查询该用户的所有订单 
-	if(ID_of_client==0)return;
+	if(ID_of_client==0) return ID_of_client;
     int count=0;
     struct sell_bill* bill=bill_pre->next;
     while(bill!=NULL)

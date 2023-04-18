@@ -135,7 +135,7 @@ void addClient(client **L, client *p) {
             	break;
 			}
             else{
-            	printf("\t\t\t\t名称长度过长！\n\t\t\t\t请重新输入名称！\n") ;
+            	printf("\t\t\t\t名称长度过长！\n\t\t\t\t请重新输入名称:") ;
 			}
 		}
 //        cout("请分配用户等级:(等级1,2,3)\n");

@@ -81,14 +81,16 @@ void ManInferface(int i){
     	printf("\t\t\t\t\t               店铺管理界面              \n");
     	printf("\t\t\t\t\t --------------------------------------- \n");
     	printf("\t\t\t\t\t|                                       |\n");
-    	if(i == 1) printf("\033[1;46m\t\t\t\t\t|   -->  (1). 信息查询模式(只读)        |\033[0m\n\033[1;44m");
-    	else printf("\t\t\t\t\t|        (1). 信息查询模式(只读)        |\n");
-    	if(i == 2) printf("\033[1;46m\t\t\t\t\t|   -->  (2).   信息修改模式            |\033[0m\n\033[1;44m");
-    	else printf("\t\t\t\t\t|        (2).   信息修改模式            |\n");
+    	if(i == 1) printf("\033[1;46m\t\t\t\t\t|   -->  (1).     仓库管理              |\033[0m\n\033[1;44m");
+    	else printf("\t\t\t\t\t|        (1).     仓库管理              |\n");
+    	if(i == 2) printf("\033[1;46m\t\t\t\t\t|   -->  (2).   客户信息管理            |\033[0m\n\033[1;44m");
+    	else printf("\t\t\t\t\t|        (2).   客户信息管理            |\n");
     	if(i == 3) printf("\033[1;46m\t\t\t\t\t|   -->  (3).     进货模式              |\033[0m\n\033[1;44m");
     	else printf("\t\t\t\t\t|        (3).     进货模式              |\n");
-    	if(i == 4) printf("\033[1;46m\t\t\t\t\t|   -->  (4).   用户订单处理            |\033[0m\n\033[1;44m");
-    	else printf("\t\t\t\t\t|        (4).   用户订单处理            |\n"); 
+		if(i == 4) printf("\033[1;46m\t\t\t\t\t|   -->  (4).   销售订单管理            |\033[0m\n\033[1;44m");
+    	else printf("\t\t\t\t\t|        (4).   销售订单管理            |\n");  
+    	if(i == 5) printf("\033[1;46m\t\t\t\t\t|   -->  (5).   用户售后处理            |\033[0m\n\033[1;44m");
+    	else printf("\t\t\t\t\t|        (5).   用户售后处理            |\n"); 
     	if(i == 0) printf("\033[1;46m\t\t\t\t\t|   -->  (0).  返回上一个界面           |\033[0m\n\033[1;44m");
     	else printf("\t\t\t\t\t|        (0).  返回上一个界面           |\n");
 		printf("\t\t\t\t\t|                                       |\n");
@@ -106,8 +108,8 @@ void ManagerChooseMode(){
 	{
 		ManInferface(i);
 		temp = getch();
-		if(temp == 'w'||temp=='W') i = (i-1+5)%5;
-		else if(temp == 's'||temp=='S') i = (i+1)%5;
+		if(temp == 'w'||temp=='W') i = (i-1+6)%6;
+		else if(temp == 's'||temp=='S') i = (i+1)%6;
 		else if(temp == '\r'){
 			Mana_mode = i;break;
 		}
@@ -118,18 +120,22 @@ void ManagerChooseMode(){
 
 	switch(Mana_mode){ // 信息查询模式 
 		case(1):{
-			ManagerInterface_Read();       // 只读模式 
+			Inventory_Mode();       // 库存管理
 			break;
 		}
 		case(2):{
-			ManagerInterface_Write();       // 修改模式 
+			Clinet_Mode();       // 客户管理 
 			break;
 		}
 		case(3):{
-			Restock();                    // 进货流程 
+			restock_mode();                     // 进货流程 
 			break;
 		}
-		case(4):{
+		case(4):{                         //销售订单管理 
+			Bill_Mode();
+			break;
+		} 
+		case(5):{
 			aftersercive_check();                // 用户订单处理 
 			pau;
 			break;
@@ -141,7 +147,53 @@ void ManagerChooseMode(){
 	
 }
 
-void ManagerInterface_Read(){	
+void restock_mode(){
+	while(1)
+	{
+		int i = 1;
+		char temp;
+		int choice_mode;
+		while(1)
+		{
+			system("cls");
+			printf("\n\n\n\n\n"); 
+	    	printf("\t\t\t\t\t --------------------------------------- \n");
+	    	printf("\t\t\t\t\t                 进货界面                \n");
+	    	printf("\t\t\t\t\t --------------------------------------- \n");
+	    	printf("\t\t\t\t\t|                                        |\n");
+	    	if(i==1) printf("\033[1;46m\t\t\t\t\t|    -->   (1).   开始进货               |\033[0m\n\033[1;44m"); 
+	    	else printf("\t\t\t\t\t|          (1).   开始进货               |\n");
+	    	if(i==2) printf("\033[1;46m\t\t\t\t\t|    -->   (2). 订单信息管理             |\033[0m\n\033[1;44m");
+	    	else printf("\t\t\t\t\t|          (2). 订单信息管理             |\n");
+	    	if(i==0) printf("\033[1;46m\t\t\t\t\t|    -->   (0). 返回上一个界面           |\033[0m\n\033[1;44m");
+	    	else printf("\t\t\t\t\t|          (0). 返回上一个界面           |\n");
+	    	printf("\t\t\t\t\t|                                        |\n");
+	    	printf("\t\t\t\t\t --------------------------------------- \n");
+	    	printf("\t\t\t\t       请选择你要进行的操作：");
+			temp = getch();
+			if(temp == 'w'||temp=='W') i = (i-1+3)%3;
+			else if(temp == 's'||temp=='S') i = (i+1)%3;
+			else if(temp == '\r'){
+				choice_mode = i;break;
+			}
+			else continue;
+		}
+		if(choice_mode == 0) return;
+		else if(choice_mode == 1){
+			Restock();
+		}
+		else if(choice_mode == 2){
+			productin_interface();
+		}
+	}
+	
+	
+} 
+
+
+
+
+void Inventory_Mode(){	
 	while(1)
 	{
 		int i = 1;
@@ -153,19 +205,19 @@ void ManagerInterface_Read(){
 			system("cls");
 			printf("\n\n\n\n\n"); 
 	    	printf("\t\t\t\t\t --------------------------------------- \n");
-	    	printf("\t\t\t\t\t         店铺管理界面(查询模式)          \n");
+	    	printf("\t\t\t\t\t              库存管理界面               \n");
 	    	printf("\t\t\t\t\t --------------------------------------- \n");
 	    	printf("\t\t\t\t\t|                                       |\n");
 	    	if(i==1) printf("\033[1;46m\t\t\t\t\t|   -->  (1). 查看仓库货品清单          |\033[0m\n\033[1;44m");
 	    	else printf("\t\t\t\t\t|        (1). 查看仓库货品清单          |\n");
-	    	if(i==2) printf("\033[1;46m\t\t\t\t\t|   -->  (2).   查看客户信息            |\033[0m\n\033[1;44m");
-	    	else printf("\t\t\t\t\t|        (2).   查看客户信息            |\n");
-	    	if(i==3) printf("\033[1;46m\t\t\t\t\t|   -->  (3).   查看销售订单            |\033[0m\n\033[1;44m"); 
-	    	else printf("\t\t\t\t\t|        (3).   查看销售订单            |\n"); 
-	    	if(i==4) printf("\033[1;46m\t\t\t\t\t|   -->  (4).   查看进货订单            |\033[0m\n\033[1;44m");
-	    	else printf("\t\t\t\t\t|        (4).   查看进货订单            |\n");
-	    	if(i==5) printf("\033[1;46m\t\t\t\t\t|   -->  (5).     订单查询              |\033[0m\n\033[1;44m");
-	    	else printf("\t\t\t\t\t|        (5).     订单查询              |\n");
+	    	if(i==2) printf("\033[1;46m\t\t\t\t\t|   -->  (2). 修改仓库货品信息          |\033[0m\n\033[1;44m");
+	    	else printf("\t\t\t\t\t|        (2).   修改仓库货品信息        |\n");
+	    	if(i==3) printf("\033[1;46m\t\t\t\t\t|   -->  (3).   查看赠品库存            |\033[0m\n\033[1;44m"); 
+	    	else printf("\t\t\t\t\t|        (3).   查看赠品库存            |\n"); 
+	    	if(i==4) printf("\033[1;46m\t\t\t\t\t|   -->  (4).     商品查询              |\033[0m\n\033[1;44m");
+	    	else printf("\t\t\t\t\t|        (4).     商品查询              |\n");
+//	    	if(i==5) printf("\033[1;46m\t\t\t\t\t|   -->  (5).     订单查询              |\033[0m\n\033[1;44m");
+//	    	else printf("\t\t\t\t\t|        (5).     订单查询              |\n");
 	    	if(i==0) printf("\033[1;46m\t\t\t\t\t|   -->  (0).  返回上一个界面           |\033[0m\n\033[1;44m");
 	    	else printf("\t\t\t\t\t|        (0).  返回上一个界面           |\n");
 			printf("\t\t\t\t\t|                                       |\n");
@@ -173,8 +225,8 @@ void ManagerInterface_Read(){
 			printf("\t\t\t\t       请选择你要进行的操作：");
 			
 			temp = getch();	
-			if(temp == 'w'||temp=='W') i = (i-1+6)%6;
-			else if(temp == 's'||temp=='S') i = (i+1)%6;
+			if(temp == 'w'||temp=='W') i = (i-1+5)%5;
+			else if(temp == 's'||temp=='S') i = (i+1)%5;
 			else if(temp == '\r'){
 				ManagerOp = i;break;
 			}
@@ -188,41 +240,33 @@ void ManagerInterface_Read(){
 				InventorySortMode();
 				break;
 			}
-			case(2):{//查看客户信息
-				printCustomer(L);
-				pau; 
+			case(2):{//修改仓库货品信息
+				ChangeInventory(); 
 				break;
 			} 
-			case(3):{ //查看销售订单
-				Check_Bills();
+			case(3):{ //查看赠品库存
+				system("cls"); 
+				PrintGift();
 				pau;
+				break; 
+			
+
+			}
+			case(4):{// 商品查询
+			    queryinventory();
+		
 				break;
 			}
-			case(4):{// 查看进货订单 
-				//printproductinlist();
-				pau;
-				break;
-			}
-			case(5):{//修改客户信息 
-				Search_For_The_Bills_Of_Given_Data();
-				break;
-			}
-			case(6):{// 用户充值
-				
-				
-			}
-			case(9):{
-				
-			} 
+
 			default:{
-				ErrorHappens();
+				RefreshPage();
 				break;
 			}
 		}
 	}
 } 
 
-void ManagerInterface_Write(){	
+void Clinet_Mode(){	
 	while(1)
 	{
 		int i = 1;
@@ -233,23 +277,22 @@ void ManagerInterface_Write(){
 			system("cls");
 			printf("\n\n\n\n\n"); 
 	    	printf("\t\t\t\t\t --------------------------------------- \n");
-	    	printf("\t\t\t\t\t         店铺管理界面(修改模式)          \n");
+	    	printf("\t\t\t\t\t            用户信息管理界面             \n");
 	    	printf("\t\t\t\t\t --------------------------------------- \n");
 	    	printf("\t\t\t\t\t|                                       |\n");
-	    	if(i==1) printf("\033[1;46m\t\t\t\t\t|        (1). 修改仓库商品信息          |\033[0m\n\033[1;44m");
-	    	else printf("\t\t\t\t\t|        (1). 修改仓库商品信息          |\n");
-	    	if(i==2) printf("\033[1;46m\t\t\t\t\t|        (2).   修改客户信息            |\033[0m\n\033[1;44m");
-	    	else printf("\t\t\t\t\t|        (2).   修改客户信息            |\n");
-	    	if(i==3) printf("\033[1;46m\t\t\t\t\t|        (3).     客户充值              |\033[0m\n\033[1;44m");
-	    	else printf("\t\t\t\t\t|        (3).     客户充值              |\n");
-	    	if(i==4) printf("\033[1;46m\t\t\t\t\t|        (4).   删除销售订单            |\033[0m\n\033[1;44m");
-	    	else printf("\t\t\t\t\t|        (4).   删除销售订单            |\n");
-	    	if(i==0) printf("\033[1;46m\t\t\t\t\t|        (0).  返回上一个界面           |\033[0m\n\033[1;44m");
-	    	else printf("\t\t\t\t\t|        (0).  返回上一个界面           |\n");
+	    	if(i==1) printf("\033[1;46m\t\t\t\t\t|          (1). 查看客户信息            |\033[0m\n\033[1;44m");
+	    	else printf("\t\t\t\t\t|          (1). 查看客户信息            |\n");
+	    	if(i==2) printf("\033[1;46m\t\t\t\t\t|          (2). 修改客户信息            |\033[0m\n\033[1;44m");
+	    	else printf("\t\t\t\t\t|          (2). 修改客户信息            |\n");
+	    	if(i==3) printf("\033[1;46m\t\t\t\t\t|          (3).   客户充值              |\033[0m\n\033[1;44m");
+	    	else printf("\t\t\t\t\t|          (3).   客户充值              |\n");
+	    	if(i==4) printf("\033[1;46m\t\t\t\t\t|          (4).   删除客户              |\033[0m\n\033[1;44m");
+	    	else printf("\t\t\t\t\t|          (4).   删除客户              |\n");
+	    	if(i==0) printf("\033[1;46m\t\t\t\t\t|          (0).  返回上一个界面         |\033[0m\n\033[1;44m");
+	    	else printf("\t\t\t\t\t|          (0).  返回上一个界面         |\n");
 			printf("\t\t\t\t\t|                                       |\n");
 			printf("\t\t\t\t\t --------------------------------------- \n");
 			printf("\t\t\t\t       请输入你要选择的服务：");	
-			
 			temp = getch();	
 			if(temp == 'w'||temp=='W') i = (i-1+5)%5;
 			else if(temp == 's'||temp=='S') i = (i+1)%5;
@@ -261,9 +304,11 @@ void ManagerInterface_Write(){
 		
 		switch(ManagerOp){
 			case(0): return;
-			case(1):{//改变仓库商品信息 
-				ChangeInventory(); 
+			case(1):{//查看客户信息		
+				printCustomer(L);
+				pau; 
 				break;
+
 			} 
 			case(2):{//修改客户信息 
 				system("cls");
@@ -322,31 +367,79 @@ void ManagerInterface_Write(){
 				}
 				break;
 			}
-			case(4):{//删除订单 
+			case(4):{
+				
+				break;
+			} 
+			default:{
+				ErrorHappens();
+				break;
+			}
+		}
+	}		
+}
+
+void Bill_Mode(){	
+	while(1)
+	{
+		int i = 1;
+		char temp;
+		int ManagerOp;
+		while(1)
+		{
+			system("cls");
+			printf("\n\n\n\n\n"); 
+	    	printf("\t\t\t\t\t --------------------------------------- \n");
+	    	printf("\t\t\t\t\t            销售订单管理界面             \n");
+	    	printf("\t\t\t\t\t --------------------------------------- \n");
+	    	printf("\t\t\t\t\t|                                       |\n");
+	    	if(i==1) printf("\033[1;46m\t\t\t\t\t|   -->  (1).   查看订单信息            |\033[0m\n\033[1;44m");
+	    	else printf("\t\t\t\t\t|        (1).   查看客户信息            |\n");
+//	    	if(i==2) printf("\033[1;46m\t\t\t\t\t|        (2).   修改客户信息            |\033[0m\n\033[1;44m");
+//	    	else printf("\t\t\t\t\t|        (2).   修改客户信息            |\n");
+	    	if(i==3) printf("\033[1;46m\t\t\t\t\t|   -->  (2).     订单查询              |\033[0m\n\033[1;44m");
+	    	else printf("\t\t\t\t\t|        (2).     订单查询              |\n");
+	    	if(i==4) printf("\033[1;46m\t\t\t\t\t|   -->  (3).   删除销售订单            |\033[0m\n\033[1;44m");
+	    	else printf("\t\t\t\t\t|        (3).   删除销售订单            |\n");
+	    	if(i==0) printf("\033[1;46m\t\t\t\t\t|   -->  (0).  返回上一个界面           |\033[0m\n\033[1;44m");
+	    	else printf("\t\t\t\t\t|        (0).  返回上一个界面           |\n");
+			printf("\t\t\t\t\t|                                       |\n");
+			printf("\t\t\t\t\t --------------------------------------- \n");
+			printf("\t\t\t\t       请输入你要选择的服务：");	
+			temp = getch();	
+			if(temp == 'w'||temp=='W') i = (i-1+5)%5;
+			else if(temp == 's'||temp=='S') i = (i+1)%5;
+			else if(temp == '\r'){
+				ManagerOp = i;break;
+			}
+			else continue;
+		}
+		
+		switch(ManagerOp){
+			case(0): return;
+			case(1):{//查看客户信息					
+				Check_Bills();
+				pau;
+				break;
+
+			} 
+			case(2):{// 订单查询
+				Search_For_The_Bills_Of_Given_Data();
+				break;
+			}
+			case(3):{//删除订单 
 				system("cls");
 				int num;
 				num=Delete_Bill();
 				if(num==1)pau;
 				break;
 			}
-//			case(5):{
-//
-//				pau;
-//				break;
-//			} 
-//			case(6):{
-//				system("cls");
-//				//deleteproductinlist();
-//				break;
-//			} 
 			default:{
 				ErrorHappens();
 				break;
 			}
 		}
-	}	
-		
-		
+	}		
 }
 
 

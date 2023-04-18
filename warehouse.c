@@ -257,6 +257,79 @@ void ChangeInventory(){
 
 
 
+void reduceinventory(Inventory* tar, int num){
+	if(tar->Reserve >= num) tar->Reserve-=num;
+}
+
+int countSpecification(int Brand){
+	Inventory* p = Inv_head->next;
+	int res = 0;
+	while(p)
+	{
+		if(p->BrandNumber == Brand) res++;
+		p = p->next;
+	}
+	return res;
+}
+
+void queryinventory(){
+	while(1)
+	{
+		system("cls");
+		int sortmode;
+		char sortmode_s[5];
+		printf("\n\n\n\n"); 
+		printf("\t\t\t\t\t --------------------------------------- \n");
+		printf("\t\t\t\t\t               查询商品信息              \n");
+		printf("\t\t\t\t\t --------------------------------------- \n");
+		printf("\t\t\t\t\t 请输入你要查询的商品品牌名称: ");
+		char queryinventory[20];
+		scanf("%s",queryinventory);          //这里有问题但我该怎么办 
+		int j = 0;
+		for(int i = 1; i <= 10; i++)
+		{
+			if(strcmp(code[i][0], queryinventory) == 0) j = i;
+		}
+		if(j == 0){
+			printf("\t\t\t\t\t 请检测您的输入有误，请按任意键刷新后重试！");
+			pau;
+			continue;
+		}
+		
+		int flag = 0;
+		Inventory* p = Inv_head->next;
+		while(p)
+		{
+			if(p->BrandNumber == j)
+			{
+				flag++;
+				if(flag == 1) printf("\t  酒水品牌  | 品牌编号 |   商品名称   | 商品编号 | 容量大小 | 包装大小 | 库存容量 |     价格     |       保质期\n");
+				printf("\t  %-15s%-9d", code[p->BrandNumber][0], p->BrandNumber);
+				printf(" %-16s", code[p->BrandNumber][p->ProductNumber]);
+				printf("%-10d%-10d %-11d", p->SpecificationNumber, p->volume, p->packagingsize, p->Reserve);
+				if(p->Reserve == 0) printf("(已售罄)   ");
+				else printf(" %-11d", p->Reserve);
+				printf("%-12.2f  ", p->Price);
+				printf(" %d年%d月%d日\n", p->quality_year, p->quality_month, p->quality_day);
+			}
+			p = p->next;
+		}
+		if(flag == 0){
+			printf("\t\t\t\t\t        库存中没有该商品！\n");
+			printf("\t\t\t\t\t      按任意键刷新后可重新查询！\n");
+			pau; 
+			continue;
+		}
+		else{
+			printf("\t\t\t\t\t --------------------------------------- \n");
+			printf("\t\t\t\t\t      按任意键刷新后可重新查询！\n");
+			pau;
+		}
+	}
+	
+}
+
+
 /*---------------------------------库存排序分割线--------------------------------------------*/ 
 
 void InventorySortMode(){
@@ -318,20 +391,6 @@ void InventorySortMode(){
 	} 
 }
 
-void reduceinventory(Inventory* tar, int num){
-	if(tar->Reserve >= num) tar->Reserve-=num;
-}
-
-int countSpecification(int Brand){
-	Inventory* p = Inv_head->next;
-	int res = 0;
-	while(p)
-	{
-		if(p->BrandNumber == Brand) res++;
-		p = p->next;
-	}
-	return res;
-}
 //--------------------------------------------------库存排序方式
 void SortByNumber(Inventory* Inv_head){
 	Inventory* p = Inv_head;  // 插入在p点的后面  , 从小到大 

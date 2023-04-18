@@ -34,12 +34,11 @@ void PurchaseInterface(client* cur_cus){
 //		}
 		int op=getchoice(&position,row,&ChooseBrand);
 		if(op<0)break;
-			
 	} 
 	if(ChooseBrand == 8) return ;
-	else{
-		struct sell_bill* newbill = Sell_select_brand(ChooseBrand);
-		PurchaseProduct(cur_cus, ChooseBrand, newbill);
+		else{
+			struct sell_bill* newbill = Sell_select_brand(ChooseBrand);
+			PurchaseProduct(cur_cus, ChooseBrand, newbill);
 	}
 }
 
@@ -89,7 +88,7 @@ void PurchaseProduct(client* cur_cus, int ChooseBrand, struct sell_bill* newbill
 			{
 				break;
 			} 
-			p = p->next;
+			pointer = pointer->next;
 		}
 		if(ChooseProduct == 0) return; 
 		else if(pointer->Reserve==0)

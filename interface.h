@@ -34,8 +34,13 @@ void ClientChooseMode(client* cur_cus);
 
 int inputcheck(char numstring[]);  // 判断整数输入是否合法 
 
-void ManagerInterface_Read();    //只读模式 
-void ManagerInterface_Write();    // 修改模式 
+//void ManagerInterface_Read();    //只读模式 
+//void ManagerInterface_Write();    // 修改模式 
+
+void Inventory_Mode();
+void Clinet_Mode();
+void Bill_Mode(); 
+void restock_mode();   
 
 void SalePromotion(client* cur_cus);            // 促销界面 
 void choosegift(double buy_money);

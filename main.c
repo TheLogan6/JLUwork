@@ -35,7 +35,10 @@ int total_brand;    // 产品的品牌总数
 char passwordans[20] = "123456";
 double total_money = 50000.00;    //  
 
-
+supplierlist L2;
+char *stringsm[] = {"firstsupplier", "secondsupplier", "thirdsupplier"};
+productlistin L1;//进货单
+int max_ = 0x3f3f3f3f;
 //end 全局变量 
 
 int main(int argc, char *argv[]) {
