@@ -117,11 +117,17 @@ void aftersercive_check(){        // 售后订单处理
 	while(1)
 	{
 		system("cls"); 
-		printf("\n\t---------------------售后订单处理界面--------------------\n");
+		printf("\n\n\n\n"); 
+    	printf("\t\t\t\t\t --------------------------------------- \n");
+    	printf("\t\t\t\t\t             售后订单处理界面            \n");
+    	printf("\t\t\t\t\t --------------------------------------- \n");
+		
 		Check_Bills_with_problem();
-		printf("请选择您要处理的订单编号:");
+		struct sell_bill* tar = bill_with_problem->next;
+		if(bill_with_problem->next == NULL)
+	        return;
+		printf("\t\t\t\t\t请选择您要处理的订单编号:");
 		int billid;
-		char billid_s[5];
 
 		billid =checkNum();
 		if(billid == -1){
@@ -129,7 +135,7 @@ void aftersercive_check(){        // 售后订单处理
 			continue;
 		}
 		if(billid == 0) return;
-		struct sell_bill* tar = bill_with_problem->next; // tar为问题订单 
+		 // tar为问题订单 
 		int i = 1;
 		while(tar)
 		{
@@ -142,11 +148,11 @@ void aftersercive_check(){        // 售后订单处理
 			printf("\n找不到您所输入的订单，请按任意键刷新后重试！");
 			continue; 
 		}
-		printf("----------------------------订单处理---------------------------\n");
-		printf("\t\t\t您要进行什么操作:\n");
-    	printf("\t\t\t 1.同意退换货\n");
-    	printf("\t\t\t 2.拒绝退换货\n");
-    	printf("\t\t   请输入您要进行的操作:");
+		printf("\t\t\t\t\t --------------------------------------- \n");
+		printf("\t\t\t\t\t             订单处理              \n");
+    	printf("\t\t\t\t\t            1.同意退换货\n");
+    	printf("\t\t\t\t\t            2.拒绝退换货\n");
+    	printf("\t\t\t\t\t         请输入您要进行的操作:");
     	int choice;
 		char choice_s[5];
 		choice = checkNum();
@@ -157,33 +163,52 @@ void aftersercive_check(){        // 售后订单处理
 		else if(choice == 1){
 			if(tar->status == 2)
 			{
-				printf("\t\t\t 您已确认成功确认换货, 新商品已从仓库发出！");
 				tar->status = 4;//已确认退换货
 				//在问题订单中删除
 				tar = tar->pre;
-				tar->next = tar->next->next;			
+				tar->next = tar->next->next;		
+				struct sell_bill* source = tar->related;
+				tar->status = 4;	
 				writeproblembill();
 				writebill();
 				bill_pre=Initiate_Bill();
 	    		bill_with_problem=Initiate_Bill_with_problem();
+	    		printf("\t\t\t\t\t 您已成功确认换货, 新商品已从仓库发出！");
+	    		pau;
 				continue;
 			} 
 			else if(tar->status == 3)
 			{
 				tar->status = 4;//已确认退换货
-				printf("\t\t\t 您已成功确认确认退货，新商品已从仓库发出！");
 				tar = tar->pre;
 				tar->next = tar->next->next;
+				struct sell_bill* source = tar->related;
+				tar->status = 4;
 				writeproblembill();
 				writebill();
 				bill_pre=Initiate_Bill();
 	    		bill_with_problem=Initiate_Bill_with_problem();
+	    		printf("\t\t\t\t\t 您已成功确认退货，新商品已从仓库发出！\n");
+	    		if(tar->reason_num == 0 || tar->reason_num == 1) //"不想要了","不喜欢"
+	    		{
+	    			Inventory* q = Inv_head->next;
+					while(q)
+					{
+						if(q->BrandNumber == tar->number_of_brand && q->SpecificationNumber ==tar->SpecificationNumber)
+							break;
+						q = q->next;
+					}
+					q->Reserve += tar->number_of_packagingzise;
+					printf("\t\t\t\t\t 已成功将商品添加回仓库！");
+				}
+				else printf("\t\t\t\t\t  已将问题商品处理！") ; 
+				pau;
 			}
 			
 			
 		}
-		else if(choice == 2){
-			tar->status = 1;  //已确认退换货
+		else if(choice == 2){                  // 已拒绝 
+			tar->status = 1;                //已确认退换货
 			tar = tar->pre;
 			tar->next = tar->next->next;			
 			writeproblembill();

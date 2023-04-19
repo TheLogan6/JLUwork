@@ -46,14 +46,10 @@ int main(int argc, char *argv[]) {
 	Inv_head = InitInventory();
 	Gift_head = InitGift();
 	Giftsort(Gift_head);
-//	PrintGift();
-//	pau;
 	readClient(&L);
 	InitLog(&log_head,&L);
 	Sou_head = ReadSource();
 	bill_pre = Initiate_Bill(); 
-	//initproductinlist();
-	//createproductinlist();
 	total_brand = 10; 
 	readShoppingCart(&L);	
 	JudgeNearexpiry();

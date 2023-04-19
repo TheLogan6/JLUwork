@@ -157,7 +157,7 @@ void ChangeInventory(){
 				printf("\t%-17s%-9d ", tar->DrinksBrand, tar->BrandNumber);
 				printf("%-16s", code[tar->BrandNumber][tar->ProductNumber]);
 				printf("%-10d%-10d%-11d", tar->SpecificationNumber, tar->volume, tar->packagingsize);
-				if(tar->Reserve == 0) printf("(已售罄)");
+				if(tar->Reserve == 0) printf("(已售罄)    ");
 				else printf("%-11d", tar->Reserve);
 				printf("%-12.2f   ", tar->Price);
 				printf("%d年%d月%d日\n", tar->quality_year, tar->quality_month, tar->quality_day);
@@ -166,7 +166,7 @@ void ChangeInventory(){
 			    printf("\t\t\t\t\t                                        \n");
 			    printf("\t\t\t\t\t         (1).   修改库存容量            \n");
 			    printf("\t\t\t\t\t         (2).   修改批发价格            \n");
-			    printf("\t\t\t\t\t         (3).    删除该商品             \n");
+			    printf("\t\t\t\t\t         (3).    下架该商品             \n");
 			    printf("\t\t\t\t\t         (0).  返回上一个界面           \n");
 				printf("\t\t\t\t\t                                        \n");
 				printf("\t\t\t\t\t --------------------------------------- \n");
@@ -213,9 +213,10 @@ void ChangeInventory(){
 						break;
 					}
 					case(3):{ // 删除商品 
-						printf("\t\t\t\t\t  你确认要删除该商品吗？\n");
-						printf("\t\t\t\t\t       1.Yes\n");
-						printf("\t\t\t\t\t       2. No\n  ");
+						printf("\t\t\t\t\t --------------------------------------- \n");
+						printf("\t\t\t\t\t             1. Yes\n");
+						printf("\t\t\t\t\t             2. No\n  ");
+						printf("\t\t\t\t\t        你确认要下架该商品吗？");
 						int checkdelete;
 						char checkdelete_s[6];
 						checkdelete = checkNum();
@@ -239,7 +240,7 @@ void ChangeInventory(){
 							tar->Reserve = 0;
 							UpdateInventory(); 
 							printf("\t\t\t\t  您已成功修改数据，按任意键返回至上一个界面！");
-							pau;return;
+							pau;continue;
 						}
 						else if(checkdelete == 2){
 							printf("\t\t\t\t  您未删除该数据，按任意键可刷新该界面！");
@@ -281,10 +282,18 @@ void queryinventory(){
 		printf("\n\n\n\n"); 
 		printf("\t\t\t\t\t --------------------------------------- \n");
 		printf("\t\t\t\t\t               查询商品信息              \n");
+		printf("\t\t\t\t\t           (输入0可返回上一个界面)       \n");
 		printf("\t\t\t\t\t --------------------------------------- \n");
 		printf("\t\t\t\t\t 请输入你要查询的商品品牌名称: ");
-		char queryinventory[20];
-		scanf("%s",queryinventory);          //这里有问题但我该怎么办 
+		
+		char queryinventory[100]={'\0'};int l=0;char ch;
+	flag:
+		l=0;
+    	while((ch=getchar())!='\n') queryinventory[l++]=ch;
+    	queryinventory[l]='\0';
+	    if(queryinventory[0]=='\0') goto flag;
+	    if(l==1&&queryinventory[0]=='0') return ;
+
 		int j = 0;
 		for(int i = 1; i <= 10; i++)
 		{
@@ -767,6 +776,53 @@ void Giftsort(Gift* Gift_head){
 	UpdateGift();
 	return; 
 }
+
+void deltegift(){
+	while(1)
+	{
+		system("cls");
+		printf("\n\n\n\n"); 
+		printf("\t\t\t\t\t --------------------------------------- \n");
+		printf("\t\t\t\t\t                 赠品删除                \n");
+		printf("\t\t\t\t\t --------------------------------------- \n");
+		PrintGift();
+		printf("\t\t\t\t\t --------------------------------------- \n");
+		printf("\t\t\t\t\t 请输入你想要删除的赠品编号:");
+		int giftid;
+		giftid = checkNum(); 
+		if(giftid == -1){
+			RefreshPage();continue;
+		}
+		Gift* q = Gift_head->next;
+		while(q)
+		{
+			if(q->reorder = giftid) break;
+			q = q->next;
+		}
+		if(q == NULL){
+			printf("\t\t\t\t\t 您的输入有误，未找到该编号赠品，请重新输入！");
+			pau;
+		}
+		else{
+			Gift* temp = q;
+			q = q->pre;
+			q->next = q->next->next;
+			free(temp);
+			printf("\t\t\t\t\t    您已成功删除该赠品！");
+			pau;
+		}
+		q = Gift_head->next;
+		int i = 1;
+		while(q)
+		{
+			q->reorder = i++;
+			q = q->next;
+		}
+		UpdateGift();
+	}
+	
+}
+
 
 void reducegift(Gift* tar, int num){              // 减少赠品 
 	if(tar->bottle > num) tar->bottle-=num;

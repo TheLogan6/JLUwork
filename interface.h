@@ -44,5 +44,6 @@ void restock_mode();
 
 void SalePromotion(client* cur_cus);            // 促销界面 
 void choosegift(double buy_money);
+void ShoppintcartInterface(client* cur_cus);    //购物车界面 
 
 

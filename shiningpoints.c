@@ -19,7 +19,13 @@ void showShoppingCart(client*cus){
         	if(q->BrandNumber == p->x&& q->SpecificationNumber == p->z) break;
         	q = q->next;
 		}
-		if(q == NULL || q->Reserve==0) printf("您曾选择的商品已售罄！");
+		if(q == NULL ) printf("\t\t\t\t\t 您曾选择的商品已下架删除！\n");
+		else if(q->Reserve==0) 
+		{
+			printf("\t  %-9d%-20s%-15s", p->id, q->DrinksBrand, code[p->x][p->y]);
+			printf("\t\t该商品已售罄！请删除该条记录后购买！"); 
+//			printf("%-12d%-12d%-12d%-9.2lf%-10.2lf\n", q->volume, q->packagingsize, p->cnt,p->single_cost,p->total_cost);
+		}
         else{
 
 			printf("\t  %-9d%-20s%-15s", p->id, q->DrinksBrand, code[p->x][p->y]);

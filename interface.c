@@ -211,13 +211,13 @@ void Inventory_Mode(){
 	    	if(i==1) printf("\033[1;46m\t\t\t\t\t|   -->  (1). 查看仓库货品清单          |\033[0m\n\033[1;44m");
 	    	else printf("\t\t\t\t\t|        (1). 查看仓库货品清单          |\n");
 	    	if(i==2) printf("\033[1;46m\t\t\t\t\t|   -->  (2). 修改仓库货品信息          |\033[0m\n\033[1;44m");
-	    	else printf("\t\t\t\t\t|        (2).   修改仓库货品信息        |\n");
+	    	else printf("\t\t\t\t\t|        (2). 修改仓库货品信息          |\n");
 	    	if(i==3) printf("\033[1;46m\t\t\t\t\t|   -->  (3).   查看赠品库存            |\033[0m\n\033[1;44m"); 
 	    	else printf("\t\t\t\t\t|        (3).   查看赠品库存            |\n"); 
-	    	if(i==4) printf("\033[1;46m\t\t\t\t\t|   -->  (4).     商品查询              |\033[0m\n\033[1;44m");
-	    	else printf("\t\t\t\t\t|        (4).     商品查询              |\n");
-//	    	if(i==5) printf("\033[1;46m\t\t\t\t\t|   -->  (5).     订单查询              |\033[0m\n\033[1;44m");
-//	    	else printf("\t\t\t\t\t|        (5).     订单查询              |\n");
+	    	if(i==4) printf("\033[1;46m\t\t\t\t\t|   -->  (4).     赠品删除              |\033[0m\n\033[1;44m");
+	    	else printf("\t\t\t\t\t|        (4).     赠品删除              |\n");
+			if(i==5) printf("\033[1;46m\t\t\t\t\t|   -->  (5).     商品查询              |\033[0m\n\033[1;44m");
+	    	else printf("\t\t\t\t\t|        (5).     商品查询              |\n");
 	    	if(i==0) printf("\033[1;46m\t\t\t\t\t|   -->  (0).  返回上一个界面           |\033[0m\n\033[1;44m");
 	    	else printf("\t\t\t\t\t|        (0).  返回上一个界面           |\n");
 			printf("\t\t\t\t\t|                                       |\n");
@@ -225,8 +225,8 @@ void Inventory_Mode(){
 			printf("\t\t\t\t       请选择你要进行的操作：");
 			
 			temp = getch();	
-			if(temp == 'w'||temp=='W') i = (i-1+5)%5;
-			else if(temp == 's'||temp=='S') i = (i+1)%5;
+			if(temp == 'w'||temp=='W') i = (i-1+6)%6;
+			else if(temp == 's'||temp=='S') i = (i+1)%6;
 			else if(temp == '\r'){
 				ManagerOp = i;break;
 			}
@@ -246,13 +246,22 @@ void Inventory_Mode(){
 			} 
 			case(3):{ //查看赠品库存
 				system("cls"); 
+				printf("\n\n\n\n"); 
+				printf("\t\t\t\t\t --------------------------------------- \n");
+				printf("\t\t\t\t\t               查看赠品信息              \n");
+				printf("\t\t\t\t\t --------------------------------------- \n");
 				PrintGift();
 				pau;
 				break; 
 			
 
 			}
-			case(4):{// 商品查询
+			case(4):{//  赠品删除
+			    deltegift(); 
+		
+				break;
+			}
+			case(5):{//商品查询
 			    queryinventory();
 		
 				break;
@@ -656,7 +665,7 @@ void SalePromotion(client* cur_cus){
 			    newbill->buyer = cur_cus;
 			    newbill->status = 1;
 				sell_save(newbill);
-			    //struct sell_bill* related;
+			    newbill->related = NULL;
 			    //struct Inventory* product; 这要连接啥 
 			    printf("\t\t\t\t\t --------------------------------------- \n");
 				printf("\t\t\t\t\t              现金支付成功！                 \n");
@@ -667,10 +676,9 @@ void SalePromotion(client* cur_cus){
 				printf("\t\t\t\t\t您已成功购买%s品牌的%s%d箱,",code[tar->BrandNumber][0], code[tar->BrandNumber][tar->ProductNumber], buy_amount);
 				printf("每箱%d瓶, 每瓶%d毫升！\n", tar->packagingsize, tar->volume);
 				printf("\t\t\t\t\t\t共计%.2f元!\n", buy_money);
-				
-				
 				reduceinventory(tar, buy_amount);
 				UpdateInventory();	
+				system("pause");
 				if(buy_money > 999 && Gift_head->next) choosegift(buy_money);
 				//库存减少 
 				break;
@@ -703,6 +711,7 @@ void SalePromotion(client* cur_cus){
 				newbill->number_of_packagingzise = tar->packagingsize;
 				newbill->total_number = buy_amount;
 				newbill->total_price = buy_money;
+				newbill->related = NULL;
 				if (cur_cus->level == 1) {
 			        newbill->discount_for_client = 0.98;
 			    }
@@ -714,16 +723,16 @@ void SalePromotion(client* cur_cus){
 			    }
 			    newbill->buyer = cur_cus;
 			    newbill->status = 1;
+			    sell_save(newbill);
 				printf("\t\t\t\t\t              余额支付成功！\n");
 				printf("\t\t\t\t\t您已成功购买%s品牌的%s%d箱,",code[tar->BrandNumber][0], code[tar->BrandNumber][tar->ProductNumber], buy_amount);
 				printf(" 每箱%d瓶, 每瓶%d毫升！\n", tar->packagingsize, tar->volume);
-				printf("\t\t\t\t\t    共计%.2f元!\n", buy_money);
+				printf("\t\t\t\t\t\t     共计%.2f元!\n", buy_money);
 				//这里还差余额成功操作！ 
 				reduceinventory(tar, buy_amount);
 				UpdateInventory();	
 				if(buy_money > 999 && Gift_head->next) choosegift(buy_money);
 				//库存减少
-				
 				system("pause");
 				break;
 			}
@@ -734,8 +743,8 @@ void SalePromotion(client* cur_cus){
 				break;
 			} 
 			case(4):{
-				printf("\n\t\t\t 您已成功取消本次购买！");
-				printf("\n\t\t   按任意键可刷新本次界面!");
+				printf("\n\t\t\t\t\t   您已成功取消本次购买！");
+				printf("\n\t\t\t\t\t   按任意键可刷新本次界面!");
 				pau;
 				continue;
 				break;
@@ -746,7 +755,7 @@ void SalePromotion(client* cur_cus){
 				break;
 			}
 		}
-		system("pause");
+		
 	}
 } 
 
@@ -907,7 +916,7 @@ void ShoppintcartInterface(client* cur_cus){          // 当前客户信息
 					break;
 				}
 				delShoppingCart(cur_cus, delete_id);
-				printf("\t\t\t\t  您已成功删除购物车内容！");
+				printf("\n\t\t\t\t  您已成功删除购物车内容！");
 				writeShoppingCart(&L);
 				pau;
 				break;
@@ -935,6 +944,39 @@ void ShoppintcartInterface(client* cur_cus){          // 当前客户信息
 			case(3):{//支付结算
 				shopping_cart* p = cur_cus->cart;
 				int flag = 0;
+				if(p == NULL)
+				{
+					printf("\n\t\t\t\t\t 您的购物车为空，请去添加商品后再购买！");
+					continue;
+				}
+				while(p)
+				{
+					Inventory* tar = Inv_head->next;
+					while(tar)
+					{
+						if(tar->BrandNumber == p->x&& tar->SpecificationNumber == p->z)
+							break;
+						tar = tar->next;
+					}
+					if(tar == NULL || tar->Reserve == 0)
+					{
+						printf("\n\t\t\t\t 您购买的商品已售罄或下架, 请删除后重新购买！\n");
+						printf("\t\t\t\t 刷新页面后可重新选择购买！\n");
+						flag = 1;
+						pau;
+						break;
+					}
+					else if(tar->Reserve < p->cnt)
+					{
+						printf("\n\t\t\t\t 您购买的数量已超过库存, 已为您自动修改为当前能够购买的最大值！\n");
+						printf("\t\t\t\t 刷新页面后可重新选择购买！\n");
+						p->cnt = tar->Reserve;
+						flag = 1;
+						pau;
+						break;
+					}
+				}
+				
 				while(p)
 				{
 					struct sell_bill *newbill = (struct sell_bill *) malloc(sizeof(struct sell_bill));
@@ -950,7 +992,7 @@ void ShoppintcartInterface(client* cur_cus){          // 当前客户信息
 					}
 					if(tar == NULL || tar->Reserve < p->cnt)
 					{
-						printf("\t\t\t\t 您购买的数量已超过库存, 已为您自动修改为当前能够购买的最大值！\n");
+						printf("\n\t\t\t\t 您购买的数量已超过库存, 已为您自动修改为当前能够购买的最大值！\n");
 						printf("\t\t\t\t 刷新页面后可重新选择购买！\n");
 						p->cnt = tar->Reserve;
 						flag = 1;
@@ -978,6 +1020,7 @@ void ShoppintcartInterface(client* cur_cus){          // 当前客户信息
 				    }
 				    newbill->buyer = cur_cus;
 				    newbill->status = 1;
+				    newbill->related = NULL;
 					sell_save(newbill);
 					
 					reduceinventory(tar, p->cnt);
@@ -985,9 +1028,14 @@ void ShoppintcartInterface(client* cur_cus){          // 当前客户信息
 					//加入订单  减少库存 
 					p = p->next;
 				}
+//				printf("\t\t\t\t\t 您已成功购买所有商品！欢迎下次光临！");
+				cur_cus->cart = NULL;
+				writeShoppingCart(&L); 
 				if(flag == 1) break;
 				else {
-					printf("\t\t\t\t\t  您已成功购买所有商品！\n");
+					printf("\n\t\t\t\t\t      您已成功购买所有商品！\n");
+					printf("\t\t\t\t\t         按任意键可刷新界面！");
+					pau; 
 				}
 			} 
 				break;

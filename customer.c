@@ -11,7 +11,7 @@ flag:
 	l=0;
     while((ch=getchar())!='\n')s[l++]=ch;
     s[l]='\0';
-    if(s[0]=='\0')goto flag;
+    if(s[0]=='\0') goto flag;
     if(l==1&&s[0]=='0')return 0;
 	int ret=0;
 	for(int i=0;s[i];i++){

@@ -212,7 +212,7 @@ int Sell_confirm(struct sell_bill* newbill,struct customer* user)
         if(buychoice==3)  //加入购物车 
         {
 			printf("\t\t\t\t\t期待您的下一次光临");
-			addShoppingCart(&user->cart,newbill->total_number,user->id,newbill->Unit_Price,newbill->number_of_brand,newbill->ProductNumber,newbill->SpecificationNumber);
+			addShoppingCart(&user->cart,newbill->number_of_packagingzise,user->id,newbill->Unit_Price,newbill->number_of_brand,newbill->ProductNumber,newbill->SpecificationNumber);
 			writeShoppingCart(&L);
             newbill->status=0;
             flag=true;
@@ -248,7 +248,7 @@ void sell_save(struct sell_bill* newbill)
         {
             pointer_of_all_bills=pointer_of_all_bills->next;
         }
-       	pau;
+//       	pau;      可删除吗？ 
         newbill->pre=pointer_of_all_bills;
         pointer_of_all_bills->next=newbill;
         newbill->order=pointer_of_all_bills->order+1;

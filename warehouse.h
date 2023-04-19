@@ -92,6 +92,7 @@ Gift* InitGift();
 void PrintGift();
 void UpdateGift();	    //赠品写刷新 
 void Giftsort(Gift* Gift_head);
+void deltegift(); 
 void reducegift(Gift* tar, int num);            //赠品送出后减少 
 
 void wornout(ProductSource* tar, int amount); // 随机产生
