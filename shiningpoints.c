@@ -38,11 +38,8 @@ void showShoppingCart(client*cus){
     printf("\t\t\t\t\t      当前购物车总金额为%.2f元！\n",total_price);
 }
 void addShoppingCart(shopping_cart**p,int cnt,int cus_id,double money,int x,int y,int z){
-    if((*p)&&(*p)->x==x&&(*p)->y==y&&(*p)->z==z){
-            (*p)->cnt+=cnt;
-            return;
-    }
-    else if(!(*p)){
+    
+    if(!(*p)){
         shopping_cart *tmp=(shopping_cart*)malloc(sizeof(shopping_cart));
         tmp->single_cost=money;
         tmp->cnt=cnt;
@@ -52,6 +49,10 @@ void addShoppingCart(shopping_cart**p,int cnt,int cus_id,double money,int x,int 
         strcpy(tmp->goods_name,"tempname");
         tmp->next=NULL;
         *p=tmp;
+    }
+    else if((*p)&&(*p)->x==x&&(*p)->y==y&&(*p)->z==z){
+            (*p)->cnt+=cnt;
+            return;
     }
     else addShoppingCart(&(*p)->next,cnt,cus_id,money,x,y,z);
 }
@@ -67,6 +68,7 @@ void readShoppingCart(client**L){
     int id,cus_id;double money;int cnt,x,y,z;
     while (fscanf(fp, "%d%d%d%lf%d%d%d",&id,&cus_id,&cnt,&money,&x,&y,&z)!=EOF){
         client *p= findClient(L,cus_id);
+        if(!p)continue;
         addShoppingCart(&(p->cart),cnt,cus_id,money,x,y,z);
     }
     fclose(fp);

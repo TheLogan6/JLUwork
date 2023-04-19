@@ -164,7 +164,6 @@ void addClient(client **L, client *p) {
                     phoneNumber[l] = '\0';
                     break;
                 } else {
-                	system("cls");
                     cout("\t\t\t\t手机号码长度不符合要求,请重新输入：");
                 }
             }
@@ -284,11 +283,10 @@ client*findClient(client**L,int id){
 void printCustomer(client*L){
 	system("cls");
 	printf("\t\t\t\t\t --------------------------------------- \n");
-	SetConsoleTextAttribute(GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_INTENSITY | FOREGROUND_RED|FOREGROUND_BLUE|FOREGROUND_GREEN|BACKGROUND_GREEN);
     printf("\t\t\t\t\t                客户信息                 \n");
     printf("\t\t\t\t\t --------------------------------------- \n");
     if(!L){
-        cout("用户列表为空！\n");
+        cout("\t\t\t\t\t\t\t用户列表为空！\n");
         return;
     }
   printf("\t\t\t%-16s%-12s%-10s%-14s%-10s  %-2s\n", "顾客编号", "顾客姓名", "顾客等级", "顾客余额","顾客积分", "联系电话");
@@ -308,7 +306,7 @@ bool checkPassword(client*L,int id,char *s){
         else L=L->ne;
     }
     if(!L){
-        cout("\t\t\t\t\tid用户不存在！\n");
+//        cout("\t\t\t\t\tid用户不存在！\n");
         return false;
     }
     int i=0;
@@ -318,16 +316,23 @@ bool checkPassword(client*L,int id,char *s){
 }
 //删除用户
 void delClient(client **L,int id){
-    if(!(*L))return;
-    client *p=*L,*q=p;
+    if(!(*L)) {
+        cout("\t\t\t\t无此用户！");
+        enter;
+        return; }
+    client*dummy=malloc(sizeof(client));
+    dummy->ne=*L;
+    client *p=dummy->ne,*q=dummy;
     while(p&&p->id!=id)q=p,p=p->ne;
     if(!p||p->id!=id){
-        cout("\t\t\t\t\t无此用户！");enter;
+        cout("\t\t\t\t无此用户！");enter;
         return;
     }
     q->ne=p->ne;
     if(p->ne)p->ne->pre=q;
     cus_cnt--;
+    (*L)=dummy->ne;
+    printf("\t\t\t\t删除用户成功！\n");
 }
 //更新用户积分和等级
 void update(client**L,double money){

@@ -42,6 +42,7 @@ struct sell_bill//卖出
     int total_number;           //卖出的总数
     double total_price;         //总价
     //卖给谁的(3)
+    int id;
     double discount_for_client; //对于客户来说优惠是多少
     //状态
     int status;//取消是0，正常是1，申请换货是2，申请退货是3，已换货是4，已退货是4

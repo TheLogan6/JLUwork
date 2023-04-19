@@ -331,7 +331,8 @@ void Clinet_Mode(){
 				if(tempid == -1){
 					RefreshPage();
 					continue;
-				}	
+				}
+				else if(tempid==0)return;	
 				changeInfo(&L, tempid);
 				writeClientInfo(L);
 				pau;
@@ -350,23 +351,25 @@ void Clinet_Mode(){
 			    	printf("\t\t\t\t\t --------------------------------------- \n");
 					char tempid_s[6];
 					printf("\t\t\t\t 请输入您的id: ");
-					scanf("%s", tempid_s);
-					tempid = inputcheck(tempid_s);
+					tempid = checkNum();
 					if(tempid == -1){
 						RefreshPage();
 						continue;
 					}	
 					if(tempid == 0)	break;
 					client* p=findClient(&L, tempid); 
-					if(!p) continue;
+					if(!p){
+						printf("\t\t\t\t\t您输入的用户不存在!\n");
+						pau;
+						return; 
+					}
 					printf("\t\t\t\t 请输充值金额：");
-					while(getchar()!='\n');
 					tempmoney=checkDouble();
-
 					if(!recharge(&L, &log_head, tempid, tempmoney)){
 						RefreshPage();continue;
 					}
-					else{printf("\t\t\t\t充值成功！本次充值金额：%.2lf",tempmoney);
+					else{
+					printf("\t\t\t\t充值成功！本次充值金额：%.2lf",tempmoney);
 					writeClientInfo(L);
 					pau;
 					break;
@@ -377,7 +380,27 @@ void Clinet_Mode(){
 				break;
 			}
 			case(4):{
-				
+				int cus_id;
+				while(1){
+					system("cls");
+					printf("\n\n\n\n\n"); 
+			    	printf("\t\t\t\t\t --------------------------------------- \n");
+			    	printf("\t\t\t\t\t                删除用户                 \n");
+			    	printf("\t\t\t\t\t     (在账号处输入0可以返回上一个界面)   \n");
+			    	printf("\t\t\t\t\t --------------------------------------- \n");
+			    	printf("\t\t\t\t请输入要删除的用户id:");
+					cus_id=checkNum();
+					if(cus_id==0)break;
+					if(cus_id!=-1){
+						delClient(&L,cus_id);
+						writeClientInfo(L);
+						break;
+					}
+					else{
+						printf("\t\t\t\t输入的用户id不正确！请重新输入！");
+					}
+				}
+				pau;
 				break;
 			} 
 			default:{
@@ -403,12 +426,12 @@ void Bill_Mode(){
 	    	printf("\t\t\t\t\t --------------------------------------- \n");
 	    	printf("\t\t\t\t\t|                                       |\n");
 	    	if(i==1) printf("\033[1;46m\t\t\t\t\t|   -->  (1).   查看订单信息            |\033[0m\n\033[1;44m");
-	    	else printf("\t\t\t\t\t|        (1).   查看客户信息            |\n");
+	    	else printf("\t\t\t\t\t|        (1).   查看订单信息            |\n");
 //	    	if(i==2) printf("\033[1;46m\t\t\t\t\t|        (2).   修改客户信息            |\033[0m\n\033[1;44m");
 //	    	else printf("\t\t\t\t\t|        (2).   修改客户信息            |\n");
-	    	if(i==3) printf("\033[1;46m\t\t\t\t\t|   -->  (2).     订单查询              |\033[0m\n\033[1;44m");
+	    	if(i==2) printf("\033[1;46m\t\t\t\t\t|   -->  (2).     订单查询              |\033[0m\n\033[1;44m");
 	    	else printf("\t\t\t\t\t|        (2).     订单查询              |\n");
-	    	if(i==4) printf("\033[1;46m\t\t\t\t\t|   -->  (3).   删除销售订单            |\033[0m\n\033[1;44m");
+	    	if(i==3) printf("\033[1;46m\t\t\t\t\t|   -->  (3).   删除销售订单            |\033[0m\n\033[1;44m");
 	    	else printf("\t\t\t\t\t|        (3).   删除销售订单            |\n");
 	    	if(i==0) printf("\033[1;46m\t\t\t\t\t|   -->  (0).  返回上一个界面           |\033[0m\n\033[1;44m");
 	    	else printf("\t\t\t\t\t|        (0).  返回上一个界面           |\n");
@@ -416,8 +439,8 @@ void Bill_Mode(){
 			printf("\t\t\t\t\t --------------------------------------- \n");
 			printf("\t\t\t\t       请输入你要选择的服务：");	
 			temp = getch();	
-			if(temp == 'w'||temp=='W') i = (i-1+5)%5;
-			else if(temp == 's'||temp=='S') i = (i+1)%5;
+			if(temp == 'w'||temp=='W') i = (i-1+4)%4;
+			else if(temp == 's'||temp=='S') i = (i+1)%4;
 			else if(temp == '\r'){
 				ManagerOp = i;break;
 			}
@@ -426,7 +449,12 @@ void Bill_Mode(){
 		
 		switch(ManagerOp){
 			case(0): return;
-			case(1):{//查看客户信息					
+			case(1):{//查看客户信息		
+			system("cls");
+				printf("\n\n\n\n\n"); 
+		    	printf("\t\t\t\t\t\t\t\t\t\t ------------------------------------------------------------------ \n");
+		    	printf("\t\t\t\t\t\t\t\t\t\t                        查询所有订单的界面                 \n");
+		    	printf("\t\t\t\t\t\t\t\t\t\t ------------------------------------------------------------------ \n");			
 				Check_Bills();
 				pau;
 				break;
@@ -504,6 +532,11 @@ void ClientChooseMode(client* cur_cus){
 			}
 			case(2):{
 				//查询历史订单 
+				system("cls");
+				printf("\n\n\n\n\n"); 
+		    	printf("\t\t\t\t\t\t\t\t\t\t ------------------------------------------------------------------ \n");
+		    	printf("\t\t\t\t\t\t\t\t\t\t                        您的历史订单界面                 \n");
+		    	printf("\t\t\t\t\t\t\t\t\t\t ------------------------------------------------------------------ \n");
 				Print_Bills_Of_Given_Id(cur_cus->id);
 				pau;
 				break;
