@@ -58,7 +58,7 @@ struct sell_bill//Âô³ö
 extern struct sell_bill* bill_with_problem;
 extern char Exchange_reason[Exchange_Reason_num][50];
 extern char Return_reason[Return_Reason_num][50];
-extern char* code[12][5];
+extern char* code[12][10];
 extern struct lognode *log_head;
 extern struct customer* L;
 extern struct sell_bill* bill_pre;

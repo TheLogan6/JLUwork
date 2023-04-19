@@ -17,7 +17,7 @@
 //全局变量区
 char Exchange_reason[Exchange_Reason_num][50]={"不喜欢","商品与描述不符","产品过期","商品少件","商品破损","发错货物"};
 char Return_reason[Return_Reason_num][50]={"不想要了","不喜欢","商品与描述不符","产品过期","质量问题","商品少件","商品破损","发错货物"};
-char* code[12][5];
+char* code[12][10];
 char* BillType[6];
 Inventory* Inv_head;                // 库存商品 
 Gift* Gift_head;                     // 赠品管理 
@@ -42,11 +42,17 @@ int max_ = 0x3f3f3f3f;
 //end 全局变量 
 
 int main(int argc, char *argv[]) {
+	
+	
+
 	encode_product();
 	Inv_head = InitInventory();
 	Gift_head = InitGift();
 	Giftsort(Gift_head);
 	readClient(&L);
+	createsupplylist();
+	initproductinlist();
+	createproductinlist();
 	InitLog(&log_head,&L);
 	Sou_head = ReadSource();
 	bill_pre = Initiate_Bill(); 

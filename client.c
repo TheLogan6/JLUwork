@@ -3,10 +3,24 @@
 extern Inventory* Inv_head;
 extern int total_brand;
 extern client* L;
-extern char* code[12][5];
+extern char* code[12][10];
 
 void PurchaseInterface(client* cur_cus){
 	int position=0,row=8,ChooseBrand=0;
+	Inventory* p = Inv_head->next;
+	int tag[11] = {0};
+	int hash[11] = {0};
+	int num = 0;
+	while(p)
+	{
+		if(tag[p->BrandNumber] == 0){
+			num++;
+			tag[p->BrandNumber] = 1;
+			hash[num] = p->BrandNumber;
+		}
+		p = p->next;
+	}
+	row=num+1;
 	while(1)
 	{
 		system("cls");
@@ -15,13 +29,14 @@ void PurchaseInterface(client* cur_cus){
     	printf("\t\t\t\t\t               商品批发界面              \n");
 //    	printf("\t\t\t\t\t         (输入0可以返回上一个界面)       \n");
     	printf("\t\t\t\t\t --------------------------------------- \n");
-		for(int i = 1; i <= 7; i++)
+    	
+		for(int i = 1; i <= num; i++)
 		{
-		if(position==i-1)printf("\t\t\t\t\t|            --->   %-14s        |\n",code[i][0]);
-		else printf("\t\t\t\t\t|                   %-14s        |\n",  code[i][0]);
+		if(position==i-1)printf("\t\t\t\t\t|        --->   %-14s            |\n",code[hash[i]][0]);
+		else printf("\t\t\t\t\t|               %-14s            |\n",  code[hash[i]][0]);
 		}
-		if(position==7)printf("\t\t\t\t\t|            --->   %-14s        |\n","退出"); 
-		else  printf("\t\t\t\t\t|                   %-14s        |\n","退出"); 
+		if(position==num)printf("\t\t\t\t\t|        --->   %-14s            |\n","退出"); 
+		else printf("\t\t\t\t\t|               %-14s            |\n","退出"); 
 		printf("\t\t\t\t\t --------------------------------------- \n");
 		printf("\n\t\t\t\t\t请选择你需要选购的品牌：");
 //		int ChooseBrand;
@@ -35,10 +50,10 @@ void PurchaseInterface(client* cur_cus){
 		int op=getchoice(&position,row,&ChooseBrand);
 		if(op<0)break;
 	} 
-	if(ChooseBrand == 8) return ;
+	if(ChooseBrand == row) return ;
 		else{
-			struct sell_bill* newbill = Sell_select_brand(ChooseBrand);
-			PurchaseProduct(cur_cus, ChooseBrand, newbill);
+			struct sell_bill* newbill = Sell_select_brand(hash[ChooseBrand]);
+			PurchaseProduct(cur_cus, hash[ChooseBrand], newbill);
 	}
 }
 
@@ -107,9 +122,7 @@ void PurchaseProduct(client* cur_cus, int ChooseBrand, struct sell_bill* newbill
 			}
 //			printf("\n\t\t\t\t您已成功选择  ,容量为  ,包装为  "); 
 		}
-				
-//		Sleep(2000); 
-//		system("pause"); 
+		system("pause"); 
 	}
 }
 

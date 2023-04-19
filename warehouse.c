@@ -1,6 +1,6 @@
 #include"warehouse.h"
 
-extern char* code[12][5];
+extern char* code[12][10];
 extern Inventory* Inv_head;
 extern ProductSource* Sou_head;
 extern int total_brand;
@@ -83,24 +83,24 @@ void AddNewinventory(Inventory* newInv){
 }
 
 void UpdateInventory(){
-    FILE* newstorehouse_fp = fopen("Newstorehouse.txt", "w");
-    if (newstorehouse_fp == NULL)
+    FILE* warehouse_fp = fopen("warehouse.txt", "w");
+    if (warehouse_fp == NULL)
     {
-        printf("NewstorehouseFile cannot open, error happens!");
+        printf("warehouseFile cannot open, error happens!");
         exit(-1);
     }
     //fprintf(newstorehouse_fp, "酒水品牌   |  品牌编号 |   商品编号   |规格编号| 容量大小 | 包装大小 | 库存容量 |  批量标价\n");
     Inventory* p = Inv_head->next;
     while (p != NULL)
     {
-        fprintf(newstorehouse_fp, "%-20s", p->DrinksBrand);
-		fprintf(newstorehouse_fp, "%-9d%-9d", p->BrandNumber, p->ProductNumber);
-		fprintf(newstorehouse_fp, "%-9d%-9d%-9d%-9d", p->SpecificationNumber, p->volume, p->packagingsize, p->Reserve); 
-		fprintf(newstorehouse_fp, "%-15.2f", p->Price);
-		fprintf(newstorehouse_fp, "%-9d%-9d%-9d%-5d\n", p->quality_year, p->quality_month, p->quality_day, p->nearexpiry);
+        fprintf(warehouse_fp, "%-20s", p->DrinksBrand);
+		fprintf(warehouse_fp, "%-9d%-9d", p->BrandNumber, p->ProductNumber);
+		fprintf(warehouse_fp, "%-9d%-9d%-9d%-9d", p->SpecificationNumber, p->volume, p->packagingsize, p->Reserve); 
+		fprintf(warehouse_fp, "%-15.2f", p->Price);
+		fprintf(warehouse_fp, "%-9d%-9d%-9d%-5d\n", p->quality_year, p->quality_month, p->quality_day, p->nearexpiry);
 		p = p->next;
     }
-    fclose(newstorehouse_fp);
+    fclose(warehouse_fp);
     return;
 }
 
@@ -675,11 +675,14 @@ Gift* InitGift(){
 		printf("Giftfile cannot open, error happens!");
 		exit(-1);
 	}
-
-	while(!feof(Gift_fp))
+	int reorder,brand,product,gif_volume,bottle,value;
+	while(fscanf(Gift_fp, "%d%d%d%d", &reorder, &brand, &product, &gif_volume)!=EOF)
 	{
 		Gift* p = (Gift*)malloc(sizeof(Gift));
-		fscanf(Gift_fp, "%d%d%d%d", &p->reorder, &p->brand, &p->product, &p->gif_volume);
+		p->reorder = reorder;
+		p->brand = brand;
+		p->product = product;
+		p->gif_volume = gif_volume;
 		fscanf(Gift_fp, "%d", &p->bottle);
 		fscanf(Gift_fp, "%f", &p->value);
 		fscanf(Gift_fp, "%d%d%d\n", &p->gif_year, &p->gif_month, &p->gif_day);
@@ -693,6 +696,10 @@ Gift* InitGift(){
 } 
 void PrintGift(){
 	Gift* p = Gift_head->next;
+	if(p == NULL){
+		printf("\t\t\t\t\t       仓库中没有赠品！\n");
+		return;
+	} 
 	printf("\t  赠品编号 | 酒水品牌  | 品牌编号 |   商品名称   | 容量大小 | 库存容量(瓶) |  商品价值  |       保质期\n");
 	while(p)
 	{
@@ -838,8 +845,7 @@ void reducegift(Gift* tar, int num){              // 减少赠品
 
 
 void wornout(ProductSource* tar, int amount){
-//	int odds = rand()%10;
-	int odds = 1; 
+	int odds = rand()%10;
 	if(odds == 1) 
 	{
 		int n = (int) (amount/10);   //n箱 
@@ -847,7 +853,7 @@ void wornout(ProductSource* tar, int amount){
 		int num_gift = n * (tar->packagingsize_sou - loss);
 		//直接在赠品中查找 
 		Gift* p = Gift_head->next;
-		Gift* temp = p;
+		Gift* temp = Gift_head;
 		int i = 0;
 		while(p)
 		{

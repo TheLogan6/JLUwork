@@ -12,6 +12,7 @@
 #include"customer.h" 
 #include"sellbill.h"
 #include"shiningpoints.h"
+#include"supplier.h"
 
 void ManagerInput();
 void Restock();

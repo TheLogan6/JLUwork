@@ -14,7 +14,7 @@
 #include"supplier.h" 
 
 //extern char* BillType[6] = {"待确认", "已确认", "已退货", "已换货"};
-extern char* code[12][5];
+extern char* code[12][10];
 //extern Inventory* Inv_head;
 struct shopping_cart{
     int id;
@@ -41,7 +41,7 @@ typedef struct Bill_Aftersales{
 	struct Bill_Aftersales* next;
 }Bill_Aftersales;
 
-void ShoppintcartInterface(client* cur_cus); // 购物车界面 
+//void ShoppintcartInterface(client* cur_cus); // 购物车界面 
 void ChangeNumber(client*cur_cus, int tarid);
 void Deleteitems();					//删除订单 
 void Changequantity();

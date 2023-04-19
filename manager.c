@@ -4,11 +4,13 @@ extern Inventory* Inv_head;
 extern Gift* Gift_head;
 extern client* L;
 extern ProductSource* Sou_head;
-extern char* code[12][5]; 
+extern char* code[12][10]; 
 extern char passwordans[20]; 
 extern int total_brand;
 extern struct sell_bill* bill_pre;            //有哨位节点 
 extern struct sell_bill* bill_with_problem;  // 有哨位节点 
+extern supplierlist L2;
+extern productlistin L1;//进货单
 //   开始进货 
 void Restock(){
 	Sou_head = ReadSource();
@@ -56,11 +58,47 @@ void Restock(){
 		double buy_money;
 		buy_money = buy_amount * tar_sou->Price_sou;
 		
-		printf("\t\t您已成功购买%s品牌的%s%d箱,",tar_sou->DrinksBrand_sou, code[tar_sou->BrandNumber_sou][tar_sou->ProductNumber_sou], buy_amount);
-		printf(" 每箱%d瓶, 每瓶%d毫升！\n", tar_sou->packagingsize_sou, tar_sou->volume_sou);
-		printf("\t\t\t\t 共计%.2f元!\n", buy_money);
-		// （加入）这里加入成功写入订单的操作 
 		printf("\t\t\t\t\t --------------------------------------- \n");
+		//加入订单
+		productin * newbill = (productin*)malloc(sizeof(productin));
+		strcpy(newbill->commodity_name, tar_sou->DrinksBrand_sou);
+		newbill->commodity_id = tar_sou->SpecificationNumber_sou;
+		newbill->commodity_packagenum = tar_sou->packagingsize_sou;
+		newbill->commodity_price = tar_sou->Price_sou;
+		
+		newbill->commodity_number = buy_amount;
+		newbill->commodity_volume = tar_sou->volume_sou;
+		newbill->next  = NULL;
+		newbill->provider = choosesupplier2();
+		newbill->sum_price = buy_money + newbill->provider->transport_cost;
+		time_t timep;
+		struct tm *p;
+	    time(&timep);
+	    p = localtime(&timep); //取得当地具体时间
+	    char temp[50];
+	    temp[0] = (1900+p->tm_year)/1000 - 0 +'0';
+	    temp[1] = ((1900+p->tm_year)%1000)/100- 0 +'0';
+	    temp[2] = (((1900+p->tm_year)%100)/10)- 0 +'0';
+	    temp[3] = (1900+p->tm_year)%10- 0 +'0';
+	    temp[4] = (1+p->tm_mon)/10- 0 +'0';
+	    temp[5] = (1+p->tm_mon)%10- 0 +'0';
+	    temp[6] = (p->tm_mday)/10- 0 +'0';
+	    temp[7] = (p->tm_mday)%10- 0 +'0';
+	    temp[8] = '\0';
+	    strcpy(newbill->date, temp);
+		
+		productin *tail = L1;
+		while(tail->next)
+		{
+			tail = tail->next;
+		}
+		tail->next = newbill;
+		
+		printf("\t\t\t\t您已成功购买%s品牌的%s%d箱,",tar_sou->DrinksBrand_sou, code[tar_sou->BrandNumber_sou][tar_sou->ProductNumber_sou], buy_amount);
+		printf(" 每箱%d瓶, 每瓶%d毫升！\n", tar_sou->packagingsize_sou, tar_sou->volume_sou);
+		printf("\t\t\t\t\t订单产生运费%d元,共计%.2f元!\n",newbill->provider->transport_cost, buy_money+newbill->provider->transport_cost);
+		
+		printfile();
 		
 		wornout(tar_sou, buy_amount);
 		
@@ -69,6 +107,36 @@ void Restock(){
 	return ;
 };
 
+
+void getchartime(){
+//	time_t timep;
+//	struct tm *p;
+//    time(&timep);
+//    p = localtime(&timep); //取得当地具体时间
+//    char temp[50];
+//    temp[0] = (1900+p->tm_year)/1000 - 0 +'0';
+//    temp[1] = ((1900+p->tm_year)%1000)/100- 0 +'0';
+//    temp[2] = (((1900+p->tm_year)%100)/10)- 0 +'0';
+//    temp[3] = (1900+p->tm_year)%10- 0 +'0';
+//    temp[4] = (1+p->tm_mon)/10- 0 +'0';
+//    temp[5] = (1+p->tm_mon)%10- 0 +'0';
+//    temp[6] = (p->tm_mday)/10- 0 +'0';
+//    temp[7] = (p->tm_mday)%10- 0 +'0';
+//    temp[8] = '\0';
+//	while(q)
+//	{
+//		if(q->nearexpiry == 1) {
+//			q = q->next;
+//			continue;
+//		}
+//		else if(timegap(q->quality_year,q->quality_month,q->quality_day,1900+p->tm_year, 1+p->tm_mon, p->tm_mday) < 60 )
+//		{
+//			q->Price *= 0.5;
+//			q->nearexpiry = 1;
+//		}
+//		q = q->next;
+//	}
+}
 
 
 

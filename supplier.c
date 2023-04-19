@@ -89,6 +89,20 @@ supplier* choosesupplier(){//找到费用最小的供应商
 	while(p != NULL){
 		if(su > p->transport_cost){
 			su = p->transport_cost;
+			flag = p; 
+		}
+		p = p->next;
+	}
+	
+	return flag;
+}
+supplier* choosesupplier2(){//找到费用最小的供应商
+	supplier *p = L2->next;
+	supplier *flag;
+	int su = max_;
+	while(p != NULL){
+		if(su > p->transport_cost){
+			su = p->transport_cost;
 			flag = p;
 		}
 		p = p->next;
@@ -153,13 +167,11 @@ void createproductinlist() {
 void printfile()
 {
 	productin *p = L1->next;
-	
 	FILE* f;
     if((f = fopen("inn.txt","w"))==NULL){
         printf("文件打开有误\n");
         return;
     }
-    
     while(p != NULL){
     	fprintf(f,"%-20s ",p->commodity_name);
     	fprintf(f,"%-6d ",p->commodity_id);

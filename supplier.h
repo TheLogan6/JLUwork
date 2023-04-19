@@ -34,6 +34,7 @@ void generate_randomstring(char str[], int n);
 int inputcheck();
 void initproductinlist();
 supplier* choosesupplier();
+supplier* choosesupplier2();
 void createproductinlist();
 void printfile();
 void addproductinlist();

@@ -4,7 +4,7 @@ extern Inventory* Inv_head;
 extern client* L;
 extern ProductSource* Sou_head;
 extern Gift* Gift_head;
-extern char* code[12][5]; 
+extern char* code[12][10]; 
 //extern SpecialInv* SpeInv_head;
 extern int total_brand;
 void LoginInterface(int position){
@@ -30,7 +30,7 @@ void LoginInterface(int position){
     else printf("\t\t\t\t\t|            (4). 退出系统              |\n");
     printf("\t\t\t\t\t|                                       |\n");
     printf("\t\t\t\t\t --------------------------------------- \n");
-    printf("\t\t\t\t请选择你要进行的服务");
+    printf("\t\t\t\t    请选择你要进行的服务(按下w或s可进行上下选择)");
 }
 
 void ClientLogin(){
@@ -95,7 +95,7 @@ void ManInferface(int i){
     	else printf("\t\t\t\t\t|        (0).  返回上一个界面           |\n");
 		printf("\t\t\t\t\t|                                       |\n");
 		printf("\t\t\t\t\t --------------------------------------- \n");
-		printf("\t\t\t\t       请选择你要进行的操作：");
+		printf("\t\t\t\t    请选择你要进行的服务(按下w或s可进行上下选择)");
 }
 
 void ManagerChooseMode(){
@@ -169,7 +169,7 @@ void restock_mode(){
 	    	else printf("\t\t\t\t\t|          (0). 返回上一个界面           |\n");
 	    	printf("\t\t\t\t\t|                                        |\n");
 	    	printf("\t\t\t\t\t --------------------------------------- \n");
-	    	printf("\t\t\t\t       请选择你要进行的操作：");
+	    	printf("\t\t\t\t    请选择你要进行的服务(按下w或s可进行上下选择)");
 			temp = getch();
 			if(temp == 'w'||temp=='W') i = (i-1+3)%3;
 			else if(temp == 's'||temp=='S') i = (i+1)%3;
@@ -222,7 +222,7 @@ void Inventory_Mode(){
 	    	else printf("\t\t\t\t\t|        (0).  返回上一个界面           |\n");
 			printf("\t\t\t\t\t|                                       |\n");
 			printf("\t\t\t\t\t --------------------------------------- \n");
-			printf("\t\t\t\t       请选择你要进行的操作：");
+			printf("\t\t\t\t    请选择你要进行的服务(输入w或s可进行上下选择)");
 			
 			temp = getch();	
 			if(temp == 'w'||temp=='W') i = (i-1+6)%6;
@@ -301,7 +301,7 @@ void Clinet_Mode(){
 	    	else printf("\t\t\t\t\t|          (0).  返回上一个界面         |\n");
 			printf("\t\t\t\t\t|                                       |\n");
 			printf("\t\t\t\t\t --------------------------------------- \n");
-			printf("\t\t\t\t       请输入你要选择的服务：");	
+			printf("\t\t\t\t    请选择你要进行的服务(输入w或s可进行上下选择)");	
 			temp = getch();	
 			if(temp == 'w'||temp=='W') i = (i-1+5)%5;
 			else if(temp == 's'||temp=='S') i = (i+1)%5;
@@ -437,7 +437,7 @@ void Bill_Mode(){
 	    	else printf("\t\t\t\t\t|        (0).  返回上一个界面           |\n");
 			printf("\t\t\t\t\t|                                       |\n");
 			printf("\t\t\t\t\t --------------------------------------- \n");
-			printf("\t\t\t\t       请输入你要选择的服务：");	
+			printf("\t\t\t\t    请选择你要进行的服务(按下w或s可进行上下选择)");	
 			temp = getch();	
 			if(temp == 'w'||temp=='W') i = (i-1+4)%4;
 			else if(temp == 's'||temp=='S') i = (i+1)%4;
@@ -510,7 +510,7 @@ void ClientChooseMode(client* cur_cus){
     	else printf("\t\t\t\t\t|           返回上一个界面              |\n");
 		printf("\t\t\t\t\t|                                       |\n");
 		printf("\t\t\t\t\t --------------------------------------- \n");
-		printf("\t\t\t\t       请输入你要选择的服务：");
+		printf("\t\t\t\t    请选择你要进行的服务(按下w或s可进行上下选择)");
 		
 //		int Cli_mode;
 //		char Cli_mode_s[5];
@@ -923,16 +923,8 @@ void ShoppintcartInterface(client* cur_cus){          // 当前客户信息
 	    	else printf("\t\t\t\t\t               返回上一个界面           \n");
 			printf("\t\t\t\t\t                                        \n");
 			printf("\t\t\t\t\t --------------------------------------- \n");
-			printf("\t\t\t\t  请选择您要对你的购物车进行的操作：");
-	//		char ShoppingcartOp_s[5];
-	//		int ShoppingcartOp;
-	//		scanf("%s", ShoppingcartOp_s);
-	//		ShoppingcartOp = inputcheck(ShoppingcartOp_s);
-	//		if(ShoppingcartOp == -1){
-	//			RefreshPage();
-	//			continue;
-	//		} 
-	//		if(ShoppingcartOp == 0) return;
+			printf("\t\t\t\t 请选择您要对你的购物车进行的操作(输入w或s可进行上下选择)");
+
 			int op=getchoice(&position,row,&ShoppingcartOp);
 			if(op<0)break;
 			else continue;
@@ -940,8 +932,13 @@ void ShoppintcartInterface(client* cur_cus){          // 当前客户信息
 		if(ShoppingcartOp==4)return;
 		switch(ShoppingcartOp){
 			case(1):{
+				shopping_cart *p = cur_cus->cart;
+				if(p == NULL){
+					printf("\n\t\t\t\t\t 您的购物车为空，请先加入商品吧！");
+					pau;
+					continue;
+				}
 				int  delete_id;
-				char delete_id_s2[10];
 				printf("\n\t\t\t\t  请输入你想要删除的订单号："); 
 				delete_id = checkNum();
 				if(delete_id == -1) {
@@ -955,12 +952,16 @@ void ShoppintcartInterface(client* cur_cus){          // 当前客户信息
 				break;
 			}
 			case(2):{
+				shopping_cart *p = cur_cus->cart;
+				if(p == NULL){
+					printf("\n\t\t\t\t\t 您的购物车为空，请先加入商品吧！");
+					pau;
+					continue;
+				}
 				int  change_id;
-				char change_id_s[10];
 				printf("\n\t\t\t\t  请输入你想要修改的订单号："); 
 				change_id = checkNum();
 				int l = 0;
-				shopping_cart *p = cur_cus->cart;
 				while(p)
 				{
 					l++;
@@ -980,6 +981,7 @@ void ShoppintcartInterface(client* cur_cus){          // 当前客户信息
 				if(p == NULL)
 				{
 					printf("\n\t\t\t\t\t 您的购物车为空，请去添加商品后再购买！");
+					pau;
 					continue;
 				}
 				while(p)
@@ -1008,6 +1010,7 @@ void ShoppintcartInterface(client* cur_cus){          // 当前客户信息
 						pau;
 						break;
 					}
+					p = p->next;
 				}
 				
 				while(p)
