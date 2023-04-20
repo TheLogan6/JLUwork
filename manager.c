@@ -11,6 +11,9 @@ extern struct sell_bill* bill_pre;            //有哨位节点
 extern struct sell_bill* bill_with_problem;  // 有哨位节点 
 extern supplierlist L2;
 extern productlistin L1;//进货单
+extern double total_cost;
+extern double total_income;
+extern double current_money;
 //   开始进货 
 void Restock(){
 	Sou_head = ReadSource();
@@ -102,6 +105,9 @@ void Restock(){
 		
 		wornout(tar_sou, buy_amount);
 		
+		total_cost+=buy_money+newbill->provider->transport_cost;
+		current_money-=buy_money+newbill->provider->transport_cost;
+		writeprofit();
 		system("pause");
 	}
 	return ;
@@ -188,13 +194,17 @@ void aftersercive_check(){        // 售后订单处理
 		printf("\n\n\n\n"); 
     	printf("\t\t\t\t\t --------------------------------------- \n");
     	printf("\t\t\t\t\t             售后订单处理界面            \n");
+    	printf("\t\t\t\t\t           (输入0可返回上一个界面)       \n");
     	printf("\t\t\t\t\t --------------------------------------- \n");
 		
 		Check_Bills_with_problem();
 		struct sell_bill* tar = bill_with_problem->next;
-		if(bill_with_problem->next == NULL)
-	        return;
-		printf("\t\t\t\t\t请选择您要处理的订单编号:");
+		if(bill_with_problem->next == NULL){
+			pau; 
+			return;
+		}
+	        
+		printf("\n\t\t\t\t\t请选择您要处理的订单编号:");
 		int billid;
 
 		billid =checkNum();
@@ -222,7 +232,7 @@ void aftersercive_check(){        // 售后订单处理
     	printf("\t\t\t\t\t            2.拒绝退换货\n");
     	printf("\t\t\t\t\t         请输入您要进行的操作:");
     	int choice;
-		char choice_s[5];
+
 		choice = checkNum();
 		if(choice == -1 || choice > 2){
 			RefreshPage();
@@ -233,30 +243,61 @@ void aftersercive_check(){        // 售后订单处理
 			{
 				tar->status = 4;//已确认退换货
 				//在问题订单中删除
-				tar = tar->pre;
-				tar->next = tar->next->next;		
+				struct sell_bill* pointer=bill_pre->next;
+		        while(pointer!=NULL)
+		        {
+		            if(pointer->order==tar->order)
+		            {
+		                tar->related=pointer;
+		                break;
+		            }
+		            pointer=pointer->next;
+		        }
 				struct sell_bill* source = tar->related;
-				tar->status = 4;	
+				source->status = 4;
+				tar = tar->pre;
+				tar->next = tar->next->next;	
 				writeproblembill();
 				writebill();
 				bill_pre=Initiate_Bill();
 	    		bill_with_problem=Initiate_Bill_with_problem();
 	    		printf("\t\t\t\t\t 您已成功确认换货, 新商品已从仓库发出！");
+				
 	    		pau;
 				continue;
 			} 
 			else if(tar->status == 3)
 			{
-				tar->status = 4;//已确认退换货
-				tar = tar->pre;
-				tar->next = tar->next->next;
+				tar->status = 5;//已确认退换货
+				
+				struct sell_bill* pointer=bill_pre->next;
+				total_income-=tar->total_price;
+				current_money-=tar->total_price;
+				writeprofit();
+				client*cus=findClient(&L,tar->id);
+				update(&cus,-tar->total_price);
+				recharge(&L,&log_head,cus->id,tar->total_price);
+		        while(pointer!=NULL)
+		        {
+		        	printf("+%d",pointer->order);
+		            if(pointer->order==tar->order)
+		            {
+		                tar->related=pointer;
+		                break;
+		            }
+		            pointer=pointer->next;
+		        }
+//		        if(tar->related==NULL)
 				struct sell_bill* source = tar->related;
-				tar->status = 4;
+				source->status = 5;
+				tar->status = 5;
+				tar = tar->pre;
+				tar->next = tar->next->next;	
 				writeproblembill();
 				writebill();
 				bill_pre=Initiate_Bill();
 	    		bill_with_problem=Initiate_Bill_with_problem();
-	    		printf("\t\t\t\t\t 您已成功确认退货，新商品已从仓库发出！\n");
+	    		printf("\t\t\t\t\t 您已成功确认退货，钱款已经打入您的余额！\n");
 	    		if(tar->reason_num == 0 || tar->reason_num == 1) //"不想要了","不喜欢"
 	    		{
 	    			Inventory* q = Inv_head->next;
@@ -289,11 +330,41 @@ void aftersercive_check(){        // 售后订单处理
 	}
 	
 }
+void costAndprofit(){
+	system("cls");
+	printf("\n\n\n\n\n"); 
+    printf("\t\t\t\t\t --------------------------------------- \n");
+    printf("\t\t\t\t\t              成本与利润                 \n");
+    printf("\t\t\t\t\t                                         \n");
+    printf("\t\t\t\t\t --------------------------------------- \n");
+    
+    time_t timep;
+    time(&timep);
+    struct tm *tp;
+    tp = gmtime(&timep);
+    printf("\t\t\t\t\t截止至%d年 %d月 %d日，本店收支情况如下:\n",tp->tm_year+1900,tp->tm_mon+1,tp->tm_mday);
+    
+    printf("\t\t\t\t\t本店总收入:%.2lf\n",total_income);
+    printf("\t\t\t\t\t本店总成本:%.2lf\n",total_cost);
+    printf("\t\t\t\t\t合计总利润:%.2lf\n",total_income-total_cost);
+    printf("\t\t\t\t\t当前剩余资金:%.2lf\n",current_money);
+    system("pause");
+}
 
+void writeprofit(){
+	FILE *fp=fopen("profit.txt","w+");
+	if(!fp)return;
+	fprintf(fp,"%.2lf     %.2lf     %.2lf",total_cost,total_income,current_money);
+	fclose(fp);
+}
 
-
-
-
+void readprofit(){
+	FILE *fp=fopen("profit.txt","r+");
+	if(!fp)return;
+	
+	fscanf(fp,"%lf%lf%lf",&total_cost,&total_income,&current_money);
+	fclose(fp);
+}
 
 
 

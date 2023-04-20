@@ -91,11 +91,12 @@ void UpdateInventory(){
     }
     //fprintf(newstorehouse_fp, "酒水品牌   |  品牌编号 |   商品编号   |规格编号| 容量大小 | 包装大小 | 库存容量 |  批量标价\n");
     Inventory* p = Inv_head->next;
+
     while (p != NULL)
     {
         fprintf(warehouse_fp, "%-20s", p->DrinksBrand);
 		fprintf(warehouse_fp, "%-9d%-9d", p->BrandNumber, p->ProductNumber);
-		fprintf(warehouse_fp, "%-9d%-9d%-9d%-9d", p->SpecificationNumber, p->volume, p->packagingsize, p->Reserve); 
+		fprintf(warehouse_fp, "%-9d%-9d%-9d%-9d", p->SpecificationNumber, p->volume, p->Reserve, p->packagingsize); 
 		fprintf(warehouse_fp, "%-15.2f", p->Price);
 		fprintf(warehouse_fp, "%-9d%-9d%-9d%-5d\n", p->quality_year, p->quality_month, p->quality_day, p->nearexpiry);
 		p = p->next;

@@ -1,5 +1,8 @@
 #include"sellbill.h"
 #include"customer.h"
+extern double total_cost;
+extern double total_income;
+extern double current_money;
 //屎械匡汽
 struct customer* Find_pointer_of_client(int id)
 {
@@ -187,6 +190,9 @@ int Sell_confirm(struct sell_bill* newbill,struct customer* user)
             flag=true;
             newbill->status=1;
             newbill->product->Reserve-=newbill->number_of_packagingzise;
+            total_income+=newbill->total_price;
+            current_money+=newbill->total_price;
+            writeprofit();
             continue;
         }
         if(buychoice==2)
@@ -201,6 +207,10 @@ int Sell_confirm(struct sell_bill* newbill,struct customer* user)
                 flag=true;
                 newbill->status=1;
                 newbill->product->Reserve-=newbill->number_of_packagingzise;
+                total_income+=newbill->total_price;
+                current_money+=newbill->total_price;
+                writeprofit();
+                
                 continue;
             }
             else
@@ -214,7 +224,7 @@ int Sell_confirm(struct sell_bill* newbill,struct customer* user)
 			printf("\t\t\t\t\t豚棋艇議和匯肝高匝");
 			addShoppingCart(&user->cart,newbill->number_of_packagingzise,user->id,newbill->Unit_Price,newbill->number_of_brand,newbill->ProductNumber,newbill->SpecificationNumber);
 			writeShoppingCart(&L);
-            newbill->status=0;
+            newbill->status=6;
             flag=true;
             continue;
         }
@@ -231,6 +241,7 @@ int Sell_confirm(struct sell_bill* newbill,struct customer* user)
 void sell_save(struct sell_bill* newbill)
 {
 	//隠贋匡汽 
+	
     FILE *filep = fopen("bill.txt", "a");time_t timep;
     struct tm *timenow;
     time(&timep);
@@ -257,7 +268,7 @@ void sell_save(struct sell_bill* newbill)
     newbill->year=1900+timenow->tm_year;
     newbill->month=1+timenow->tm_mon;
     newbill->day=timenow->tm_mday;
-    newbill->hour=8+timenow->tm_hour;
+    newbill->hour=(8+timenow->tm_hour)%24;
     newbill->minute=timenow->tm_min;
     newbill->second=timenow->tm_sec;
     newbill->reason_num=-1;
@@ -313,6 +324,11 @@ void Print_Bills_Of_Given_Brand(void)
     int count = 0;
     while (bill != NULL) {
         if (bill->number_of_brand == number_of_brand) {
+        	if(bill->status==6)
+        	{
+        		bill=bill->next;
+        		continue;
+			}
             count++;
             if (count == 1)
                 printf("\n！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！煽雰匡汽！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！\n"
@@ -349,13 +365,13 @@ void Print_Bills_Of_Given_Brand(void)
                 }
                 case(4):
                 {
-                    printf("厮算歯\t\t");
+                    printf("厮算歯\t\t\t");
                     printf("|");
                     break;
                 }
                 case(5):
                 {
-                    printf("厮曜歯\t\t");
+                    printf("厮曜歯\t\t\t");
                     printf("|");
                     break;
                 }
@@ -471,6 +487,11 @@ int Print_Bills_Of_Given_Id(int ID_of_client)
     {
         if(bill->id==ID_of_client)
         {
+        	if(bill->status==6)
+        	{
+        		bill=bill->next;
+        		continue;
+			}
             count++;
             if (count == 1)
                 printf("\n！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！煽雰匡汽！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！\n"
@@ -507,13 +528,13 @@ int Print_Bills_Of_Given_Id(int ID_of_client)
                 }
                 case(4):
                 {
-                    printf("厮算歯\t\t");
+                    printf("厮算歯\t\t\t");
                     printf("|");
                     break;
                 }
                 case(5):
                 {
-                    printf("厮曜歯\t\t");
+                    printf("厮曜歯\t\t\t");
                     printf("|");
                     break;
                 }
@@ -762,6 +783,11 @@ void Check_Bills(void)
     struct sell_bill* bill=bill_pre->next;
     while(bill!=NULL)
     {
+    	if(bill->status==6)
+        	{
+        		bill=bill->next;
+        		continue;
+			}
         //匡汽園催
         printf("%d\t", bill->order);
         printf("|");
@@ -794,13 +820,13 @@ void Check_Bills(void)
             }
             case(4):
             {
-                printf("厮算歯\t\t");
+                printf("厮算歯\t\t\t");
                 printf("|");
                 break;
             }
             case(5):
             {
-                printf("厮曜歯\t\t");
+                printf("厮曜歯\t\t\t");
                 printf("|");
                 break;
             }
@@ -910,10 +936,12 @@ struct sell_bill* Initiate_Bill_with_problem(void)
         fscanf(filep, "%d", &bill->number_of_packagingzise);//宸倖淫廾議択阻謹富��
         fscanf(filep, "%d", &bill->total_number);        //沢竃議悳方
         fscanf(filep, "%lf", &bill->total_price);        //悳勺
-        int id_of_client;
-        fscanf(filep, "%d", &id_of_client);               //人薩
-        bill->buyer= Find_pointer_of_client(id_of_client);
+        fscanf(filep, "%d", &bill->id);               //人薩
+        bill->buyer= Find_pointer_of_client(bill->id);
         fscanf(filep, "%lf", &bill->discount_for_client);//單旨
+        point->next=bill;
+        bill->pre=point;
+        bill->next=NULL;
         struct sell_bill* pointer=bill_pre->next;
         while(pointer!=NULL)
         {
@@ -935,6 +963,7 @@ struct sell_bill* Initiate_Bill_with_problem(void)
         }
         bill->product=pointer_Inventory;
         point=bill;
+//        printf("+%d",bill->order);
     }
     if(head->next==NULL)
     {
@@ -1244,7 +1273,7 @@ void Check_Bills_with_problem(void)
     int count=0;
     while(bill!=NULL)
     {
-    	if(bill->status==3||bill->status==4)
+    	if(bill->status==4||bill->status==5||bill->status==6)
     	{
     		bill=bill->next;
     		continue;
@@ -1325,13 +1354,14 @@ void Check_Bills_with_problem(void)
         printf("|");
         //択社吉雫?
         printf("%d", bill->buyer->level);
-        printf("\t\t|");
+        printf("\t\t\n");
 		}
         else 
         {
         	printf("乎択社厮瓜評茅\t|");
-        	printf("乎択社厮瓜評茅\t|");
+        	printf("乎択社厮瓜評茅\t\n");
 		}
+		bill=bill->next;
     }
 }
 void writebill(){

@@ -45,7 +45,7 @@ struct sell_bill//卖出
     int id;
     double discount_for_client; //对于客户来说优惠是多少
     //状态
-    int status;//取消是0，正常是1，申请换货是2，申请退货是3，已换货是4，已退货是4
+    int status;//取消是0，正常是1，申请换货是2，申请退货是3，已换货是4，已退货是5
     int reason_num;//原因所对应的编号
     int change_num;//退换货涉及的箱数
     struct sell_bill* next;

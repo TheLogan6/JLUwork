@@ -28,6 +28,7 @@ double checkDouble(){
     double ret=0;double res=0;bool flag=0;
     l=0;
     for(int i=0;s[i];i++){
+    	 if(s[i]>'9'&&s[i]!='.'||s[i]<'0'&&s[i]!='.')return -1; 
     	 if(s[i]=='.'){
     	 	if(!flag)flag=1;
     	 	else return -1;
@@ -198,14 +199,14 @@ void addClient(client **L, client *p) {
 			}
             if (ch == '\r') {
             	for(int i=0;password[i];i++)if(password[i]==' '){
-                	 cout("\t\t\t\t输入的密码不能含有空格！\n请重新输入密码：");
+                	 cout("\n\t\t\t\t输入的密码不能含有空格！\n请重新输入密码：");
                 	 break;
 				}
                 if (l >= 6 && l <= 10) {
                     password[l] = '\0';
                     break;
                 } else {
-                    cout("\t\t\t\t密码长度不符合要求,请重新输入密码：");
+                    cout("\n\t\t\t\t密码长度不符合要求,请重新输入密码：");
                 }
                 
             }
@@ -345,7 +346,6 @@ void update(client**L,double money){
 }
 //修改用户信息
 void changeInfo(client**L,int id) {
-	while((getchar())!='\n');
     if (!(*L)) {
         cout("\t\t\t\t\t暂无用户信息！\n");
         return;
@@ -355,14 +355,13 @@ void changeInfo(client**L,int id) {
         cout("\t\t\t\t该用户不存在！\n");
         return;
     }
-    cout("\t\t\t\t请输入要修改的信息：(1:密码 2:手机号 3:余额 4：姓名 0:返回)\n");
-    cout("\t\t\t\t\t");
+    cout("\t\t\t\t\n\t\t\t\t(1:密码 2:手机号 3:余额 4：姓名 0:返回)\n");
+    cout("\t\t\t\t\t请输入要修改的信息：");
     int con;
     while (1) {
         con =checkNum();
         if (con==-1|| con <0 || con > 5 ) {
-            cout("\t\t\t\t\t输入的数字非法！请重新输入\n");
-            cout("\t\t\t\t\t");
+            cout("\n\t\t\t\t\t输入的数字非法！请重新输入：");
         } else
             break;
     }
@@ -378,9 +377,7 @@ void changeInfo(client**L,int id) {
                 int l = 0;
                 while ((ch = getchar()) != '\n') {
                     if (ch == ' ') {
-                        cout("\t\t\t\t\t输入的密码不能含有空格！\n请重新输入密码：");
-                        cout("\t\t\t\t\t");
-                        while (getchar() != '\n');
+                        cout("\n\t\t\t\t\t输入的密码不能含有空格！\n请重新输入密码：");
                         continue;
                     }
                     password[l++] = ch;
@@ -398,18 +395,15 @@ void changeInfo(client**L,int id) {
                             int i = 0;
                             for (i = 0; password[i]; i++)p->password[i] = password[i];
                             p->password[i] = '\0';
-                            cout("\t\t\t\t\t修改密码成功！\n");
+                            cout("\n\t\t\t\t\t修改密码成功！\n");
                             break;
                         } else {
-                            cout("\t\t\t\t\t密码不能与现在的密码一致！\n");
-                            cout("\t\t\t\t\t");
-                            while (getchar() != '\n');
+                            cout("\n\t\t\t\t\t密码不能与现在的密码一致！请重新输入：");
                             l = 0;
                             continue;
                         }
                     } else {
-                        cout("\t\t\t\t\t密码长度不符合要求,请重新输入密码：");
-                        cout("\t\t\t\t\t");
+                        cout("\n\t\t\t\t\t密码长度不符合要求,请重新输入密码：");
                         l = 0;
                     }
                 }
@@ -424,7 +418,7 @@ void changeInfo(client**L,int id) {
                 int l = 0;
                 while ((ch = getchar()) != '\n') {
                     if (ch == ' ' || ch > '9' || ch < '0') {
-                        cout("\t\t\t\t\t输入的手机号不能含有空格或非数字！\n请重新输入手机号：");
+                        cout("\n\t\t\t\t\t输入的手机号不能含有空格或非数字！\n请重新输入手机号：");
                         while ((getchar()) != '\n');
                         l = 0;
                         continue;
@@ -437,7 +431,7 @@ void changeInfo(client**L,int id) {
                         for (int i = 0; i < 12; i++)p->phoneNumber[i] = phoneNumber[i];
                         break;
                     } else {
-                        cout("\t\t\t\t\t手机号码长度不符合要求,请重新输入：");
+                        cout("\n\t\t\t\t\t手机号码长度不符合要求,请重新输入：");
                     }
                 }
             }
@@ -450,7 +444,6 @@ void changeInfo(client**L,int id) {
                 double balance=checkDouble();
                 if (balance==-1) {
                     cout("\t\t\t\t\t输入的不是数字！请重新输入：");
-                    cout("\t\t\t\t\t");
 //                    while (getchar() != '\n');
                 } else if (!(isFiniteNumber(balance))||balance==-2) {
                     cout("\t\t\t\t\t输入的金额不正确！请重新输入：");
@@ -466,11 +459,34 @@ void changeInfo(client**L,int id) {
         case 4: {
             char s[20];
             int i = 0;
-            cout("\t\t\t\t\t请输入顾客的姓名：\n");
-            cin("%s", s);
+            cout("\t\t\t\t\t请输入顾客的姓名：");
+            while(1){
+			
+            char ch;
+            int l = 0;
+            while ((ch = getchar()) != '\n') {
+                if (ch == ' ' ) {
+                    cout("\t\t\t\t\t输入的名称不能含有空格！\n\t\t\t\t请重新输入名称：");
+                    while ((getchar()) != '\n');
+                    l = 0;
+                    continue;
+                }
+                s[l++] = ch;
+            }
+            if(l==0)continue;
+            else if(l<19){
+            	if(l==2&&s[0]=='!'&&s[1]=='q')return;
+            	s[l]='\0';
+            	break;
+			}
+            else{
+            	printf("\t\t\t\t\t名称长度过长！\n\t\t\t\t请重新输入名称:") ;
+			}
+			}
             for (i = 0; s[i]; i++)p->name[i] = s[i];
             p->name[i] = '\0';
-        }
+            printf("\n\t\t\t\t\t用户信息修改成功！\n");
+        	}
             break;
         default:
             break;

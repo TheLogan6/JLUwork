@@ -1,4 +1,7 @@
 #include"client.h"
+extern double total_cost;
+extern double total_income;
+extern double current_money;
 
 extern Inventory* Inv_head;
 extern int total_brand;
@@ -135,6 +138,9 @@ void ClientInput(){
         ClientId=checkNum();
         if(ClientId==-1){
         	ErrorHappens();
+        	puts("");
+        	pau;
+        	continue;
 		}
         if(ClientId == 0) return;
         PasswordOutput();
@@ -168,8 +174,8 @@ void ClientInput(){
 //		}
         
         if(!checkPassword(L, ClientId, ClientPassword)){
-        	printf("\n\t\t\t\t 您输入的账号或密码有误, 请按任意键刷新后重新输入！\n");
-			system("pause"); 
+        	printf("\n\t\t\t\t 您输入的账号或密码有误, 请重新输入！\n");
+			Sleep(1000);
 		}
 		else{
 			client* cur_cus=findClient(&L,ClientId);

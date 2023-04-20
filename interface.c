@@ -5,8 +5,14 @@ extern client* L;
 extern ProductSource* Sou_head;
 extern Gift* Gift_head;
 extern char* code[12][10]; 
+extern double total_cost;
+extern double total_income;
+extern double current_money;
 //extern SpecialInv* SpeInv_head;
 extern int total_brand;
+extern double total_cost;
+extern double total_income;
+extern double current_money;
 void LoginInterface(int position){
 	system("cls");
     system("color 1F"); // B天蓝色   4：红色字 
@@ -91,6 +97,8 @@ void ManInferface(int i){
     	else printf("\t\t\t\t\t|        (4).   销售订单管理            |\n");  
     	if(i == 5) printf("\033[1;46m\t\t\t\t\t|   -->  (5).   用户售后处理            |\033[0m\n\033[1;44m");
     	else printf("\t\t\t\t\t|        (5).   用户售后处理            |\n"); 
+    	if(i == 6) printf("\033[1;46m\t\t\t\t\t|   -->  (6).   成本与利润              |\033[0m\n\033[1;44m");
+		else printf("\t\t\t\t\t|        (6).   成本与利润              |\n"); 
     	if(i == 0) printf("\033[1;46m\t\t\t\t\t|   -->  (0).  返回上一个界面           |\033[0m\n\033[1;44m");
     	else printf("\t\t\t\t\t|        (0).  返回上一个界面           |\n");
 		printf("\t\t\t\t\t|                                       |\n");
@@ -108,8 +116,8 @@ void ManagerChooseMode(){
 	{
 		ManInferface(i);
 		temp = getch();
-		if(temp == 'w'||temp=='W') i = (i-1+6)%6;
-		else if(temp == 's'||temp=='S') i = (i+1)%6;
+		if(temp == 'w'||temp=='W') i = (i-1+7)%7;
+		else if(temp == 's'||temp=='S') i = (i+1)%7;
 		else if(temp == '\r'){
 			Mana_mode = i;break;
 		}
@@ -137,7 +145,10 @@ void ManagerChooseMode(){
 		} 
 		case(5):{
 			aftersercive_check();                // 用户订单处理 
-			pau;
+			break;
+		}
+		case(6):{
+			costAndprofit();
 			break;
 		}
 	
@@ -873,7 +884,7 @@ void choosegift(double buy_money){
 /*------------------------------------------其他功能----------------------------------------------*/
  
 void ErrorHappens(){
-	printf("\n\t\t\t\t 您的输入有误, 请重新输入："); 
+	printf("\n\t\t\t\t 您的输入有误, 请重新输入!"); 
 }
 
 
@@ -1012,7 +1023,7 @@ void ShoppintcartInterface(client* cur_cus){          // 当前客户信息
 					}
 					p = p->next;
 				}
-				
+				p = cur_cus->cart;
 				while(p)
 				{
 					struct sell_bill *newbill = (struct sell_bill *) malloc(sizeof(struct sell_bill));
@@ -1044,7 +1055,7 @@ void ShoppintcartInterface(client* cur_cus){          // 当前客户信息
 					newbill->volume = tar->volume;
 					newbill->number_of_packagingzise = tar->packagingsize;
 					newbill->total_number = p->cnt;
-					newbill->total_price = p->total_cost;
+					
 					if (cur_cus->level == 1) {
 				        newbill->discount_for_client = 0.98;
 				    }
@@ -1054,11 +1065,15 @@ void ShoppintcartInterface(client* cur_cus){          // 当前客户信息
 				    else if (cur_cus->level == 3) {
 				        newbill->discount_for_client = 0.90;
 				    }
+					newbill->total_price = p->total_cost*newbill->discount_for_client;
 				    newbill->buyer = cur_cus;
 				    newbill->status = 1;
 				    newbill->related = NULL;
 					sell_save(newbill);
-					
+					update(&cur_cus,newbill->total_price);
+					total_income+=newbill->total_price;
+					current_money+=newbill->total_price;
+					writeprofit();
 					reduceinventory(tar, p->cnt);
 					UpdateInventory();	
 					//加入订单  减少库存 

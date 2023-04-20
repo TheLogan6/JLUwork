@@ -33,8 +33,9 @@ struct sell_bill* bill_with_problem;  // 有哨位节点
 
 int total_brand;    // 产品的品牌总数 
 char passwordans[20] = "123456";
-double total_money = 50000.00;    //  
-
+double total_cost;
+double total_income;
+double current_money;
 supplierlist L2;
 char *stringsm[] = {"firstsupplier", "secondsupplier", "thirdsupplier"};
 productlistin L1;//进货单
@@ -44,7 +45,7 @@ int max_ = 0x3f3f3f3f;
 int main(int argc, char *argv[]) {
 	
 	
-
+	readprofit();
 	encode_product();
 	Inv_head = InitInventory();
 	Gift_head = InitGift();
@@ -60,6 +61,7 @@ int main(int argc, char *argv[]) {
 	readShoppingCart(&L);	
 	JudgeNearexpiry();
 	bill_with_problem=Initiate_Bill_with_problem();
+//	pau;
 	while(1)                //用作返回上一级 
 	{
         system("cls"); 

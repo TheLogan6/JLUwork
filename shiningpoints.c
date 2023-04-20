@@ -1,5 +1,7 @@
 #include"shiningpoints.h"
-
+extern double total_cost;
+extern double total_income;
+extern double current_money;
 void showShoppingCart(client*cus){
     if(!cus)return ;
     shopping_cart*p=cus->cart; 
@@ -35,7 +37,17 @@ void showShoppingCart(client*cus){
         p=p->next;
     }
     printf("\t\t\t\t\t --------------------------------------- \n");
-    printf("\t\t\t\t\t      当前购物车总金额为%.2f元！\n",total_price);
+    float t;
+    if (cus->level == 1) {
+			t = 0.98;
+		}
+	else if (cus->level == 2) {
+			 t = 0.95;
+		}
+	else if (cus->level == 3) {
+		   t = 0.90;
+	}
+    printf("\t\t\t\t\t  您已享受%d级优惠，当前购物车总金额为%.2f元！\n",cus->level,total_price*t);
 }
 void addShoppingCart(shopping_cart**p,int cnt,int cus_id,double money,int x,int y,int z){
     
