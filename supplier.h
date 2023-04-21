@@ -6,6 +6,7 @@
 #include<stdbool.h>
 #include<time.h>
 
+
 typedef struct supply{
 	int transport_cost;
 	char suppliername[50];
@@ -23,9 +24,6 @@ typedef struct productin{//商家进货时的商品结构体
     supplier* provider;
     struct productin *next;
 }productin,*productlistin;
-
-
-
 
 
 void createsupplylist();

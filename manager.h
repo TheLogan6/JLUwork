@@ -11,10 +11,7 @@
 #include"client.h" 
 #include"customer.h" 
 #include"sellbill.h"
-#include"shiningpoints.h"
 #include"supplier.h"
- 
-
 void ManagerInput();
 void Restock();
 
@@ -27,6 +24,7 @@ void aftersercive_check();        // 售后订单处理
 void agree();
 void reject();     // 拒绝退换货 
 
+/* -----------------------------成本与利润-----------------------------*/ 
 void costAndprofit();
 void writeprofit();
 void readprofit(); 

@@ -48,13 +48,13 @@ extern int log_cnt;
 extern LogNode *log_head;
 extern client *cus_head;
 
-void changeInfo(client**L,int id);//修改用户信息
-client* findClient(client**L,int id);//寻找用户
-void addClient(client **L,client*p);//添加用户
+void changeInfo(client**L,int id);
+client* findClient(client**L,int id);
+void addClient(client **L,client*p);
 void writeClientInfo(client* L);// ����ͻ���Ϣ 
-void delClient(client **L,int id);//删除用户
-void readClient(client** L);//从文件中读取用户信息
-void printCustomer(client*L);//打印所有用户信息
+void delClient(client **L,int id);
+void readClient(client** L);
+void printCustomer(client*L);
 bool checkPassword(client*L,int id,char *s);
 void update(client**L,double money);
 bool recharge(client**L,LogNode **log_head,int id,double money);

@@ -1,5 +1,4 @@
-#include"manager.h"
-
+#include"manager.h" 
 extern Inventory* Inv_head;
 extern Gift* Gift_head;
 extern client* L;
@@ -113,39 +112,6 @@ void Restock(){
 	return ;
 };
 
-
-void getchartime(){
-//	time_t timep;
-//	struct tm *p;
-//    time(&timep);
-//    p = localtime(&timep); //取得当地具体时间
-//    char temp[50];
-//    temp[0] = (1900+p->tm_year)/1000 - 0 +'0';
-//    temp[1] = ((1900+p->tm_year)%1000)/100- 0 +'0';
-//    temp[2] = (((1900+p->tm_year)%100)/10)- 0 +'0';
-//    temp[3] = (1900+p->tm_year)%10- 0 +'0';
-//    temp[4] = (1+p->tm_mon)/10- 0 +'0';
-//    temp[5] = (1+p->tm_mon)%10- 0 +'0';
-//    temp[6] = (p->tm_mday)/10- 0 +'0';
-//    temp[7] = (p->tm_mday)%10- 0 +'0';
-//    temp[8] = '\0';
-//	while(q)
-//	{
-//		if(q->nearexpiry == 1) {
-//			q = q->next;
-//			continue;
-//		}
-//		else if(timegap(q->quality_year,q->quality_month,q->quality_day,1900+p->tm_year, 1+p->tm_mon, p->tm_mday) < 60 )
-//		{
-//			q->Price *= 0.5;
-//			q->nearexpiry = 1;
-//		}
-//		q = q->next;
-//	}
-}
-
-
-
 void ManagerInput(){
 	while(1)
 	{
@@ -173,16 +139,14 @@ void ManagerInput(){
 		else if(strcmp(ManagerPassword, passwordans) == 0)
         	ManagerChooseMode();
 		else {
-			printf("您输入的密码有误，请在界面刷新后重新输入！");
+			printf("\n\t\t\t\t\t您输入的密码有误，请在界面刷新后重新输入！\n");
+			pau;
 			continue; 
 		}
 		
 	}
 	
 }
-
-
-
 
 
 /*-------------------------------管理员订单售后处理-----------------*/
@@ -365,7 +329,4 @@ void readprofit(){
 	fscanf(fp,"%lf%lf%lf",&total_cost,&total_income,&current_money);
 	fclose(fp);
 }
-
-
-
 

@@ -34,12 +34,6 @@ typedef struct ProductSource{							//货源结构体
 	struct  ProductSource* next;
 }ProductSource;
 
-//typedef struct SpecialInv{
-//	struct SpecialInv* pre;
-//	Inventory* Pro;                     //直接指向库存 
-////	double SpecialPrice;                
-//	struct SpecialInv* next;
-//}SpecialInv; 
 
 typedef struct Gift{
 	struct Gift* pre;
@@ -55,25 +49,23 @@ typedef struct Gift{
 void encode_product();
 /*-----------------------------------库存操作---------------------------------*/ 
 
-Inventory* InitInventory();               //(初始化)读仓库  修改仓库内容 
+Inventory* InitInventory();                                  //(初始化)读仓库  修改仓库内容 
 void PrintInventory(Inventory* Inv_head);
-
-void ChangeInventory();                       //修改仓库商品信息
+void ChangeInventory();                                   //修改仓库商品信息
 Inventory* FindInventory(int Brand, int Specification);  // 查找商品 
-void UpdateInventory();				           	//保存修改信息 
-void AddNewinventory(Inventory* newInv);      // 增加新产品信息 
+void UpdateInventory();				                    	//保存修改信息 
+void AddNewinventory(Inventory* newInv);                  // 增加新产品信息 
 
-void InventorySortMode(); 								//库存选择 
+void InventorySortMode(); 							  	//库存选择 
 void SortByNumber(Inventory* Inv_head);                  // 按编号排序 
-void SortByReserve(Inventory* Inv_head);              // 按库存量排序 
-void SortByPrice(Inventory* Inv_head);                // 按价格排序 
+void SortByReserve(Inventory* Inv_head);                // 按库存量排序 
+void SortByPrice(Inventory* Inv_head);                   // 按价格排序 
 int countSpecification(int Brand); 
 void reduceinventory(Inventory* tar, int num);
 void addinwarehouse(ProductSource* tar, int amount);      // 在货源购买后加入库存 
 void queryinventory();
 
 /* --------------------------------- 特价商品操作----------------------------------*/
-//SpecialInv* InitSpecialInv(); 
 
 void PrintSpecialInv();
 void JudgeNearexpiry();
@@ -98,5 +90,4 @@ void reducegift(Gift* tar, int num);            //赠品送出后减少
 void wornout(ProductSource* tar, int amount); // 随机产生
 
 /*-------------------------------管理员订单售后处理-----------------*/
-void agree();      // 同意退换货
-void reject();     // 拒绝退换货 
+

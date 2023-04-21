@@ -194,6 +194,7 @@ void restock_mode(){
 			Restock();
 		}
 		else if(choice_mode == 2){
+			createsupplylist();
 			productin_interface();
 		}
 	}
@@ -906,8 +907,6 @@ int inputcheck(char numstring[]){
 	return ans;
 } 
 
-
-
 /*-------------------------------购物车界面-----------------------------------*/
 void ShoppintcartInterface(client* cur_cus){          // 当前客户信息 
 	int position=0,row=4,ShoppingcartOp;
@@ -1093,8 +1092,6 @@ void ShoppintcartInterface(client* cur_cus){          // 当前客户信息
 		} 
 	}
 }
-
-
 
 void giftinterface(){
 	system("cls");

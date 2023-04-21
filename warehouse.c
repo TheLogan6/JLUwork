@@ -5,7 +5,6 @@ extern Inventory* Inv_head;
 extern ProductSource* Sou_head;
 extern int total_brand;
 extern Gift* Gift_head;
-//extern SpecialInv* SpeInv_head;
 
 void encode_product(){
 	code[1][0] = "农夫山泉";code[1][1] = "纯净水", code[1][2] = "矿泉水" ;code[1][3] = "红茶味茶π";code[1][3] = "元气森林";
@@ -584,7 +583,44 @@ ProductSource* FindSource(int Brand, int Specification){
 }
 
 
-/*---------------------------------------------------------------------------临期商品操作-----*/ 
+
+void addinwarehouse(ProductSource* tar, int amount){
+	Inventory* p = Inv_head->next;
+	Inventory* temp = p;
+	while(p)
+	{
+		if(p->BrandNumber == tar->BrandNumber_sou && p->ProductNumber==tar->ProductNumber_sou && p->volume==tar->volume_sou&& p->packagingsize==tar->packagingsize_sou &&p->quality_year==tar->quality_year_sou &&p->quality_month&&tar->quality_month_sou&&p->quality_day==tar->quality_day_sou)
+		{
+			break;
+		}	
+		else p = p->next;
+		if(p) temp = p;
+	}
+	if(p == NULL)
+	{
+		Inventory* newinv = (Inventory*)malloc(sizeof(Inventory));
+		strcpy(newinv->DrinksBrand,tar->DrinksBrand_sou);
+		newinv->BrandNumber = tar->BrandNumber_sou;
+		newinv->nearexpiry = 0;
+		newinv->packagingsize = tar->packagingsize_sou;
+		newinv->Price = tar->Price_sou * 1.5;
+		newinv->ProductNumber = tar->ProductNumber_sou;
+		newinv->quality_day = tar->quality_day_sou;
+		newinv->quality_month = tar->quality_month_sou;
+		newinv->quality_year = tar->quality_year_sou;
+		newinv->Reserve = amount;
+		newinv->SpecificationNumber = countSpecification(tar->BrandNumber_sou)+1;
+		newinv->volume = tar->volume_sou; 
+		newinv->pre = temp;
+		temp->next = newinv;
+		newinv->next = NULL;
+	}
+	else{
+		p->Reserve += amount;
+	}
+}
+
+/*--------------------------------------------------临期商品操作--------------------------*/ 
 int timegap(int x1, int y1, int z1, int x2, int y2, int z2){ // 1是保质期限 
 //	printf("%d %d %d %d %d %d",x1,y1,z1,x2,y2,z2);
 	return (x1-x2)*365 + (y1-y2)* 30 + (z1-z2);
@@ -613,32 +649,6 @@ void JudgeNearexpiry(){
 	return;
 }
 
-//SpecialInv* InitSpecialInv(){
-//	SpecialInv* head = (SpecialInv*)malloc(sizeof(SpecialInv));
-//	head->next = NULL;
-//	SpecialInv* tail = head;
-//	time_t timep;
-//	struct tm *p;
-//    time(&timep);
-//    p = localtime(&timep); //取得当地具体时间
-////    printf("%d %d %d ", (1900 + p->tm_year), (1 + p->tm_mon), p->tm_mday);
-//	Inventory* q = Inv_head->next;
-//	while(q)
-//	{
-//		if(timegap(q->quality_year,q->quality_month,q->quality_day,1900+p->tm_year, 1+p->tm_mon, p->tm_mday) < 60 ){
-//			q->Price *= 0.5;
-//			SpecialInv* node = (SpecialInv*)malloc(sizeof(SpecialInv));
-//			node->Pro = q;
-//			node->next = NULL;
-//			node->pre = tail;
-//			tail->next = node;
-//			tail = node;
-//		}
-//		q = q->next;
-//	}
-//	return head;
-//} 
-//
 void PrintSpecialInv(){
 	Inventory* p = Inv_head->next;
 
@@ -663,8 +673,7 @@ void PrintSpecialInv(){
 
 
 
-
-/*-------------------------- 赠品操作--------------------------*/
+/*------------------------------------ 赠品操作-----------------------------------*/
 Gift* InitGift(){
 	Gift* Gift_head = (Gift*)malloc(sizeof(Gift));  // 哨位节点 
 	Gift_head->pre = NULL;
@@ -845,7 +854,7 @@ void reducegift(Gift* tar, int num){              // 减少赠品
 
 
 
-void wornout(ProductSource* tar, int amount){
+void wornout(ProductSource* tar, int amount){ // 赠品的产生与 
 	int odds = rand()%10;
 	if(odds == 1) 
 	{
@@ -905,41 +914,6 @@ void wornout(ProductSource* tar, int amount){
 }
 
 
-void addinwarehouse(ProductSource* tar, int amount){
-	Inventory* p = Inv_head->next;
-	Inventory* temp = p;
-	while(p)
-	{
-		if(p->BrandNumber == tar->BrandNumber_sou && p->ProductNumber==tar->ProductNumber_sou && p->volume==tar->volume_sou&& p->packagingsize==tar->packagingsize_sou &&p->quality_year==tar->quality_year_sou &&p->quality_month&&tar->quality_month_sou&&p->quality_day==tar->quality_day_sou)
-		{
-			break;
-		}	
-		else p = p->next;
-		if(p) temp = p;
-	}
-	if(p == NULL)
-	{
-		Inventory* newinv = (Inventory*)malloc(sizeof(Inventory));
-		strcpy(newinv->DrinksBrand,tar->DrinksBrand_sou);
-		newinv->BrandNumber = tar->BrandNumber_sou;
-		newinv->nearexpiry = 0;
-		newinv->packagingsize = tar->packagingsize_sou;
-		newinv->Price = tar->Price_sou * 1.5;
-		newinv->ProductNumber = tar->ProductNumber_sou;
-		newinv->quality_day = tar->quality_day_sou;
-		newinv->quality_month = tar->quality_month_sou;
-		newinv->quality_year = tar->quality_year_sou;
-		newinv->Reserve = amount;
-		newinv->SpecificationNumber = countSpecification(tar->BrandNumber_sou)+1;
-		newinv->volume = tar->volume_sou; 
-		newinv->pre = temp;
-		temp->next = newinv;
-		newinv->next = NULL;
-	}
-	else{
-		p->Reserve += amount;
-	}
-}
 
 
 

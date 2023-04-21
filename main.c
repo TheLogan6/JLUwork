@@ -11,7 +11,6 @@
 #include"manager.h"
 #include"customer.h"
 #include"sellbill.h"
-#include"shiningpoints.h" 
 #include"supplier.h" 
 
 //全局变量区
@@ -21,10 +20,9 @@ char* code[12][10];
 char* BillType[6];
 Inventory* Inv_head;                // 库存商品 
 Gift* Gift_head;                     // 赠品管理 
-//SpecialInv* SpeInv_head;             // 特价商品 
 ProductSource* Sou_head;            // 货源结构体 
 client* L;                         //客户节点 没有哨位节点 
-LogNode* log_head;                 //  
+LogNode* log_head;              
 int cus_cnt;  
 int log_cnt;
 //client *cus_head;
@@ -43,15 +41,13 @@ int max_ = 0x3f3f3f3f;
 //end 全局变量 
 
 int main(int argc, char *argv[]) {
-	
-	
 	readprofit();
 	encode_product();
 	Inv_head = InitInventory();
 	Gift_head = InitGift();
 	Giftsort(Gift_head);
 	readClient(&L);
-	createsupplylist();
+
 	initproductinlist();
 	createproductinlist();
 	InitLog(&log_head,&L);
@@ -66,18 +62,15 @@ int main(int argc, char *argv[]) {
 	{
         system("cls"); 
 	
-        char ChooseLogin_s[10];
-//       system("taskkill /im process.exe>nul 2>nul");
-//        scanf("%s", ChooseLogin_s);
-//        int ChooseLogin = inputcheck(ChooseLogin_s);
-	int ChooseLogin;
-    int position=0;int row=4;
-	while(1){
-		system("cls");
-		LoginInterface(position);
-		int op=getchoice(&position,row,&ChooseLogin);
-		if(op<0)break;
-	}
+	    char ChooseLogin_s[10];
+		int ChooseLogin;
+	    int position=0;int row=4;
+		while(1){
+			system("cls");
+			LoginInterface(position);
+			int op=getchoice(&position,row,&ChooseLogin);
+			if(op<0)break;
+		}
         switch(ChooseLogin){
             case(1) : {
                 ClientInput();
