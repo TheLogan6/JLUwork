@@ -219,7 +219,6 @@ void printfile()
         printf("文件打开有误\n");
         return;
     }
-    
     while(p != NULL){
     	fprintf(f,"%-20s ",p->commodity_name);
     	fprintf(f,"%-6d ",p->commodity_id);

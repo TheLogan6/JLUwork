@@ -877,6 +877,7 @@ void choosegift(double buy_money){
 			//赠品处理操作 
 			reducegift(p1, n1); 
 			UpdateGift();
+			pau; 
 			//赠品处理end 
 			break;
 		}
@@ -885,6 +886,7 @@ void choosegift(double buy_money){
 			printf("\t\t\t\t您已成功选择赠品：%s品牌的%s%d瓶！\n",code[p2->brand][0],code[p2->brand][p2->product], min(p2->bottle, n2));
 			reducegift(p2, n2); 
 			UpdateGift();
+			pau;
 			break;
 		}
 		else if(giftchoice == 3)
@@ -892,6 +894,7 @@ void choosegift(double buy_money){
 			printf("\t\t\t\t您已成功选择赠品：%s品牌的%s%d瓶！\n",code[p3->brand][0],code[p3->brand][p3->product], min(p3->bottle, n3));
 			reducegift(p3, n3); 
 			UpdateGift();
+			pau;
 			break;
 		}
 	} 

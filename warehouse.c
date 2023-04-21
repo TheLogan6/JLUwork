@@ -875,15 +875,13 @@ void reducegift(Gift* tar, int num){              // 减少赠品
 	}
 	Giftsort(Gift_head);//编号重排 
 }
-
-
-
-void wornout(ProductSource* tar, int amount){ // 赠品的产生与 
+void wornout(ProductSource* tar, int amount){ // 赠品的产生
 	int odds = rand()%10;
+	odds = 1; 
 	if(odds == 1) 
 	{
 		int n = (int) (amount/10);   //n箱 
-		int loss = rand()%2+1;      // 随机损失1—2瓶 
+		int loss = rand()%2+1;      // 每箱随机损失1—2瓶 
 		int num_gift = n * (tar->packagingsize_sou - loss);
 		//直接在赠品中查找 
 		Gift* p = Gift_head->next;
@@ -917,15 +915,15 @@ void wornout(ProductSource* tar, int amount){ // 赠品的产生与
 			newgift->gif_volume = tar->volume_sou;
 		}
 		UpdateGift();
-		PrintGift();
-		pau;
-		printf("\t\t\t 很遗憾在运输途中有%d箱货物产生意外,共损失%d瓶酒水！\n", n,loss);
-		printf("\t\t\t  其余%d瓶酒水因无法售卖, 已成功加入赠品中！\n", num_gift);
+		
+		printf("\t\t\t\t 很遗憾在运输途中有%d箱货物产生意外,共损失%d瓶酒水！\n", n,loss*n);
+		printf("\t\t\t\t  其余%d瓶酒水因无法售卖, 已成功加入赠品中！\n", num_gift);
 		
 		//加入库存中//
 		addinwarehouse(tar , amount - n); 
-		printf("\t\t\t  剩余%d箱酒水正常, 已成功添加入库存！\n", amount-n);
+		printf("\t\t\t\t  剩余%d箱酒水正常, 已成功添加入库存！\n", amount-n);
 		UpdateInventory();
+		pau;
 	}
 	else
 	{
