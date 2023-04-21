@@ -30,13 +30,14 @@ Inventory* InitInventory(){
 		printf("Storehousefile cannot open, error happens!");
 		exit(-1);
 	}
-
-	while(!feof(Storehouse_fp))
+	char garbage[100];
+	while((fscanf(Storehouse_fp, "%s", garbage))!=EOF)
 	{
 //		char garbage[50];
 //		fgets(garbage, sizeof(Inventory), Storehouse_fp);
 		Inventory* p = (Inventory*)malloc(sizeof(Inventory));
-		fscanf(Storehouse_fp, "%s", p->DrinksBrand);
+//		fscanf(Storehouse_fp, "%s", p->DrinksBrand);
+		strcpy(p->DrinksBrand, garbage);
 		fscanf(Storehouse_fp, "%d%d%d%d%d%d", &p->BrandNumber, &p->ProductNumber, &p->SpecificationNumber, &p->volume, &p->Reserve, &p->packagingsize);
 		fscanf(Storehouse_fp, "%f", &p->Price);
 		fscanf(Storehouse_fp, "%d%d%d%d\n", &p->quality_year, &p->quality_month, &p->quality_day, &p->nearexpiry);	
@@ -51,6 +52,11 @@ Inventory* InitInventory(){
 
 void PrintInventory(Inventory* Inv_head){
 	Inventory* p = Inv_head->next;
+	if(p == NULL) {
+		printf("\t\t\t\t\t            暂无任何商品！\n");
+		pau;
+		return;
+	}
 	printf("\t  酒水品牌  | 品牌编号 |   商品名称   | 商品编号 | 容量大小 | 包装大小 | 库存容量 |     价格     |       保质期\n");
 	while(p)
 	{
@@ -117,6 +123,9 @@ void ChangeInventory(){
     	printf("\t\t\t\t\t         (输入0可返回上一个界面)         \n"); 
     	printf("\t\t\t\t\t --------------------------------------- \n");
 		PrintInventory(Inv_head);
+		if(Inv_head->next == NULL){
+			return;
+		}
 		int ChooseBrand, ChooseProduct;
 		char ChooseBrand_s[5], ChooseProduct_s[5];
 		printf("\t\t\t\t\t --------------------------------------- \n");
@@ -801,7 +810,14 @@ void deltegift(){
 		printf("\n\n\n\n"); 
 		printf("\t\t\t\t\t --------------------------------------- \n");
 		printf("\t\t\t\t\t                 赠品删除                \n");
+		printf("\t\t\t\t\t         (输入0可以返回上一个界面)       \n");
 		printf("\t\t\t\t\t --------------------------------------- \n");
+		if(Gift_head->next == NULL)
+		{
+			PrintGift();
+			pau;
+			return;
+		}
 		PrintGift();
 		printf("\t\t\t\t\t --------------------------------------- \n");
 		printf("\t\t\t\t\t 请输入你想要删除的赠品编号:");
@@ -810,6 +826,7 @@ void deltegift(){
 		if(giftid == -1){
 			RefreshPage();continue;
 		}
+		if(giftid == 0) return;
 		Gift* q = Gift_head->next;
 		while(q)
 		{
@@ -828,6 +845,7 @@ void deltegift(){
 			printf("\t\t\t\t\t    您已成功删除该赠品！");
 			pau;
 		}
+		//编号重排 
 		q = Gift_head->next;
 		int i = 1;
 		while(q)
@@ -845,9 +863,16 @@ void reducegift(Gift* tar, int num){              // 减少赠品
 	if(tar->bottle > num) tar->bottle-=num;
 	else if(tar->bottle == num)            // 删除该赠品 
 	{
-		Gift* temp = tar->pre;
-		temp->next = temp->next->next;
-		temp->next->pre = temp;
+		if(tar->next == NULL)
+		{
+			Gift* temp = tar->pre;
+			temp->next = temp->next->next;
+		}
+		else {
+			Gift* temp = tar->pre;
+			temp->next = temp->next->next;
+			temp->next->pre = temp;
+		}
 	}
 	Giftsort(Gift_head);//编号重排 
 }

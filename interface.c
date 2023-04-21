@@ -271,7 +271,9 @@ void Inventory_Mode(){
 
 			}
 			case(4):{//  赠品删除
-			    deltegift(); 
+			    
+				
+				deltegift(); 
 		
 				break;
 			}
@@ -828,8 +830,11 @@ void choosegift(double buy_money){
 		if(p2->brand!=p1->brand) break;
 		p2 = p2->next;
 	}
-	n2 = floor(buy_money * 0.1 / p2->value);
-	n2 = min(n2, p2->bottle);
+	if(p2)
+	{
+		n2 = floor(buy_money * 0.1 / p2->value);
+		n2 = min(n2, p2->bottle);
+	}
 	if(p2)
 	{
 		n++;
@@ -860,7 +865,12 @@ void choosegift(double buy_money){
 			printf("\t\t\t\t 您的输入有误，请重新输入！\n");	
 			continue;
 		}
-		else if(giftchoice == n) printf("\t\t\t\t  很遗憾没有您喜欢的赠品，期待您的下次光临！\n"); 
+		else if(giftchoice == n)
+		{
+			printf("\t\t\t\t  很遗憾没有您喜欢的赠品，期待您的下次光临！\n");
+			pau;
+			break;
+		}
 		else if(giftchoice == 1)
 		{
 			printf("\t\t\t\t您已成功选择赠品：%s品牌的%s%d瓶！\n",code[p1->brand][0],code[p1->brand][p1->product], min(p1->bottle, n1));

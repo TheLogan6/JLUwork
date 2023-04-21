@@ -67,7 +67,6 @@ void Restock(){
 		newbill->commodity_id = tar_sou->SpecificationNumber_sou;
 		newbill->commodity_packagenum = tar_sou->packagingsize_sou;
 		newbill->commodity_price = tar_sou->Price_sou;
-		
 		newbill->commodity_number = buy_amount;
 		newbill->commodity_volume = tar_sou->volume_sou;
 		newbill->next  = NULL;
@@ -103,7 +102,7 @@ void Restock(){
 		printfile();
 		
 		wornout(tar_sou, buy_amount);
-		
+		newbill->provider->transport_cost = 100;
 		total_cost+=buy_money+newbill->provider->transport_cost;
 		current_money-=buy_money+newbill->provider->transport_cost;
 		writeprofit();

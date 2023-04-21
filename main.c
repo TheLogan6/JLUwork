@@ -47,7 +47,6 @@ int main(int argc, char *argv[]) {
 	Gift_head = InitGift();
 	Giftsort(Gift_head);
 	readClient(&L);
-
 	initproductinlist();
 	createproductinlist();
 	InitLog(&log_head,&L);
