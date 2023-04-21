@@ -16,7 +16,6 @@ typedef struct Inventory{                                  // 库存结构体
 	int     packagingsize;    								//包装大小 
 	int     quality_year, quality_month, quality_day;            //保质日期 
 	float   Price;                                        // 销售价格  
-	
 	int 	nearexpiry;                                     //是否临期               
 	struct  Inventory* next;                        
 }Inventory;

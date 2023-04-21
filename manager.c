@@ -258,6 +258,21 @@ void aftersercive_check(){        // 售后订单处理
 		            pointer=pointer->next;
 		        }
 //		        if(tar->related==NULL)
+				
+	    		printf("\t\t\t\t\t 您已成功确认退货，钱款已经打入您的余额！\n");
+	    		if(tar->reason_num == 0 || tar->reason_num == 1) //"不想要了","不喜欢"
+	    		{
+	    			Inventory* q = Inv_head->next;
+					while(q)
+					{
+						if(q->BrandNumber == tar->number_of_brand && q->SpecificationNumber ==tar->SpecificationNumber)
+							break;
+						q = q->next;
+					}
+					q->Reserve += tar->number_of_packagingzise;
+					printf("\t\t\t\t\t 已成功将商品添加回仓库！");
+				}
+				else printf("\t\t\t\t\t  已将问题商品处理！") ; 
 				struct sell_bill* source = tar->related;
 				source->status = 5;
 				tar->status = 5;
@@ -274,20 +289,6 @@ void aftersercive_check(){        // 售后订单处理
 				writebill();
 				bill_pre=Initiate_Bill();
 	    		bill_with_problem=Initiate_Bill_with_problem();
-	    		printf("\t\t\t\t\t 您已成功确认退货，钱款已经打入您的余额！\n");
-	    		if(tar->reason_num == 0 || tar->reason_num == 1) //"不想要了","不喜欢"
-	    		{
-	    			Inventory* q = Inv_head->next;
-					while(q)
-					{
-						if(q->BrandNumber == tar->number_of_brand && q->SpecificationNumber ==tar->SpecificationNumber)
-							break;
-						q = q->next;
-					}
-					q->Reserve += tar->number_of_packagingzise;
-					printf("\t\t\t\t\t 已成功将商品添加回仓库！");
-				}
-				else printf("\t\t\t\t\t  已将问题商品处理！") ; 
 				pau;
 			}
 			

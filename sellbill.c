@@ -153,7 +153,7 @@ void Sell_select_Number_of_goods(struct sell_bill* newbill,struct customer* user
     }
     int discount = 100 * newbill->discount_for_client;
     newbill->total_price *= newbill->discount_for_client;
-    printf("%d%%，因此需要支付%.2lf", discount,newbill->total_price);
+    printf("%d%%，因此需要支付%.2lf元", discount,newbill->total_price);
 //    user->point+=newbill->total_price;
 }
 int Sell_confirm(struct sell_bill* newbill,struct customer* user)
