@@ -539,10 +539,11 @@ ProductSource* ReadSource(){
 		printf("sourcefile cannot open, error happens!");
 		exit(-1);
 	}
-	while(!feof(source_fp))
+	char garbage[20];
+	while((fscanf(source_fp, "%s", garbage))!=EOF)
 	{
 		ProductSource* p = (ProductSource*)malloc(sizeof(ProductSource));
-		fscanf(source_fp, "%s", p->DrinksBrand_sou);
+		strcpy(p->DrinksBrand_sou, garbage);
 //		fgets(p->DrinksBrand, 20, fp);
 		fscanf(source_fp, "%d%d%d%d%d", &p->BrandNumber_sou, &p->ProductNumber_sou, &p->SpecificationNumber_sou, &p->volume_sou, &p->packagingsize_sou);
 		fscanf(source_fp, "%f", &p->Price_sou);	

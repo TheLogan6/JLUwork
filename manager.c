@@ -218,8 +218,16 @@ void aftersercive_check(){        // 售后订单处理
 		        }
 				struct sell_bill* source = tar->related;
 				source->status = 4;
-				tar = tar->pre;
-				tar->next = tar->next->next;	
+				if(tar->next == NULL)
+				{
+					tar = tar->pre;
+					tar->next = NULL;
+				}
+				else{
+					tar = tar->pre;
+					tar->next = tar->next->next;
+				}
+					
 				writeproblembill();
 				writebill();
 				bill_pre=Initiate_Bill();
@@ -242,7 +250,6 @@ void aftersercive_check(){        // 售后订单处理
 				recharge(&L,&log_head,cus->id,tar->total_price);
 		        while(pointer!=NULL)
 		        {
-		        	printf("+%d",pointer->order);
 		            if(pointer->order==tar->order)
 		            {
 		                tar->related=pointer;
@@ -254,8 +261,15 @@ void aftersercive_check(){        // 售后订单处理
 				struct sell_bill* source = tar->related;
 				source->status = 5;
 				tar->status = 5;
-				tar = tar->pre;
-				tar->next = tar->next->next;	
+				if(tar->next == NULL)
+				{
+					tar = tar->pre;
+					tar->next = NULL;
+				}
+				else{
+					tar = tar->pre;
+					tar->next = tar->next->next;
+				}	
 				writeproblembill();
 				writebill();
 				bill_pre=Initiate_Bill();
@@ -291,7 +305,6 @@ void aftersercive_check(){        // 售后订单处理
 		}
 		pau;
 	}
-	
 }
 void costAndprofit(){
 	system("cls");

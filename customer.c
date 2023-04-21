@@ -645,7 +645,7 @@ void showCusInfo(client*cus,LogNode*logh){
     printf("\t\t\t\t\t              余额变动记录               \n");
     printf("\t\t\t\t%-16s%-12s%-10s%-10s\n", "日期", "涉及金额", "变动原因", "获得积分");
     while(logh){
-    	if(logh->cus=cus){
+    	if(logh->cus->id==cus->id){
     		printf("\t\t\t\t%-16d%-12.2lf%-10s%-10.2f\n", logh->date, logh->money, logh->event, logh->point);
 		}
 		logh=logh->next;
