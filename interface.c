@@ -13,6 +13,8 @@ extern int total_brand;
 extern double total_cost;
 extern double total_income;
 extern double current_money;
+extern client* L;                         //客户节点 没有哨位节点 
+extern LogNode* log_head;  
 void LoginInterface(int position){
 	system("cls");
     system("color 1F"); // B天蓝色   4：红色字 
@@ -496,7 +498,7 @@ void Bill_Mode(){
 void ClientChooseMode(client* cur_cus){
 
 	while(1){
-		int position=0,row=7,Cli_mode; 
+		int position=0,row=8,Cli_mode; 
 	while(1)
 	{	
 		
@@ -516,9 +518,11 @@ void ClientChooseMode(client* cur_cus){
     	else printf("\t\t\t\t\t|              商品退货                 |\n");
     	if(position==4)printf("\033[1;46m\t\t\t\t\t|     -->       购物车                  |\033[0m\n\033[1;44m");
     	else printf("\t\t\t\t\t|               购物车                  |\n");
-    	if(position==5)printf("\033[1;46m\t\t\t\t\t|     -->   临期商品大促销              |\033[0m\n\033[1;44m");
+    	if(position==5)printf("\033[1;46m\t\t\t\t\t|     -->      个人信息                 |\033[0m\n\033[1;44m");
+    	else printf("\t\t\t\t\t|              个人信息                 |\n"); 
+    	if(position==6)printf("\033[1;46m\t\t\t\t\t|     -->   临期商品大促销              |\033[0m\n\033[1;44m");
     	else printf("\t\t\t\t\t|           临期商品大促销              |\n");
-    	if(position==6)printf("\033[1;46m\t\t\t\t\t|     -->   返回上一个界面              |\033[0m\n\033[1;44m");
+    	if(position==7)printf("\033[1;46m\t\t\t\t\t|     -->   返回上一个界面              |\033[0m\n\033[1;44m");
     	else printf("\t\t\t\t\t|           返回上一个界面              |\n");
 		printf("\t\t\t\t\t|                                       |\n");
 		printf("\t\t\t\t\t --------------------------------------- \n");
@@ -535,7 +539,7 @@ void ClientChooseMode(client* cur_cus){
 //			RefreshPage();
 //			continue;
 //		}
-		if(Cli_mode == 7)
+		if(Cli_mode == 8)
 			return;
 		switch(Cli_mode){
 			case(1):{
@@ -561,11 +565,15 @@ void ClientChooseMode(client* cur_cus){
 				Return(cur_cus);
 				break;
 			}
+			case(6):{
+				showCusInfo(cur_cus,log_head);
+				break;
+			}
 			case(5):{  // 购物车界面
 				ShoppintcartInterface(cur_cus);
 				break;
 			}
-			case(6):{ // 临期商品促销 
+			case(7):{ // 临期商品促销 
 				SalePromotion(cur_cus);
 				break;
 			}

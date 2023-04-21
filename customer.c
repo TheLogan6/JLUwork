@@ -1,6 +1,6 @@
 #include "customer.h"
 extern int count[4];//不同等级对应不同的折扣
-extern client *cus_head;
+extern client *L;
 extern LogNode*log_head;
 extern int cus_cnt;
 extern int log_cnt;
@@ -499,6 +499,10 @@ bool checkBalance(client**cus,double money){
     if(p->balance<money)return false;
     if(!(isFiniteNumber(p->balance-money)))return false;
     p->balance-=money;
+    if(money>0){
+	addLogNode(&log_head,&L,p->id,0,money);
+    writeLog(log_head);
+	}
     if(money>0) update(&p,money);
     return true;
 }
@@ -622,4 +626,29 @@ void writeLog(LogNode*L){
         p = p->next;
     }
     fclose(fp);
+}
+void showCusInfo(client*cus,LogNode*logh){
+	system("cls");
+	printf("\n\n\n\n\n"); 
+    printf("\t\t\t\t\t --------------------------------------- \n");
+    printf("\t\t\t\t\t              我的信息                   \n");
+    printf("\t\t\t\t\t                                         \n");
+    printf("\t\t\t\t\t --------------------------------------- \n");
+    
+    printf("\t\t\t\t\t用户名：%s\n",cus->name);
+    printf("\t\t\t\t\t用户ID:%d\n",cus->id);
+    printf("\t\t\t\t\t手机号：%s\n",cus->phoneNumber);
+    printf("\t\t\t\t\t用户等级:%d\n",cus->level);
+    printf("\t\t\t\t\t用户余额:%.2lf\n",cus->balance);
+    
+    printf("\t\t\t\t\t --------------------------------------- \n");
+    printf("\t\t\t\t\t              余额变动记录               \n");
+    printf("\t\t\t\t%-16s%-12s%-10s%-10s\n", "日期", "涉及金额", "变动原因", "获得积分");
+    while(logh){
+    	if(logh->cus=cus){
+    		printf("\t\t\t\t%-16d%-12.2lf%-10s%-10.2f\n", logh->date, logh->money, logh->event, logh->point);
+		}
+		logh=logh->next;
+	}
+	system("pause"); 
 }

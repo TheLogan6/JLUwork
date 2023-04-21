@@ -64,6 +64,7 @@ void InitLog(LogNode**l,client**cus);
 void addLogNode(LogNode **l,client**L,int cus_id,int op,double money);  // 记录账单节点 
 void printLog(LogNode*L);
 void writeLog(LogNode*L);
+void showCusInfo(client*cus,LogNode*logh); 
 int checkNum();
 double checkDouble();
 

@@ -201,8 +201,8 @@ int Sell_confirm(struct sell_bill* newbill,struct customer* user)
             if(checkBalance(&user,newbill->total_price))
             {
                 printf("\t\t\t\t\tÄúÒÑ³É¹¦¹ºÂò£¬Ð»Ð»ÄúµÄ»Ý¹Ë");
-                addLogNode(&log_head,&L,user->id,0,newbill->total_price);
-                writeLog(log_head);
+//                addLogNode(&log_head,&L,user->id,0,newbill->total_price);
+//                writeLog(log_head);
                 writeClientInfo(L);
                 flag=true;
                 newbill->status=1;
@@ -210,7 +210,6 @@ int Sell_confirm(struct sell_bill* newbill,struct customer* user)
                 total_income+=newbill->total_price;
                 current_money+=newbill->total_price;
                 writeprofit();
-                
                 continue;
             }
             else
