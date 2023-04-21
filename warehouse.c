@@ -156,7 +156,6 @@ void ChangeInventory(){
 			while(1)
 			{
 				system("cls");
-				
 				printf("\n\n\n\n"); 
 		    	printf("\t\t\t\t\t --------------------------------------- \n");
 		    	printf("\t\t\t\t\t            修改商品信息界面             \n");
@@ -170,7 +169,6 @@ void ChangeInventory(){
 				else printf("%-11d", tar->Reserve);
 				printf("%-12.2f   ", tar->Price);
 				printf("%d年%d月%d日\n", tar->quality_year, tar->quality_month, tar->quality_day);
-
 				printf("\t\t\t\t\t --------------------------------------- \n");
 			    printf("\t\t\t\t\t                                        \n");
 			    printf("\t\t\t\t\t         (1).   修改库存容量            \n");

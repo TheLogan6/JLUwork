@@ -16,6 +16,7 @@ extern double current_money;
 //   开始进货 
 void Restock(){
 	Sou_head = ReadSource();
+	createsupplylist();
 	while(1)
 	{
 		system("cls");
@@ -70,7 +71,7 @@ void Restock(){
 		newbill->commodity_number = buy_amount;
 		newbill->commodity_volume = tar_sou->volume_sou;
 		newbill->next  = NULL;
-		newbill->provider = choosesupplier2();
+		newbill->provider = choosesupplier();
 		newbill->sum_price = buy_money + newbill->provider->transport_cost;
 		time_t timep;
 		struct tm *p;

@@ -36,6 +36,7 @@ double total_income;
 double current_money;
 supplierlist L2;
 char *stringsm[] = {"firstsupplier", "secondsupplier", "thirdsupplier"};
+int rt[3] = {100,200,300};
 productlistin L1;//进货单
 int max_ = 0x3f3f3f3f;
 //end 全局变量 
@@ -49,6 +50,7 @@ int main(int argc, char *argv[]) {
 	readClient(&L);
 	initproductinlist();
 	createproductinlist();
+	createsupplylist();
 	InitLog(&log_head,&L);
 	Sou_head = ReadSource();
 	bill_pre = Initiate_Bill(); 

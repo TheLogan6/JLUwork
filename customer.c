@@ -558,6 +558,7 @@ void InitLog(LogNode**L,client**cus){
     fgets(buffer,sizeof buffer,fp);
     int cus_id;char event[30];
     while(fscanf(fp,"%d%d%lf%f%s%d",&p->id,&cus_id,&p->money,&p->point,p->event,&p->date)!=EOF){
+    	if(findClient(cus,cus_id)==NULL)continue; 
         tmp=(LogNode*) malloc(sizeof(LogNode));
         tmp->id=p->id;
         tmp->date=p->date;
@@ -644,11 +645,14 @@ void showCusInfo(client*cus,LogNode*logh){
     printf("\t\t\t\t\t --------------------------------------- \n");
     printf("\t\t\t\t\t              余额变动记录               \n");
     printf("\t\t\t\t%-16s%-12s%-10s%-10s\n", "日期", "涉及金额", "变动原因", "获得积分");
+    int flag=0;
     while(logh){
     	if(logh->cus->id==cus->id){
+    		flag=1;
     		printf("\t\t\t\t%-16d%-12.2lf%-10s%-10.2f\n", logh->date, logh->money, logh->event, logh->point);
 		}
 		logh=logh->next;
 	}
+	if(!flag)printf("\t\t\t\t您的余额变动记录为空\n");
 	system("pause"); 
 }
