@@ -177,7 +177,6 @@ void ChangeInventory(){
 			    printf("\t\t\t\t\t         (0).  返回上一个界面           \n");
 				printf("\t\t\t\t\t                                        \n");
 				printf("\t\t\t\t\t --------------------------------------- \n");
-
 				printf("\t\t\t\t\t 请选择你要进行的操作：");
 				int ChangeInfo;
 				char ChangeInfo_s[5];
@@ -204,15 +203,22 @@ void ChangeInventory(){
 						break;
 					}
 					case(2):{ // 修改价格 
-						printf("\t\t\t\t  请输入新的批发价格(只保留两位小数且不得小于1元)：");
+						printf("\t\t\t\t  请输入新的批发价格(只保留两位小数)：");
 						float NewPrice;
-						if((scanf("%f", &NewPrice))==0 || NewPrice < 1)
+//						if((scanf("%f", &NewPrice))==0 || NewPrice < 1)
+//						{
+//							char garbage[20];
+//							gets(garbage);
+//							RefreshPage();
+//							continue;
+//						}
+						double temp = checkDouble();
+						if(temp < 0)
 						{
-							char garbage[20];
-							gets(garbage);
 							RefreshPage();
 							continue;
 						}
+						NewPrice = (float)temp;
 						tar->Price = NewPrice;
 						UpdateInventory(); 
 						printf("\t\t\t\t  您已成功修改价格，按任意键刷新！");

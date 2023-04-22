@@ -302,8 +302,33 @@ void aftersercive_check(){        // 售后订单处理
 		}
 		else if(choice == 2){                  // 已拒绝 
 			tar->status = 1;                //已确认退换货
-			tar = tar->pre;
-			tar->next = tar->next->next;			
+			struct sell_bill* pointer=bill_pre->next;
+			while(pointer!=NULL)
+		    {
+		        if(pointer->order==tar->order)
+		        {
+		     	   tar->related=pointer;
+		            break;
+		        }
+		        pointer=pointer->next;
+		    }
+			if(pointer == NULL)
+			{
+				printf("\t\t\t\t\t 该订单异常，请重新操作！\n");
+				pau;
+				continue;
+			}
+			else pointer->status = 1;
+			if(tar->next == NULL)
+			{
+				tar = tar->pre;
+				tar->next = NULL;
+			}
+			else{
+				tar = tar->pre;
+				tar->next = tar->next->next;
+			}
+						
 			writeproblembill();
 			writebill();
 			bill_pre=Initiate_Bill();

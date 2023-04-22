@@ -147,8 +147,6 @@ void ClientInput(){
 		}
         if(ClientId == 0) return;
         PasswordOutput();
-        
-        
 		char ClientPassword[20];
 		char temp;
 		int i = 0;
@@ -317,7 +315,7 @@ void ChangeNumber(client*cur_cus, int tarid){
 	char change_num_s[10];
 
 	change_num = checkNum();
-	if(change_num == -1 || change_num == 0){
+	if(change_num == -1 || change_num == 0 || change_num>300){
 		RefreshPage();
 		return;
 	} 

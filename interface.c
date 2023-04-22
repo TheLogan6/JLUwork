@@ -1050,7 +1050,9 @@ void ShoppintcartInterface(client* cur_cus){          // 当前客户信息
 					}
 					p = p->next;
 				}
+				if(flag == 1) continue;
 				p = cur_cus->cart;
+				
 				while(p)
 				{
 					struct sell_bill *newbill = (struct sell_bill *) malloc(sizeof(struct sell_bill));
@@ -1107,10 +1109,10 @@ void ShoppintcartInterface(client* cur_cus){          // 当前客户信息
 					p = p->next;
 				}
 //				printf("\t\t\t\t\t 您已成功购买所有商品！欢迎下次光临！");
-				cur_cus->cart = NULL;
-				writeShoppingCart(&L); 
 				if(flag == 1) break;
 				else {
+					cur_cus->cart = NULL;
+					writeShoppingCart(&L); 
 					printf("\n\t\t\t\t\t      您已成功购买所有商品！\n");
 					printf("\t\t\t\t\t         按任意键可刷新界面！");
 					pau; 
