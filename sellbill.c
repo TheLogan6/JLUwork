@@ -1002,13 +1002,14 @@ void Exchange(struct customer* user)
 	    struct sell_bill* bill=bill_pre->next;
 	    while(bill!=NULL)
 	    {
-	        if (bill->id == user->id)
+	        if (bill->id == user->id&&bill->status!=6)
 	        {
 	            counter++;
 	        }
 	        if(counter==order)break;
 	        bill=bill->next;
 	    }
+	    printf("%d",bill->status); 
 	    if(bill->status!=1)
 	    {
 	    	printf("\t\t\t\t\t\t\t\t\t\t对不起，您想申请换货的订单处于非正常状态，请您重新输入:");
@@ -1040,7 +1041,7 @@ void Exchange(struct customer* user)
     struct sell_bill* bill=bill_pre->next;
     while(bill!=NULL)
     {
-        if (bill->id == user->id)
+        if (bill->id == user->id&&bill->status!=6)
         {
             counter++;
         }
@@ -1151,7 +1152,7 @@ void Return(struct customer* user)
 	    struct sell_bill* bill=bill_pre->next;
 	    while(bill!=NULL)
 	    {
-	        if (bill->id == user->id)
+	        if (bill->id == user->id&&bill->status!=6)
 	        {
 	            counter++;
 	        }
@@ -1189,7 +1190,7 @@ void Return(struct customer* user)
     struct sell_bill* bill=bill_pre->next;
     while(bill!=NULL)
     {
-        if (bill->id == user->id)
+        if (bill->id == user->id&&bill->status!=6)
         {
             counter++;
         }
