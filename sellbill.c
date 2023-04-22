@@ -225,14 +225,14 @@ int Sell_confirm(struct sell_bill* newbill,struct customer* user)
 			writeShoppingCart(&L);
             newbill->status=6;
             flag=true;
-            continue;
+            return 3;
         }
         if(buychoice==4)
         {
             printf("\t\t\t\t\t期待您的下一次光临\n");
             newbill->status=0;
             flag=true;
-            continue;
+            return 4;
         }
         return buychoice;
     }
@@ -240,7 +240,7 @@ int Sell_confirm(struct sell_bill* newbill,struct customer* user)
 void sell_save(struct sell_bill* newbill)
 {
 	//保存订单 
-	
+	if(newbill->status==6)return;
     FILE *filep = fopen("bill.txt", "a");time_t timep;
     struct tm *timenow;
     time(&timep);
