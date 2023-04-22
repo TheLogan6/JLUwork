@@ -659,7 +659,6 @@ void JudgeNearexpiry(){
 
 void PrintSpecialInv(){
 	Inventory* p = Inv_head->next;
-
 	printf("\t  酒水品牌  | 品牌编号 |   商品名称   | 商品编号 | 容量大小 | 包装大小 | 库存容量 |   促销价格   |       保质期\n");
 	while(p)
 	{
@@ -675,7 +674,7 @@ void PrintSpecialInv(){
 			printf(" %d年%d月%d日\n", p->quality_year, p->quality_month, p->quality_day);
 			p = p->next;
 		}
-		p = p->next;	
+		else p = p->next;	
 	}	
 }
 
@@ -877,7 +876,7 @@ void reducegift(Gift* tar, int num){              // 减少赠品
 }
 void wornout(ProductSource* tar, int amount){ // 赠品的产生
 	int odds = rand()%10;
-	odds = 1; 
+//	odds = 1; 
 	if(odds == 1) 
 	{
 		int n = (int) (amount/10);   //n箱 
@@ -923,7 +922,6 @@ void wornout(ProductSource* tar, int amount){ // 赠品的产生
 		addinwarehouse(tar , amount - n); 
 		printf("\t\t\t\t  剩余%d箱酒水正常, 已成功添加入库存！\n", amount-n);
 		UpdateInventory();
-		pau;
 	}
 	else
 	{

@@ -60,7 +60,12 @@ void Restock(){
 		}
 		double buy_money;
 		buy_money = buy_amount * tar_sou->Price_sou;
-		
+		if(buy_money+100 > current_money) 
+		{
+			printf("\t\t\t\t\t 您当前的资金已不足！\n");
+			pau;
+			continue;
+		}
 		printf("\t\t\t\t\t --------------------------------------- \n");
 		//加入订单
 		productin * newbill = (productin*)malloc(sizeof(productin));

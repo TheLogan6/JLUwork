@@ -329,6 +329,18 @@ void delClient(client **L,int id){
         cout("\t\t\t\t无此用户！");enter;
         return;
     }
+    printf("\t\t\t\t以下为该用户的信息：\n");
+    printf("\t\t\t%-16s%-12s%-10s%-14s%-10s  %-2s\n", "顾客编号", "顾客姓名", "顾客等级", "顾客余额","顾客积分", "联系电话");
+    printf("\t\t\t%-16d%-12s%-10d%-14.2lf%-6.2lf\t%-2s\n", p->id, p->name, p->level, p->balance, p->point, p->phoneNumber);
+    printf("\t\t\t\t是否确认删除客户%d?\n",p->id);
+    printf("\t\t\t\t1:确认删除 2:取消操作 请输入您的选择："); 
+    int op;
+    while(1){
+    	op=checkNum();
+    	if(op>0&&(op==1||op==2))break;
+    	else printf("\t\t\t\t输入不正确，请重新输入："); 
+	}
+	if(op==2)return;
     q->ne=p->ne;
     if(p->ne)p->ne->pre=q;
     cus_cnt--;
@@ -355,7 +367,7 @@ void changeInfo(client**L,int id) {
         cout("\t\t\t\t该用户不存在！\n");
         return;
     }
-    cout("\t\t\t\t\n\t\t\t\t(1:密码 2:手机号 3:余额 4：姓名 0:返回)\n");
+    cout("\t\t\t\t\n\t\t\t\t\t(1:密码 2:手机号 3:余额 4：姓名 0:返回)\n");
     cout("\t\t\t\t\t请输入要修改的信息：");
     int con;
     while (1) {

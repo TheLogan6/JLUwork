@@ -18,7 +18,6 @@ void ManagerInterface();              // 店铺管理界面
 void NewClientInterface();
 
 void InitInterface();  
-
 void ClientLogin();
 void ManagerLogin();
 void PasswordOutput();
@@ -27,7 +26,6 @@ void ManagerChooseMode();
 void ManInferface(int i);
 void ClientChooseMode(client* cur_cus);
 int inputcheck(char numstring[]);  // 判断整数输入是否合法 
-
 
 void Inventory_Mode();
 void Clinet_Mode();

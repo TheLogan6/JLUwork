@@ -327,4 +327,3 @@ void ChangeNumber(client*cur_cus, int tarid){
 	}
 	
 } 
-

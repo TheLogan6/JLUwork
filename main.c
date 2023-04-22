@@ -28,7 +28,6 @@ int log_cnt;
 //client *cus_head;
 struct sell_bill* bill_pre;            //有哨位节点 
 struct sell_bill* bill_with_problem;  // 有哨位节点 
-
 int total_brand;    // 产品的品牌总数 
 char passwordans[20] = "123456";
 double total_cost;
@@ -62,7 +61,6 @@ int main(int argc, char *argv[]) {
 	while(1)                //用作返回上一级 
 	{
         system("cls"); 
-	
 	    char ChooseLogin_s[10];
 		int ChooseLogin;
 	    int position=0;int row=4;

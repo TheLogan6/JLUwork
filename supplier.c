@@ -1,6 +1,5 @@
 #include"supplier.h"
 #include"customer.h"
-
 extern productlistin L1;//进货单
 extern char *stringsm[];
 extern int max_; 
@@ -612,9 +611,7 @@ void deleteproductinlist(){//从商家链表中删除信息
 			}
 	    	aim = searchproductinlist(a->commodity_name,a->commodity_id);
 		}
-	
 		productin *p = L1;
-	
 		while(p->next->commodity_name != aim->commodity_name || p->next->commodity_id != aim->commodity_id){//未找到目标结点
 		
 			p = p->next;
@@ -1281,10 +1278,8 @@ void productin_interface(){
 			case(1):{
 				system("cls");
 				correctproductinlist();
-				//printf("打印文件");
-				
-				//system("pause");
-				
+				//printf("打印文件");	
+				//system("pause");			
 				//printf("\t\t\t\t\t     这是修改后的订单\n");
 				//printproductinlist();
 				//system("pause");

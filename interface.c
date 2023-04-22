@@ -8,7 +8,6 @@ extern char* code[12][10];
 extern double total_cost;
 extern double total_income;
 extern double current_money;
-//extern SpecialInv* SpeInv_head;
 extern int total_brand;
 extern double total_cost;
 extern double total_income;
@@ -20,7 +19,8 @@ void LoginInterface(int position){
     system("color 1F"); // B天蓝色   4：红色字 
     printf("\n\n\n\n\n"); 
     //printf("\t\t\t\t\t --------------------------------------- \n");
-    printf("\t\t\t\t\t           欢迎使用酒水管理系统！          \n");
+//    printf("\t\t\t\t\t           欢迎使用酒水管理系统！          \n");
+//    Sleep(1000);
     //printf("\t\t\t\t\t --------------------------------------- \n");
     system("cls");
     printf("\n\n\n\n\n"); 
@@ -736,7 +736,7 @@ void SalePromotion(client* cur_cus){
 				total_income+=buy_money;
 				current_money+=buy_money;
 				writeprofit();
-				system("pause");
+//				system("pause");
 				if(buy_money > 999 && Gift_head->next) choosegift(buy_money);
 				//库存减少 
 				break;
@@ -869,6 +869,7 @@ void choosegift(double buy_money){
 		giftchoice = checkNum();
 		if(giftchoice > n || giftchoice <= 0){
 			printf("\t\t\t\t 您的输入有误，请重新输入！\n");	
+			pau;
 			continue;
 		}
 		else if(giftchoice == n)
@@ -1129,4 +1130,3 @@ void giftinterface(){
     printf("\t\t\t\t\t --------------------------------------- \n");
     PrintGift(); 
 }
-
