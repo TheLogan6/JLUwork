@@ -294,6 +294,7 @@ void printCustomer(client*L){
 
     client *p=L;
     while(p){
+    	if(p->point==-0.00)p->point=0.00;
         printf("\t\t\t%-16d%-12s%-10d%-14.2lf%-6.2lf\t%-2s\n", p->id, p->name, p->level, p->balance, p->point, p->phoneNumber);
         p=p->ne;
     }
@@ -512,7 +513,7 @@ bool checkBalance(client**cus,double money){
     if(p->balance<money)return false;
     if(!(isFiniteNumber(p->balance-money)))return false;
     p->balance-=money;
-    if(money>0){
+    if(money<0){
 	addLogNode(&log_head,&L,p->id,0,money);
     writeLog(log_head);
 	}
@@ -599,11 +600,16 @@ void addLogNode(LogNode **l,client **L,int cus_id,int op,double money){
             strcpy(tmp->event,s);
             tmp->point=0;
         }
-        else{
+        else if(op==0){
             char s[30]="Ïû·Ñ";
             strcpy(tmp->event,s);
             tmp->point=(float)money;
         }
+        else{
+        	char s[30]="ÍË¿î";
+            strcpy(tmp->event,s);
+            tmp->point=0;
+		}
         time_t timep;
         time(&timep);
         struct tm *tp;

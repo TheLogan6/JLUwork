@@ -460,8 +460,6 @@ void addproductinlist(){
 productin* searchproductinlist(char name[100],int id){//在商家链表中寻找目标结点
 	//printf("到了\n");
 	productin* qq = L1->next;
-	//printf("qq过去了\n");
-	//printf("到了\n");
 	while(qq != NULL && (strcmp(qq->commodity_name,name) != 0 || qq->commodity_id != id)){
 		qq = qq->next;
 	}
@@ -516,7 +514,7 @@ void deleteproductinlist(){//从商家链表中删除信息
 			if (strcmp(a->commodity_name, "enddelete") == 0){
     		if(k0 == 0){
     			printf("\t\t\t\t\t\t\t\t   未进行有效删除操作!\n");
-            	free(a);
+//            	free(a);
             	system("pause");
             	break;
 			}
@@ -558,7 +556,8 @@ void deleteproductinlist(){//从商家链表中删除信息
 			}
 		}
 	    productin *aim = searchproductinlist(a->commodity_name,a->commodity_id);
-	    while(aim == NULL){
+	    while(aim == NULL)
+		{
 	    	printf("\t\t\t\t\t\t\t\t   您输入的编号有误，该商品不在订单信息中，请重新输入\n");
 	    	printf("\t\t\t\t\t\t\t\t   ");
 	    	fflush(stdin);
@@ -574,7 +573,7 @@ void deleteproductinlist(){//从商家链表中删除信息
     				printf("\t\t\t\t\t\t\t\t   未进行有效删除操作!\n");
             		free(a);
             		system("pause");
-            		break;
+            		return;
 				}
 				else{
 					printf("\t\t\t\t\t\t\t\t   这是删除后的订单\n");
@@ -587,8 +586,14 @@ void deleteproductinlist(){//从商家链表中删除信息
 			}
 	    	aim = searchproductinlist(a->commodity_name,a->commodity_id);
 		}
+		if(aim == NULL)
+		{
+			
+			return;
+		}
 		productin *p = L1;
-		while(p->next->commodity_name != aim->commodity_name || p->next->commodity_id != aim->commodity_id){//未找到目标结点
+
+		while((p->next != NULL) && (p->next->commodity_name != aim->commodity_name || p->next->commodity_id != aim->commodity_id)){//未找到目标结点
 		
 			p = p->next;
 		

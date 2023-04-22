@@ -2,6 +2,7 @@
 extern Inventory* Inv_head;
 extern Gift* Gift_head;
 extern client* L;
+extern LogNode*log_head;
 extern ProductSource* Sou_head;
 extern char* code[12][10]; 
 extern char passwordans[20]; 
@@ -69,7 +70,8 @@ void Restock(){
 		printf("\t\t\t\t\t --------------------------------------- \n");
 		//加入订单
 		productin * newbill = (productin*)malloc(sizeof(productin));
-		strcpy(newbill->commodity_name, tar_sou->DrinksBrand_sou);
+		strcpy(newbill->commodity_name, code[tar_sou->BrandNumber_sou][0]);
+//		strcpy(newbill->commodity_name, code[tar_sou->ProductNumber_sou][0]);
 		newbill->commodity_id = tar_sou->SpecificationNumber_sou;
 		newbill->commodity_packagenum = tar_sou->packagingsize_sou;
 		newbill->commodity_price = tar_sou->Price_sou;
@@ -253,7 +255,10 @@ void aftersercive_check(){        // 售后订单处理
 				writeprofit();
 				client*cus=findClient(&L,tar->id);
 				update(&cus,-tar->total_price);
-				recharge(&L,&log_head,cus->id,tar->total_price);
+				cus->balance+=tar->total_price;
+				addLogNode(&log_head,&L,cus->id,2,tar->total_price);
+				writeClientInfo(L);
+				writeLog(log_head);
 		        while(pointer!=NULL)
 		        {
 		            if(pointer->order==tar->order)
