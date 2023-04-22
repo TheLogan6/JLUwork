@@ -197,18 +197,23 @@ void addClient(client **L, client *p) {
 			}
 			password[l] = '\0';
 			}
+			bool t=0;
             if (ch == '\r') {
             	for(int i=0;password[i];i++)if(password[i]==' '){
-                	 cout("\n\t\t\t\t输入的密码不能含有空格！\n请重新输入密码：");
+//                	 cout("\n\t\t\t\t输入的密码不能含有空格！\n\t\t\t\t\t请重新输入密码！");
+t=1;
                 	 break;
 				}
                 if (l >= 6 && l <= 10) {
                     password[l] = '\0';
                     break;
                 } else {
-                    cout("\n\t\t\t\t密码长度不符合要求,请重新输入密码：");
+                    t=1;
                 }
-                
+                if(t==1){
+                	printf("\n\t\t\t\t\t您输入的密码有误！请重新输入：");
+					continue; 
+				}
             }
             
 		}
@@ -388,14 +393,19 @@ void changeInfo(client**L,int id) {
             while (1) {
                 char ch;
                 int l = 0;
+                bool tmp=0;
                 while ((ch = getchar()) != '\n') {
                     if (ch == ' ') {
-                        cout("\n\t\t\t\t\t输入的密码不能含有空格！\n请重新输入密码：");
+                        tmp=1;
                         continue;
                     }
                     password[l++] = ch;
                 }
                 password[l] = '\0';
+                if(tmp==1){
+                	cout("\n\t\t\t\t\t输入的密码不能含有空格！\n\t\t\t\t\t请重新输入密码：");
+                	continue;
+				}
                 if (ch == '\n') {
                     if (l >= 6 && l <= 10) {
                         bool flag = 1;
