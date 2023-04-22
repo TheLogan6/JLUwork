@@ -597,7 +597,7 @@ void addinwarehouse(ProductSource* tar, int amount){
 	Inventory* temp = p;
 	while(p)
 	{
-		if(p->BrandNumber == tar->BrandNumber_sou && p->ProductNumber==tar->ProductNumber_sou && p->volume==tar->volume_sou&& p->packagingsize==tar->packagingsize_sou &&p->quality_year==tar->quality_year_sou &&p->quality_month&&tar->quality_month_sou&&p->quality_day==tar->quality_day_sou)
+		if(p->BrandNumber == tar->BrandNumber_sou && p->ProductNumber==tar->ProductNumber_sou && p->volume==tar->volume_sou&& p->packagingsize==tar->packagingsize_sou &&p->quality_year==tar->quality_year_sou &&p->quality_month==tar->quality_month_sou&&p->quality_day==tar->quality_day_sou)
 		{
 			break;
 		}	

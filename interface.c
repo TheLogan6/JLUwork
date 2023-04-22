@@ -733,6 +733,9 @@ void SalePromotion(client* cur_cus){
 				printf("\t\t\t\t\t\t共计%.2f元!\n", buy_money);
 				reduceinventory(tar, buy_amount);
 				UpdateInventory();	
+				total_income+=buy_money;
+				current_money+=buy_money;
+				writeprofit();
 				system("pause");
 				if(buy_money > 999 && Gift_head->next) choosegift(buy_money);
 				//库存减少 
@@ -786,6 +789,9 @@ void SalePromotion(client* cur_cus){
 				//这里还差余额成功操作！ 
 				reduceinventory(tar, buy_amount);
 				UpdateInventory();	
+				total_income+=buy_money;
+				current_money+=buy_money;
+				writeprofit();
 				if(buy_money > 999 && Gift_head->next) choosegift(buy_money);
 				//库存减少
 				system("pause");

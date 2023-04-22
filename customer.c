@@ -435,6 +435,7 @@ void changeInfo(client**L,int id) {
                     }
                 }
             }
+            printf("\n\t\t\t\t\t手机号修改成功！\n");
         }
             break;
         case 3: {
@@ -466,7 +467,7 @@ void changeInfo(client**L,int id) {
             int l = 0;
             while ((ch = getchar()) != '\n') {
                 if (ch == ' ' ) {
-                    cout("\t\t\t\t\t输入的名称不能含有空格！\n\t\t\t\t请重新输入名称：");
+                    cout("\t\t\t\t\t输入的名称不能含有空格！\n\t\t\t\t\t请重新输入名称：");
                     while ((getchar()) != '\n');
                     l = 0;
                     continue;
@@ -480,7 +481,7 @@ void changeInfo(client**L,int id) {
             	break;
 			}
             else{
-            	printf("\t\t\t\t\t名称长度过长！\n\t\t\t\t请重新输入名称:") ;
+            	printf("\t\t\t\t\t名称长度过长！\n\t\t\t\t\t请重新输入名称:") ;
 			}
 			}
             for (i = 0; s[i]; i++)p->name[i] = s[i];
