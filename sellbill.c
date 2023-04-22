@@ -153,7 +153,7 @@ void Sell_select_Number_of_goods(struct sell_bill* newbill,struct customer* user
     }
     int discount = 100 * newbill->discount_for_client;
     newbill->total_price *= newbill->discount_for_client;
-    printf("%d%%，因此需要支付%.2lf元", discount,newbill->total_price);
+    printf("%d%%，因此需要支付%.2lf元\n", discount,newbill->total_price);
 //    user->point+=newbill->total_price;
 }
 int Sell_confirm(struct sell_bill* newbill,struct customer* user)
@@ -1009,7 +1009,6 @@ void Exchange(struct customer* user)
 	        if(counter==order)break;
 	        bill=bill->next;
 	    }
-	    printf("%d",bill->status); 
 	    if(bill->status!=1)
 	    {
 	    	printf("\t\t\t\t\t\t\t\t\t\t对不起，您想申请换货的订单处于非正常状态，请您重新输入:");
