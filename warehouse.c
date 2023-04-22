@@ -7,7 +7,7 @@ extern int total_brand;
 extern Gift* Gift_head;
 
 void encode_product(){
-	code[1][0] = "农夫山泉";code[1][1] = "纯净水", code[1][2] = "矿泉水" ;code[1][3] = "红茶味茶π";code[1][3] = "元气森林";
+	code[1][0] = "农夫山泉";code[1][1] = "纯净水", code[1][2] = "矿泉水" ;code[1][3] = "红茶味茶π";code[1][4] = "元气森林";
 	code[2][0] = "汇源"; code[2][1] = "苹果汁"; code[2][2] = "葡萄汁"; code[2][3] = "葡萄汁";
 	code[3][0] = "青岛啤酒" ; code[3][1] = "青岛纯生"; code[3][2] = "青岛小棕瓶" ;
 	code[4][0] = "舍得"; code[4][1] = "水晶舍得"; code[4][2] = "至尊舍得" ;
