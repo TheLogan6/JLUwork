@@ -295,16 +295,16 @@ void addproductinlist(){
 					}
 					printf("\t\t\t\t\t\t\t\t   请输入所要添加的商品编号   ");
 					id = inputNum();
-					while(id == -1) {
-	        			printf("\t\t\t\t\t\t\t\t   请输入合法编号!\n");
+					while(id == -1 || id > 100) {
+	        			printf("\t\t\t\t\t\t\t\t   请输入小于100的合法编号!\n");
 	        			printf("\t\t\t\t\t\t\t\t   ");
 	        			fflush(stdin); // 清空缓存区，避免无限循环
 	        			id = inputNum();
 	    			}
 	    			printf("\t\t\t\t\t\t\t\t   请输入所要添加的商品包装大小   ");
 	    			packagenum = inputNum();
-	    			while(packagenum == -1) {
-	        			printf("\t\t\t\t\t\t\t\t   请输入合法包装大小!\n");
+	    			while(packagenum == -1 || packagenum >  50) {
+	        			printf("\t\t\t\t\t\t\t\t   请输入小于50的合法包装大小!\n");
 	        			printf("\t\t\t\t\t\t\t\t   ");
 	        			fflush(stdin); // 清空缓存区，避免无限循环
 	        			packagenum = inputNum();
@@ -312,25 +312,25 @@ void addproductinlist(){
 					
 					printf("\t\t\t\t\t\t\t\t   请输入所要添加的商品单价(单价是浮点类型，可最多精确到分)   ");
 					price = checkDouble();
-					while(price < 0) {
-	        			printf("\t\t\t\t\t\t\t\t   请输入合法单价!\n");
+					while(price < 0 || price > 100) {
+	        			printf("\t\t\t\t\t\t\t\t   请输入小于100的合法单价!\n");
 	        			printf("\t\t\t\t\t\t\t\t   ");
 	        			fflush(stdin); // 清空缓存区，避免无限循环
-	        			price = inputNum();
+	        			price = checkDouble();
 	    			}
 					
 					printf("\t\t\t\t\t\t\t\t   请输入所要添加的商品进货数量   ");
 					number = inputNum();
-					while(number == -1) {
-	        			printf("\t\t\t\t\t\t\t\t   请输入合法进货数量!\n");
+					while(number == -1 || number > 500) {
+	        			printf("\t\t\t\t\t\t\t\t   请输入小于500的合法进货数量!\n");
 	        			printf("\t\t\t\t\t\t\t\t   ");
 	        			fflush(stdin); // 清空缓存区，避免无限循环
 	        			number = inputNum();
 	    			}
 					printf("\t\t\t\t\t\t\t\t   请输入所要添加的商品容量   ");
 					volume = inputNum();
-					while(volume == -1) {
-	        			printf("\t\t\t\t\t\t\t\t   请输入合法商品容量!\n");
+					while(volume == -1 || volume > 1000 || volume < 500) {
+	        			printf("\t\t\t\t\t\t\t\t   请输入500到1000毫升的合法商品容量!\n");
 	        			printf("\t\t\t\t\t\t\t\t   ");
 	        			fflush(stdin); // 清空缓存区，避免无限循环
 	        			volume = inputNum();
@@ -339,7 +339,7 @@ void addproductinlist(){
 				    fgets(str, 50, stdin); // 50表示输入的字符数最多为50个，可以根据实际需要调整
 					str[strcspn(str, "\n")] = '\0'; // 去掉字符串末尾的换行符
 					while(!isdate(str)){
-						printf("\t\t\t\t\t\t\t\t   请输入合法进货日期!\n");
+						printf("\t\t\t\t\t\t\t\t   请输入2023年的合法进货日期!\n");
 						printf("\t\t\t\t\t\t\t\t   \n");
 						fgets(str, 50, stdin); // 50表示输入的字符数最多为50个，可以根据实际需要调整
 						str[strcspn(str, "\n")] = '\0'; // 去掉字符串末尾的换行符
@@ -384,16 +384,16 @@ void addproductinlist(){
 					}
 					printf("\t\t\t\t\t\t\t\t   请输入所要添加的商品编号   ");
 					id = inputNum();
-					while(id == -1) {
-	        			printf("\t\t\t\t\t\t\t\t   请输入合法编号!\n");
+					while(id == -1 || id > 100) {
+	        			printf("\t\t\t\t\t\t\t\t   请输入小于100的合法编号!\n");
 	        			printf("\t\t\t\t\t\t\t\t   ");
 	        			fflush(stdin); // 清空缓存区，避免无限循环
 	        			id = inputNum();
 	    			}
 	    			printf("\t\t\t\t\t\t\t\t   请输入所要添加的商品包装大小   ");
 	    			packagenum = inputNum();
-	    			while(packagenum == -1) {
-	        			printf("\t\t\t\t\t\t\t\t   请输入合法包装大小!\n");
+	    			while(packagenum == -1 || packagenum > 50) {
+	        			printf("\t\t\t\t\t\t\t\t   请输入小于50的合法包装大小!\n");
 	        			printf("\t\t\t\t\t\t\t\t   ");
 	        			fflush(stdin); // 清空缓存区，避免无限循环
 	        			packagenum = inputNum();
@@ -401,25 +401,25 @@ void addproductinlist(){
 					
 					printf("\t\t\t\t\t\t\t\t   请输入所要添加的商品单价(单价是浮点类型，可最多精确到分)   ");
 					price = checkDouble();
-					while(price < 0) {
-	        			printf("\t\t\t\t\t\t\t\t   请输入合法单价!\n");
+					while(price < 0 || price > 100) {
+	        			printf("\t\t\t\t\t\t\t\t   请输入小于100的合法单价!\n");
 	        			printf("\t\t\t\t\t\t\t\t   ");
 	        			fflush(stdin); // 清空缓存区，避免无限循环
-	        			price = inputNum();
+	        			price = checkDouble();
 	    			}
 					
 					printf("\t\t\t\t\t\t\t\t   请输入所要添加的商品进货数量   ");
 					number = inputNum();
-					while(number == -1) {
-	        			printf("\t\t\t\t\t\t\t\t   请输入合法进货数量!\n");
+					while(number == -1 || number > 500) {
+	        			printf("\t\t\t\t\t\t\t\t   请输入小于500的合法进货数量!\n");
 	        			printf("\t\t\t\t\t\t\t\t   ");
 	        			fflush(stdin); // 清空缓存区，避免无限循环
 	        			number = inputNum();
 	    			}
 					printf("\t\t\t\t\t\t\t\t   请输入所要添加的商品容量   ");
 					volume = inputNum();
-					while(volume == -1) {
-	        			printf("\t\t\t\t\t\t\t\t   请输入合法商品容量!\n");
+					while(volume == -1 || volume > 1000 || volume < 500) {
+	        			printf("\t\t\t\t\t\t\t\t   请输入500到1000毫升的合法商品容量!\n");
 	        			printf("\t\t\t\t\t\t\t\t   ");
 	        			fflush(stdin); // 清空缓存区，避免无限循环
 	        			volume = inputNum();
@@ -428,7 +428,7 @@ void addproductinlist(){
 				    fgets(str, 50, stdin); // 50表示输入的字符数最多为50个，可以根据实际需要调整
 					str[strcspn(str, "\n")] = '\0'; // 去掉字符串末尾的换行符
 					while(!isdate(str)){
-						printf("\t\t\t\t\t\t\t\t   请输入合法进货日期!\n");
+						printf("\t\t\t\t\t\t\t\t   请输入2023年的合法进货日期!\n");
 						printf("\t\t\t\t\t\t\t\t   ");
 						fgets(str, 50, stdin); // 50表示输入的字符数最多为50个，可以根据实际需要调整
 						str[strcspn(str, "\n")] = '\0'; // 去掉字符串末尾的换行符
@@ -530,31 +530,7 @@ void deleteproductinlist(){//从商家链表中删除信息
 			}
         }
 		}
-    	
-        
-//        while(strcmp(a->commodity_name, "农夫山泉") != 0 && strcmp(a->commodity_name, "汇源") != 0 && strcmp(a->commodity_name, "青岛啤酒") != 0 && strcmp(a->commodity_name, "舍得") != 0 && strcmp(a->commodity_name, "娃哈哈") != 0&& strcmp(a->commodity_name, "五粮液") != 0 && strcmp(a->commodity_name, "康师傅") != 0 && strcmp(a->commodity_name, "喜茶") != 0 && strcmp(a->commodity_name, "可口可乐") != 0 && strcmp(a->commodity_name, "大窑嘉宾") != 0){
-//    		printf("\t\t\t\t\t   您输入的酒水名称有误，请重新输入!\n");
-//    		printf("\t\t\t\t\t   ");
-//    		fflush(stdin);
-//    		fgets(a->commodity_name, 50, stdin);
-//    		a->commodity_name[strcspn(a->commodity_name, "\n")] = '\0';
-//    		if (strcmp(a->commodity_name, "enddelete") == 0){
-//    		if(k0 == 0){
-//    			printf("\t\t\t\t\t  未进行有效删除操作!\n");
-//            	free(a);
-//            	system("pause");
-//            	break;
-//			}
-//			else{
-//				printf("\t\t\t\t\t   这是删除后的订单\n");
-//				printproductinlist();
-//				
-//				printfile();
-//				system("pause");
-//				return;
-//			}
-//        }
-//		}
+
 		printf("\t\t\t\t\t\t\t\t   请输入所要删除商品的编号,输入11111结束!\n");
 		printf("\t\t\t\t\t\t\t\t   ");
 	    //fgets(a->commodity_id, 50, stdin);
@@ -583,7 +559,7 @@ void deleteproductinlist(){//从商家链表中删除信息
 		}
 	    productin *aim = searchproductinlist(a->commodity_name,a->commodity_id);
 	    while(aim == NULL){
-	    	printf("\t\t\t\t\t\t\t\t   您输入的编号有误，请重新输入\n");
+	    	printf("\t\t\t\t\t\t\t\t   您输入的编号有误，该商品不在订单信息中，请重新输入\n");
 	    	printf("\t\t\t\t\t\t\t\t   ");
 	    	fflush(stdin);
 	    	a->commodity_id = inputNum();
@@ -716,8 +692,8 @@ void searchproductin(){//查找商品信息
 			printf("\t\t\t\t\t           请输入每箱瓶数   ");
 			int package;
 			package = inputNum();
-			while(package == -1) {
-        		printf("\t\t\t\t\t           请输入合法每箱瓶数!\n");
+			while(package == -1 || package > 50) {
+        		printf("\t\t\t\t\t           请输入小于50的合法每箱瓶数!\n");
         		printf("\t\t\t\t\t           ");
         		fflush(stdin); // 清空缓存区，避免无限循环
         		package = inputNum();
@@ -790,8 +766,8 @@ void searchproductin(){//查找商品信息
 			printf("\t\t\t\t\t           请输入进货数量   ");
 			int in;
 			in = inputNum();
-			while(in == -1) {
-        		printf("\t\t\t\t\t           请输入合法进货数量!\n");
+			while(in == -1 || in > 500) {
+        		printf("\t\t\t\t\t           请输入小于500的合法进货数量!\n");
         		printf("\t\t\t\t\t           ");
         		fflush(stdin); // 清空缓存区，避免无限循环
         		in = inputNum();
@@ -862,7 +838,7 @@ void searchproductin(){//查找商品信息
 			fgets(da, 100, stdin); // 50表示输入的字符数最多为50个，可以根据实际需要调整
 			da[strcspn(da, "\n")] = '\0'; // 去掉字符串末尾的换行符
 			while(!isdate(da)){
-				printf("\t\t\t\t\t           请输入合法进货日期\n");
+				printf("\t\t\t\t\t           请输入2023年的合法进货日期\n");
 				printf("\t\t\t\t\t           ");
 				fflush(stdin);
 				fgets(da, 100, stdin); // 50表示输入的字符数最多为50个，可以根据实际需要调整
@@ -986,8 +962,8 @@ void correctproductinlist(){
 				printf("\t\t\t\t\t\t\t\t   请输入修改后的进货数量   ");
 				//printf("\t\t\t\t\t         ");
 				number = inputNum();
-				while(number == -1) {
-        			printf("\t\t\t\t\t\t\t\t   请输入合法数字!\n");
+				while(number == -1 || number > 500) {
+        			printf("\t\t\t\t\t\t\t\t   请输入小于500合法数字!\n");
         			printf("\t\t\t\t\t\t\t\t   ");
         			fflush(stdin); // 清空缓存区，避免无限循环
         			number = inputNum();
@@ -1004,8 +980,8 @@ void correctproductinlist(){
 				double price;
 				printf("\t\t\t\t\t\t\t\t   请输入修改后的进货单价   ");
 				price = checkDouble();
-				while(price < 0) {
-        			printf("\t\t\t\t\t\t\t\t   请输入合法数字!\n");
+				while(price < 0 || price > 100) {
+        			printf("\t\t\t\t\t\t\t\t   请输入小于100的合法数字!\n");
         			printf("\t\t\t\t\t\t\t\t   ");
         			fflush(stdin); // 清空缓存区，避免无限循环
         			price = checkDouble();
@@ -1022,8 +998,8 @@ void correctproductinlist(){
 				//printf("\t\t\t\t\t         ");
 				int packagenum;
 				packagenum = inputNum();
-				while(packagenum == -1) {
-        			printf("\t\t\t\t\t\t\t\t   请输入合法数字!\n");
+				while(packagenum == -1 || packagenum > 50) {
+        			printf("\t\t\t\t\t\t\t\t   请输入小于50的合法数字!\n");
         			printf("\t\t\t\t\t\t\t\t   ");
         			fflush(stdin); // 清空缓存区，避免无限循环
         			packagenum = inputNum();
@@ -1037,8 +1013,8 @@ void correctproductinlist(){
 				printf("\t\t\t\t\t\t\t\t   请输入修改后的每瓶容量   ");
 				int volume;
 				volume = inputNum();
-				while(volume == -1) {
-        			printf("\t\t\t\t\t\t\t\t   请输入合法数字!\n");
+				while(volume == -1 || volume > 1000 || volume < 500) {
+        			printf("\t\t\t\t\t\t\t\t   请输入500到1000毫升的合法商品容量!\n");
         			printf("\t\t\t\t\t\t\t\t   ");
         			fflush(stdin); // 清空缓存区，避免无限循环
         			volume = inputNum();
@@ -1055,7 +1031,7 @@ void correctproductinlist(){
 			    fgets(str, 50, stdin); // 50表示输入的字符数最多为50个，可以根据实际需要调整
 				str[strcspn(str, "\n")] = '\0'; // 去掉字符串末尾的换行符
 				while(!isdate(str)){
-					printf("\t\t\t\t\t\t\t\t   请输入合法进货日期!\n");
+					printf("\t\t\t\t\t\t\t\t   请输入2023年的合法进货日期!\n");
 					printf("\t\t\t\t\t\t\t\t   ");
 					fgets(str, 50, stdin); // 50表示输入的字符数最多为50个，可以根据实际需要调整
 					str[strcspn(str, "\n")] = '\0'; // 去掉字符串末尾的换行符
@@ -1175,7 +1151,10 @@ void damage(){
 				printf("\t\t\t\t\t\t\t\t\t     该商品现有箱数%d箱,由于破损,总价调整为%.2lf\n",p->commodity_number,p->sum_price);
 				break;
 			}
+			fgh:
 			case(2):{
+				productin *pp;
+				int fyu = 0;
 				printf("\t\t\t\t\t\t\t\t\t     请输入破损商品名称   ");
 				char sp[100];
 				fgets(sp, 100, stdin); // 50表示输入的字符数最多为50个，可以根据实际需要调整
@@ -1186,6 +1165,16 @@ void damage(){
 	    			fflush(stdin);
 	    			fgets(sp, 100, stdin); // 50表示输入的字符数最多为50个，可以根据实际需要调整
 					sp[strcspn(sp, "\n")] = '\0'; // 去掉字符串末尾的换行符
+				}
+				for(pp = L1->next;pp != NULL;pp = pp->next){
+					if(strcmp(pp->commodity_name,sp) == 0){
+						fyu = 1;
+						break;
+					}
+				}
+				if(fyu == 0){
+					printf("\t\t\t\t\t\t\t\t\t     订单中已不含此商品名称，请重新操作\n");
+					goto fgh;
 				}
 				printf("\t\t\t\t\t\t\t\t\t     请输入破损商品编号   ");
 				int damage_num;
@@ -1199,7 +1188,7 @@ void damage(){
 				productin *p = NULL;
 				p = searchproductinlist(sp,damage_num);
 				while(p == NULL){
-	    			printf("\t\t\t\t\t\t\t\t\t     您输入的编号有误，该名称及编号对应的商品不在订单中请重新输入\n");
+	    			printf("\t\t\t\t\t\t\t\t\t     您输入的编号有误，该名称及编号对应的商品不在订单中请重新输入编号\n");
 	    			printf("\t\t\t\t\t\t\t\t\t     ");
 	    			fflush(stdin);
 	    			damage_num = inputNum();
@@ -1210,7 +1199,7 @@ void damage(){
 				int damagebox,damagebottle,damagesum = 0;
 				damagebox = inputNum();
 				while(damagebox == -1 || damagebox > p->commodity_number || damagebox < 0){
-	    			printf("\t\t\t\t\t\t\t\t\t     请输入大于0小于总箱数的合法箱数!\n");
+	    			printf("\t\t\t\t\t\t\t\t\t     请输入大于0小于%d的合法箱数!\n",p->commodity_number);
         			printf("\t\t\t\t\t\t\t\t\t     ");
         			fflush(stdin); // 清空缓存区，避免无限循环
         			damagebox = inputNum();
@@ -1222,7 +1211,7 @@ void damage(){
 					i++;
 					damagebottle = inputNum();
 					while(damagebottle == -1 || damagebottle > p->commodity_packagenum || damagebottle < 0){
-	    				printf("\t\t\t\t\t\t\t\t\t     请输入大于0小于总瓶数的合法瓶数!\n");
+	    				printf("\t\t\t\t\t\t\t\t\t     请输入大于等于0小于%d的合法瓶数!\n",p->commodity_packagenum);
         				printf("\t\t\t\t\t\t\t\t\t     ");
         				fflush(stdin); // 清空缓存区，避免无限循环
         				damagebottle = inputNum();
@@ -1279,10 +1268,6 @@ void productin_interface(){
 				system("cls");
 				correctproductinlist();
 				//printf("打印文件");	
-				//system("pause");			
-				//printf("\t\t\t\t\t     这是修改后的订单\n");
-				//printproductinlist();
-				//system("pause");
 				break;
 			}
 			case(2):{
@@ -1304,7 +1289,6 @@ void productin_interface(){
 			case(4):{
 				system("cls");
 				addproductinlist();
-				//system("pause");
 				//system("pause");
 				break;
 			}
